@@ -1,0 +1,283 @@
+
+---
+title: "Tutorial 2"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: false
+---
+
+# Putting your commands in files
+Last week,  we typed all our commands directly into the console window.  THis is useful for testing and small projects, but it is much better to capture our command in a file, so we can control them.  
+
+Rstudio has a file editor built directly into the environment.  Create a new R Script file by going to File -> New File -> R Script (or just type ctrl-shift-N)
+
+```{r 0_menu_new_file.jpg, echo=FALSE, fig.cap="New File Menu", out.width='50%'}
+knitr::include_graphics("../screens/0_menu_new_file.jpg")
+```
+## R script editing window
+A blank R Script editing window pops up in the top left quadrant.  You can type your commands in here, and send them to the console window by pressing ctrl-enter.  As in pgadmin, you can also highlight a section of the line, and run it by pressing ctrl-enter.
+ 
+```{r 1_blank_file_window.jpg, echo=FALSE, fig.cap="Blank R script window", out.width='50%'}
+knitr::include_graphics("../screens/1_blank_file_window.jpg")
+```
+
+## Typing commands in Rscript window
+
+
+Now, running commands in RStudio is a two step process.  First type the commands into the upper script window, and press ctrl-enter to run them in the console window, below.  Like last week, type `library(tidyverse)` into the rscript window, and press ctrl-enter.  It is conventional to load all your libraries at the start of the script.
+
+Notice the informational messages that now show up in the console window, below.
+
+```{r 2_load_tidyverse.jpg, echo=FALSE, fig.cap="2_load_tidyverse.jpg", out.width='50%'}
+knitr::include_graphics("../screens/2_load_tidyverse.jpg")
+```
+## Viewing data
+It is also often useful to view your data.  View the `mpg` dataset.  Note how it shows up in the console window, below.
+
+```{r 3_view_mpg.jpg, echo=FALSE, fig.cap="3_view_mpg.jpg", out.width='50%'}
+knitr::include_graphics("../screens/3_view_mpg.jpg")
+```
+## Generating graphics
+When you generate a graphic, like last week, it shows up in the bottom right quadrant
+
+```{r, echo=F, results='hide', message=F, warning=F}
+
+library(tidyverse)
+
+```
+
+```{r, eval=F}
+
+ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))
+
+```
+
+
+```{r 4_plot_mpg.jpg, echo=FALSE, fig.cap="4_plot_mpg.jpg", out.width='100%'}
+knitr::include_graphics("../screens/4_plot_mpg.jpg")
+
+```
+
+## Naming your file
+At some point it is useful to save your file. I named my file `vaed_explore.R`, by going to File -> Save as -> vaed_explore.R 
+
+You can see `vaed_explore.R` in the bottom right Files quadrant. If you want to download files from the server, select them using left hand tick box, then File -> More -> Export.
+
+# Importing Health Data
+
+We will now work with health data. The following two queries select the same data we used in the second tableau tutorial. 
+
+## SQL Query for cardiac_diagnosis.csv
+
+```{sql, eval=F }
+
+select diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_diagnosis using (admission_id)
+join diagnosis_desc using (diag_code)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE diag_code between 'I21' AND 'I2399';
+
+```
+## SQL Query for cardiac_procedures.csv
+
+```{sql, eval=F}
+
+select procedure_code, admission_id, age_years, los, sameday_id, drg, sex_desc, procedure_short_desc, block_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_procedure using (admission_id)
+join procedure_desc using (procedure_code)
+join block using (block)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE block_desc like '%cardiac%'
+AND bnt to come downlock_desc not like 'Closure%'
+AND block_desc not like '%catheter%'
+AND block_desc not like 'Gated%'
+
+```
+I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this.  [Download cardiac.zip](../data/cardiac.zip) to your desktop.  It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv. 
+
+### Exercises
+
+1.  Write the SQL query that would get the diagnosis information for your assigned AHD disease. 
+
+## Uploading data
+We will upload the cardiac datafiles to Rstudio, by using the Files-> Upload, found in Files tab of the bottom right quadrant.  
+
+```{r 5_file_upload.jpg, echo=FALSE, fig.cap="Files tab", out.width='40%'}
+knitr::include_graphics("../screens/5_file_upload.jpg")
+```
+
+```{r 6_file_upload_2.jpg, echo=FALSE, fig.cap="Upload file selection box", out.width='40%'}
+knitr::include_graphics("../screens/6_file_upload_2.jpg")
+```
+Rstudio has unzipped the files for you.  You can now see the uploaded cardiac files in the Files tab.
+
+```{r 7_file_upload_done.jpg, echo=FALSE, fig.cap="Uploaded files complete", out.width='40%'}
+knitr::include_graphics("../screens/7_file_upload_done.jpg")
+```
+```{r XXX, echo=FALSE, fig.cap="XXX", out.width='100%', eval=F, results='hide'}
+knitr::include_graphics("../screens/XXX")
+```
+## Reading in CSV files
+
+The best way to read CSV files into R is by using the read_csv function.  This is part of the readr package, already loaded in as part of the tidyverse. Type the following code into your Rscript file, and press Ctrl-enter.
+
+```{r }
+
+read_csv("cardiac_procedures.csv")
+
+```
+## Reading CSV files into the environment
+
+While we could do so, it is inefficient to read the data in from the original CSV file every time we use it.  Instead, we will read it into a `tibble`, a structure in the R environment that we can use repeatedly.
+
+```{r }
+
+cardiac_procedures <- read_csv("cardiac_procedures.csv") 
+
+```
+
+### Exercises
+
+1.  Read in the cardiac_diagnosis.csv file. What fields are in it?
+
+1.  Read the cardiac_diagnosis.csv file into the cardiac_diagnosis tibble
+
+# Piping data between functions
+
+The best thing about R, and language in general, is that you can build up meaningful phrases based on relatively simple fragments.  For example, ggplot produces many different graphs by combining two types of chunks, `ggplot` and `geom_` functions, joining the chunks of the phrase using the plus sign `+` .
+
+When we combine *data* phrases, we call it a data pipeline, and we join them using the pipe symbol, `%>%` . 
+
+For example, the following command finds all the distinct block descriptions in the cardiac procedures dataset.  
+
+```{r }
+
+cardiac_procedures %>%
+  distinct( block_desc )
+
+```
+##  `select` and `filter` functions
+
+There are a wide variety of functions you can use in a pipe.  Some useful ones that you will recognise are `select` and `filter`.  Let's explore them!
+
+```{r }
+
+cardiac_procedures %>%
+  select( drg, sex_desc )
+
+```
+
+```{r }
+
+cardiac_procedures %>%
+  filter( sex_desc == 'Female')
+
+```
+
+### Exercises
+
+1.  How would you select only the diagnosis descriptions?
+
+1.  How would you see the ages and lengths of stay of men who had a cardiac procedure?
+
+1.  How many different seperation modes are there?  How many drg's?
+
+## `count` and `head` functions
+
+The `count` function is a two step function.  It groups all unique values together (like `distinct`), summarising the result by counting.  The equivalent in SQL would be `COUNT(*)` and `GROUP BY`.
+
+```{r }
+
+cardiac_procedures %>%
+  count( procedure_short_desc )
+
+```
+
+If we add `sort = TRUE` to `count`, the results are sorted in descending order.
+
+```{r }
+
+cardiac_procedures %>%
+  count( procedure_short_desc, sort = TRUE )
+
+```
+## Creating a longer pipe
+
+If we add the `head(5)` function to the end of the pipe, we get the top 5 procedures.  Our phrases are getting longer!
+
+```{r }
+
+cardiac_procedures %>%
+  count( procedure_short_desc, sort = TRUE )  %>%
+  head( 5 )
+
+```
+
+### Exercises
+
+1.  What is the most prevalent cardiac block?  Most prevalent los?  drg?  
+
+1.  Show only the ages and lengths of stay of men who had cardiac procedures.
+
+1.  How many different seperation modes are there?  How many drg's?
+
+1.  Create another tibble called top 5 diagnosis, containing the top 5 diagnosis codes
+
+
+## Piping into ggplot
+
+You can also plot directly from a pipe.  Lets compare the number of men and women who had cardiac procedures.  Note, I select out distinct admissions so that we don't double count admissions that had more than one procedure.
+
+```{r }
+
+cardiac_procedures %>%
+  distinct( admission_id, sex_desc, block_desc ) %>%
+  ggplot() +
+    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) 
+
+```
+
+## Refining a graph - labelling
+The graph need better titles.  Here, I modify the title, x and y labels and legend label.
+
+```{r }
+
+cardiac_procedures %>%
+  ggplot() +
+    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) +
+    ggtitle( 'Raw cardiac repair by gender and repair type') +
+    ylab('Number of Patients') +
+    xlab('Block Description') +
+    scale_fill_discrete(name = 'Sex' )
+
+```
+
+## Refining a graph - label text wrapping
+
+Pretty well anything you want to do in R, someone else has wanted to do it previously. I noted that the text on the x axis was too long, and after a few tries, I came up the the google search 'how to wrap text on x axis ggplot'.  Stack overflow suggested using the `scales` package.  After a few tries to get find the appropriate number of characters to wrap at, I came up with the following.
+
+
+```{r, message=F, warning=F}
+
+library(scales)
+
+cardiac_procedures %>%
+  ggplot() +
+    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) +
+    ggtitle( 'Raw cardiac repair by gender and repair type') +
+    ylab('Number of Patients') +
+    xlab('Block Description') +
+    scale_fill_discrete(name = 'Sex' ) +
+    scale_x_discrete(labels = wrap_format(40)) +
+    coord_flip()
+
+```
+
+
+

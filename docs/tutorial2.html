@@ -1,0 +1,814 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Tutorial 2</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">tutorial2</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial 2</h1>
+
+</div>
+
+
+<p><strong>Last updated:</strong> 2019-05-13</p>
+<strong>workflowr checks:</strong> <small>(Click a bullet for more information)</small>
+<ul>
+<li>
+<p><details> <summary> <strong style="color:red;">✖</strong> <strong>R Markdown file:</strong> uncommitted changes </summary> The R Markdown file has staged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</details>
+</li>
+<li>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Environment:</strong> empty </summary></p>
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</details>
+</li>
+<li>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Seed:</strong> <code>set.seed(20190513)</code> </summary></p>
+<p>The command <code>set.seed(20190513)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</details>
+</li>
+<li>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Session information:</strong> recorded </summary></p>
+<p>Great job! Recording the operating system, R version, and package versions is critical for reproducibility.</p>
+</details>
+</li>
+<li>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> e9a337e </summary></p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+<pre><code>
+Untracked files:
+    Untracked:  data/cardiac.zip
+
+Unstaged changes:
+    Modified:   analysis/tutorial2.Rmd
+
+Staged changes:
+    New:        analysis/tutorial2.Rmd
+    New:        cardiac_diagnosis.csv
+    New:        cardiac_procedures.csv
+    New:        screens/0_menu_new_file.jpg
+    New:        screens/1_blank_file_window.jpg
+    New:        screens/2_load_tidyverse.jpg
+    New:        screens/3_view_mpg.jpg
+    New:        screens/4_plot_mpg.jpg
+    New:        screens/5_file_upload.jpg
+    New:        screens/6_file_upload_2.jpg
+    New:        screens/7_file_upload_done.jpg
+
+</code></pre>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
+</li>
+</ul>
+<hr />
+<div id="putting-your-commands-in-files" class="section level1">
+<h1>Putting your commands in files</h1>
+<p>Last week, we typed all our commands directly into the console window. THis is useful for testing and small projects, but it is much better to capture our command in a file, so we can control them.</p>
+<p>Rstudio has a file editor built directly into the environment. Create a new R Script file by going to File -&gt; New File -&gt; R Script (or just type ctrl-shift-N)</p>
+<div class="figure" style="text-align: center">
+<img src="../screens/0_menu_new_file.jpg" alt="New File Menu" width="50%" />
+<p class="caption">
+New File Menu
+</p>
+</div>
+<div id="r-script-editing-window" class="section level2">
+<h2>R script editing window</h2>
+<p>A blank R Script editing window pops up in the top left quadrant. You can type your commands in here, and send them to the console window by pressing ctrl-enter. As in pgadmin, you can also highlight a section of the line, and run it by pressing ctrl-enter.</p>
+<div class="figure" style="text-align: center">
+<img src="../screens/1_blank_file_window.jpg" alt="Blank R script window" width="50%" />
+<p class="caption">
+Blank R script window
+</p>
+</div>
+</div>
+<div id="typing-commands-in-rscript-window" class="section level2">
+<h2>Typing commands in Rscript window</h2>
+<p>Now, running commands in RStudio is a two step process. First type the commands into the upper script window, and press ctrl-enter to run them in the console window, below. Like last week, type <code>library(tidyverse)</code> into the rscript window, and press ctrl-enter. It is conventional to load all your libraries at the start of the script.</p>
+<p>Notice the informational messages that now show up in the console window, below.</p>
+<div class="figure" style="text-align: center">
+<img src="../screens/2_load_tidyverse.jpg" alt="2_load_tidyverse.jpg" width="50%" />
+<p class="caption">
+2_load_tidyverse.jpg
+</p>
+</div>
+</div>
+<div id="viewing-data" class="section level2">
+<h2>Viewing data</h2>
+<p>It is also often useful to view your data. View the <code>mpg</code> dataset. Note how it shows up in the console window, below.</p>
+<div class="figure" style="text-align: center">
+<img src="../screens/3_view_mpg.jpg" alt="3_view_mpg.jpg" width="50%" />
+<p class="caption">
+3_view_mpg.jpg
+</p>
+</div>
+</div>
+<div id="generating-graphics" class="section level2">
+<h2>Generating graphics</h2>
+<p>When you generate a graphic, like last week, it shows up in the bottom right quadrant</p>
+<pre class="r"><code>ggplot(data = mpg) + 
+  geom_point(mapping = aes(x = displ, y = hwy))</code></pre>
+<div class="figure" style="text-align: center">
+<img src="../screens/4_plot_mpg.jpg" alt="4_plot_mpg.jpg" width="100%" />
+<p class="caption">
+4_plot_mpg.jpg
+</p>
+</div>
+</div>
+<div id="naming-your-file" class="section level2">
+<h2>Naming your file</h2>
+<p>At some point it is useful to save your file. I named my file <code>vaed_explore.R</code>, by going to File -&gt; Save as -&gt; vaed_explore.R</p>
+<p>You can see <code>vaed_explore.R</code> in the bottom right Files quadrant. If you want to download files from the server, select them using left hand tick box, then File -&gt; More -&gt; Export.</p>
+</div>
+</div>
+<div id="importing-health-data" class="section level1">
+<h1>Importing Health Data</h1>
+<p>We will now work with health data. The following two queries select the same data we used in the second tableau tutorial.</p>
+<div id="sql-query-for-cardiac_diagnosis.csv" class="section level2">
+<h2>SQL Query for cardiac_diagnosis.csv</h2>
+<pre class="sql"><code>
+select diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_diagnosis using (admission_id)
+join diagnosis_desc using (diag_code)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE diag_code between &#39;I21&#39; AND &#39;I2399&#39;;
+</code></pre>
+</div>
+<div id="sql-query-for-cardiac_procedures.csv" class="section level2">
+<h2>SQL Query for cardiac_procedures.csv</h2>
+<pre class="sql"><code>
+select procedure_code, admission_id, age_years, los, sameday_id, drg, sex_desc, procedure_short_desc, block_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_procedure using (admission_id)
+join procedure_desc using (procedure_code)
+join block using (block)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE block_desc like &#39;%cardiac%&#39;
+AND bnt to come downlock_desc not like &#39;Closure%&#39;
+AND block_desc not like &#39;%catheter%&#39;
+AND block_desc not like &#39;Gated%&#39;
+</code></pre>
+<p>I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this. <a href="../data/cardiac.zip">Download cardiac.zip</a> to your desktop. It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv.</p>
+<div id="exercises" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li>Write the SQL query that would get the diagnosis information for your assigned AHD disease.</li>
+</ol>
+</div>
+</div>
+<div id="uploading-data" class="section level2">
+<h2>Uploading data</h2>
+<p>We will upload the cardiac datafiles to Rstudio, by using the Files-&gt; Upload, found in Files tab of the bottom right quadrant.</p>
+<div class="figure" style="text-align: center">
+<img src="../screens/5_file_upload.jpg" alt="Files tab" width="40%" />
+<p class="caption">
+Files tab
+</p>
+</div>
+<div class="figure" style="text-align: center">
+<img src="../screens/6_file_upload_2.jpg" alt="Upload file selection box" width="40%" />
+<p class="caption">
+Upload file selection box
+</p>
+</div>
+<p>Rstudio has unzipped the files for you. You can now see the uploaded cardiac files in the Files tab.</p>
+<div class="figure" style="text-align: center">
+<img src="../screens/7_file_upload_done.jpg" alt="Uploaded files complete" width="40%" />
+<p class="caption">
+Uploaded files complete
+</p>
+</div>
+</div>
+<div id="reading-in-csv-files" class="section level2">
+<h2>Reading in CSV files</h2>
+<p>The best way to read CSV files into R is by using the read_csv function. This is part of the readr package, already loaded in as part of the tidyverse. Type the following code into your Rscript file, and press Ctrl-enter.</p>
+<pre class="r"><code>read_csv(&quot;cardiac_procedures.csv&quot;)</code></pre>
+<pre><code>Parsed with column specification:
+cols(
+  procedure_code = col_double(),
+  admission_id = col_double(),
+  age_years = col_double(),
+  los = col_double(),
+  sameday_id = col_character(),
+  drg = col_character(),
+  sex_desc = col_character(),
+  procedure_short_desc = col_character(),
+  block_desc = col_character(),
+  sep_mode_desc = col_character(),
+  care_type_desc = col_character()
+)</code></pre>
+<pre><code># A tibble: 9,087 x 11
+   procedure_code admission_id age_years   los sameday_id drg   sex_desc
+            &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;   
+ 1        3825600     21019781        62    11 N          F40A  Male    
+ 2        3825600     21159692        80     2 N          F17A  Female  
+ 3        3825600     21356305        83     4 N          F12B  Female  
+ 4        3825600     21380943        69    15 N          F09A  Male    
+ 5        3825600     21389939        69    32 N          A06B  Male    
+ 6        3825600     21513018        77     7 N          F12A  Male    
+ 7        3825600     21532997        77    15 N          F03A  Male    
+ 8        3825600     21602667        58     1 Y          F41A  Male    
+ 9        3825600     21631075        90     7 N          F10B  Male    
+10        3825600     21814103        79     5 N          F17A  Male    
+# … with 9,077 more rows, and 4 more variables:
+#   procedure_short_desc &lt;chr&gt;, block_desc &lt;chr&gt;, sep_mode_desc &lt;chr&gt;,
+#   care_type_desc &lt;chr&gt;</code></pre>
+</div>
+<div id="reading-csv-files-into-the-environment" class="section level2">
+<h2>Reading CSV files into the environment</h2>
+<p>While we could do so, it is inefficient to read the data in from the original CSV file every time we use it. Instead, we will read it into a <code>tibble</code>, a structure in the R environment that we can use repeatedly.</p>
+<pre class="r"><code>cardiac_procedures &lt;- read_csv(&quot;cardiac_procedures.csv&quot;) </code></pre>
+<pre><code>Parsed with column specification:
+cols(
+  procedure_code = col_double(),
+  admission_id = col_double(),
+  age_years = col_double(),
+  los = col_double(),
+  sameday_id = col_character(),
+  drg = col_character(),
+  sex_desc = col_character(),
+  procedure_short_desc = col_character(),
+  block_desc = col_character(),
+  sep_mode_desc = col_character(),
+  care_type_desc = col_character()
+)</code></pre>
+<div id="exercises-1" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li><p>Read in the cardiac_diagnosis.csv file. What fields are in it?</p></li>
+<li><p>Read the cardiac_diagnosis.csv file into the cardiac_diagnosis tibble</p></li>
+</ol>
+</div>
+</div>
+</div>
+<div id="piping-data-between-functions" class="section level1">
+<h1>Piping data between functions</h1>
+<p>The best thing about R, and language in general, is that you can build up meaningful phrases based on relatively simple fragments. For example, ggplot produces many different graphs by combining two types of chunks, <code>ggplot</code> and <code>geom_</code> functions, joining the chunks of the phrase using the plus sign <code>+</code> .</p>
+<p>When we combine <em>data</em> phrases, we call it a data pipeline, and we join them using the pipe symbol, <code>%&gt;%</code> .</p>
+<p>For example, the following command finds all the distinct block descriptions in the cardiac procedures dataset.</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  distinct( block_desc )</code></pre>
+<pre><code># A tibble: 9 x 1
+  block_desc                                                               
+  &lt;chr&gt;                                                                    
+1 Insertion of temporary transvenous electrode for cardiac pacemaker or de…
+2 Insertion of permanent transvenous electrode for cardiac pacemaker or de…
+3 Insertion of other electrode or patch for cardiac pacemaker or defibrill…
+4 Insertion of cardiac pacemaker generator                                 
+5 Insertion of cardiac defibrillator generator                             
+6 Adjustment, replacement or removal of electrode for cardiac pacemaker or…
+7 Adjustment, replacement or removal of cardiac pacemaker generator        
+8 Adjustment, replacement or removal of cardiac defibrillator generator    
+9 Testing of cardiac pacemaker or defibrillator                            </code></pre>
+<div id="select-and-filter-functions" class="section level2">
+<h2><code>select</code> and <code>filter</code> functions</h2>
+<p>There are a wide variety of functions you can use in a pipe. Some useful ones that you will recognise are <code>select</code> and <code>filter</code>. Let’s explore them!</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  select( drg, sex_desc )</code></pre>
+<pre><code># A tibble: 9,087 x 2
+   drg   sex_desc
+   &lt;chr&gt; &lt;chr&gt;   
+ 1 F40A  Male    
+ 2 F17A  Female  
+ 3 F12B  Female  
+ 4 F09A  Male    
+ 5 A06B  Male    
+ 6 F12A  Male    
+ 7 F03A  Male    
+ 8 F41A  Male    
+ 9 F10B  Male    
+10 F17A  Male    
+# … with 9,077 more rows</code></pre>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  filter( sex_desc == &#39;Female&#39;)</code></pre>
+<pre><code># A tibble: 3,445 x 11
+   procedure_code admission_id age_years   los sameday_id drg   sex_desc
+            &lt;dbl&gt;        &lt;dbl&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt; &lt;chr&gt;   
+ 1        3825600     21159692        80     2 N          F17A  Female  
+ 2        3825600     21356305        83     4 N          F12B  Female  
+ 3        3825600     21881322        76    21 N          F01A  Female  
+ 4        3825600     22293633        79     1 N          F15B  Female  
+ 5        3825600     22318182        77     1 N          F15B  Female  
+ 6        3825601     21077136        79     4 N          F76A  Female  
+ 7        3825601     21088080        73     6 N          F12A  Female  
+ 8        3825601     21145398        73     9 N          F12A  Female  
+ 9        3825601     21154733        14     7 N          F17A  Female  
+10        3825601     21159692        80     2 N          F17A  Female  
+# … with 3,435 more rows, and 4 more variables:
+#   procedure_short_desc &lt;chr&gt;, block_desc &lt;chr&gt;, sep_mode_desc &lt;chr&gt;,
+#   care_type_desc &lt;chr&gt;</code></pre>
+<div id="exercises-2" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li><p>How would you select only the diagnosis descriptions?</p></li>
+<li><p>How would you see the ages and lengths of stay of men who had a cardiac procedure?</p></li>
+<li><p>How many different seperation modes are there? How many drg’s?</p></li>
+</ol>
+</div>
+</div>
+<div id="count-and-head-functions" class="section level2">
+<h2><code>count</code> and <code>head</code> functions</h2>
+<p>The <code>count</code> function is a two step function. It groups all unique values together (like <code>distinct</code>), summarising the result by counting. The equivalent in SQL would be <code>COUNT(*)</code> and <code>GROUP BY</code>.</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  count( procedure_short_desc )</code></pre>
+<pre><code># A tibble: 51 x 2
+   procedure_short_desc                         n
+   &lt;chr&gt;                                    &lt;int&gt;
+ 1 Adjust cardiac defibrillator generator      15
+ 2 Adjust epicardial elec card pacemaker        3
+ 3 Adjust L ventrl elec defib thmy stmy sbx     1
+ 4 Adjust trnsven elec card defibrillator      17
+ 5 Adjust trnsven elec for card pacemaker      51
+ 6 Adjust ventrl elec pcmkr thmy stmy sbx       2
+ 7 Adjustment cardiac pacemaker generator      14
+ 8 Ins of patches for cardiac defibrillator     2
+ 9 Ins perm epicardial elec pcmkr sbx appr      1
+10 Ins perm epicardl elec defib stmy thmy       8
+# … with 41 more rows</code></pre>
+<p>If we add <code>sort = TRUE</code> to <code>count</code>, the results are sorted in descending order.</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  count( procedure_short_desc, sort = TRUE )</code></pre>
+<pre><code># A tibble: 51 x 2
+   procedure_short_desc                         n
+   &lt;chr&gt;                                    &lt;int&gt;
+ 1 Ins perm trnsven elec oth cham pcmkr      2346
+ 2 Insertion of cardiac pacemaker generator  2285
+ 3 Testing of other cardiac pacemaker        1118
+ 4 Replacement cardiac pacemaker generator    664
+ 5 Ins perm trnsven elec oth cham defib       490
+ 6 Insertion of cardiac defib generator       485
+ 7 Testing of cardiac defibrillator           428
+ 8 Replace cardiac defibrillator generator    322
+ 9 Test A-V seqtl rate respn / antchy pcmkr   190
+10 Ins perm trnsven elec L ventrl pcmkr       128
+# … with 41 more rows</code></pre>
+</div>
+<div id="creating-a-longer-pipe" class="section level2">
+<h2>Creating a longer pipe</h2>
+<p>If we add the <code>head(5)</code> function to the end of the pipe, we get the top 5 procedures. Our phrases are getting longer!</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  count( procedure_short_desc, sort = TRUE )  %&gt;%
+  head( 5 )</code></pre>
+<pre><code># A tibble: 5 x 2
+  procedure_short_desc                         n
+  &lt;chr&gt;                                    &lt;int&gt;
+1 Ins perm trnsven elec oth cham pcmkr      2346
+2 Insertion of cardiac pacemaker generator  2285
+3 Testing of other cardiac pacemaker        1118
+4 Replacement cardiac pacemaker generator    664
+5 Ins perm trnsven elec oth cham defib       490</code></pre>
+<div id="exercises-3" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li><p>What is the most prevalent cardiac block? Most prevalent los? drg?</p></li>
+<li><p>Show only the ages and lengths of stay of men who had cardiac procedures.</p></li>
+<li><p>How many different seperation modes are there? How many drg’s?</p></li>
+<li><p>Create another tibble called top 5 diagnosis, containing the top 5 diagnosis codes</p></li>
+</ol>
+</div>
+</div>
+<div id="piping-into-ggplot" class="section level2">
+<h2>Piping into ggplot</h2>
+<p>You can also plot directly from a pipe. Lets compare the number of men and women who had cardiac procedures. Note, I select out distinct admissions so that we don’t double count admissions that had more than one procedure.</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  distinct( admission_id, sex_desc, block_desc ) %&gt;%
+  ggplot() +
+    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) </code></pre>
+<p><img src="figure/tutorial2.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="refining-a-graph---labelling" class="section level2">
+<h2>Refining a graph - labelling</h2>
+<p>The graph need better titles. Here, I modify the title, x and y labels and legend label.</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  ggplot() +
+    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) +
+    ggtitle( &#39;Raw cardiac repair by gender and repair type&#39;) +
+    ylab(&#39;Number of Patients&#39;) +
+    xlab(&#39;Block Description&#39;) +
+    scale_fill_discrete(name = &#39;Sex&#39; )</code></pre>
+<p><img src="figure/tutorial2.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="refining-a-graph---label-text-wrapping" class="section level2">
+<h2>Refining a graph - label text wrapping</h2>
+<p>Pretty well anything you want to do in R, someone else has wanted to do it previously. I noted that the text on the x axis was too long, and after a few tries, I came up the the google search ‘how to wrap text on x axis ggplot’. Stack overflow suggested using the <code>scales</code> package. After a few tries to get find the appropriate number of characters to wrap at, I came up with the following.</p>
+<pre class="r"><code>library(scales)
+
+cardiac_procedures %&gt;%
+  ggplot() +
+    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) +
+    ggtitle( &#39;Raw cardiac repair by gender and repair type&#39;) +
+    ylab(&#39;Number of Patients&#39;) +
+    xlab(&#39;Block Description&#39;) +
+    scale_fill_discrete(name = &#39;Sex&#39; ) +
+    scale_x_discrete(labels = wrap_format(40)) +
+    coord_flip()</code></pre>
+<p><img src="figure/tutorial2.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="session-information" class="section level2">
+<h2>Session information</h2>
+<pre class="r"><code>sessionInfo()</code></pre>
+<pre><code>R version 3.4.4 (2018-03-15)
+Platform: x86_64-pc-linux-gnu (64-bit)
+Running under: Ubuntu 18.04.2 LTS
+
+Matrix products: default
+BLAS: /usr/lib/x86_64-linux-gnu/openblas/libblas.so.3
+LAPACK: /usr/lib/x86_64-linux-gnu/libopenblasp-r0.2.20.so
+
+locale:
+ [1] LC_CTYPE=en_AU.UTF-8       LC_NUMERIC=C              
+ [3] LC_TIME=en_AU.UTF-8        LC_COLLATE=en_AU.UTF-8    
+ [5] LC_MONETARY=en_AU.UTF-8    LC_MESSAGES=en_AU.UTF-8   
+ [7] LC_PAPER=en_AU.UTF-8       LC_NAME=C                 
+ [9] LC_ADDRESS=C               LC_TELEPHONE=C            
+[11] LC_MEASUREMENT=en_AU.UTF-8 LC_IDENTIFICATION=C       
+
+attached base packages:
+[1] stats     graphics  grDevices utils     datasets  methods   base     
+
+other attached packages:
+ [1] scales_1.0.0    forcats_0.4.0   stringr_1.4.0   dplyr_0.8.0.1  
+ [5] purrr_0.3.2     readr_1.3.1     tidyr_0.8.3     tibble_2.1.1   
+ [9] ggplot2_3.1.1   tidyverse_1.2.1 nvimcom_0.9-82 
+
+loaded via a namespace (and not attached):
+ [1] tidyselect_0.2.5  xfun_0.6          haven_2.1.0      
+ [4] lattice_0.20-35   colorspace_1.4-1  generics_0.0.2   
+ [7] htmltools_0.3.6   yaml_2.2.0        utf8_1.1.4       
+[10] rlang_0.3.4       R.oo_1.22.0       pillar_1.3.1     
+[13] withr_2.1.2       glue_1.3.1        R.utils_2.7.0    
+[16] modelr_0.1.4      readxl_1.3.1      plyr_1.8.4       
+[19] munsell_0.5.0     gtable_0.3.0      workflowr_1.1.1  
+[22] cellranger_1.1.0  rvest_0.3.3       R.methodsS3_1.7.1
+[25] evaluate_0.13     labeling_0.3      knitr_1.22       
+[28] fansi_0.4.0       highr_0.8         broom_0.5.2      
+[31] Rcpp_1.0.1        backports_1.1.4   jsonlite_1.6     
+[34] hms_0.4.2         digest_0.6.18     stringi_1.4.3    
+[37] grid_3.4.4        rprojroot_1.3-2   cli_1.1.0        
+[40] tools_3.4.4       magrittr_1.5      lazyeval_0.2.2   
+[43] crayon_1.3.4      whisker_0.3-2     pkgconfig_2.0.2  
+[46] xml2_1.2.0        lubridate_1.7.4   assertthat_0.2.1 
+[49] rmarkdown_1.11    httr_1.4.0        rstudioapi_0.10  
+[52] R6_2.4.0          nlme_3.1-137      git2r_0.24.0     
+[55] compiler_3.4.4   </code></pre>
+</div>
+</div>
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+<hr>
+<p>
+  This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a>
+  analysis was created with
+  <a href="https://github.com/jdblischak/workflowr">workflowr</a> 1.1.1
+</p>
+<hr>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
