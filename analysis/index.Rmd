@@ -6,4 +6,6 @@ output:
     toc: false
 ---
 
-Welcome to my research website.
+Welcome to Health Informatics 3 
+
+This website contains the R tutorial, parts 2 and 3 
