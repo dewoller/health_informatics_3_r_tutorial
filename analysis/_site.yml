@@ -1,10 +1,14 @@
-name: "tutorial2"
+name: "Health Informatics 3 R Tutorial"
 output_dir: "../docs"
 navbar:
-  title: "tutorial2"
+  title: "Health Informatics R Tutorial"
   left:
     - text: "Home"
       href: index.html
+    - text: "Tutorial 2"
+      href: tutorial2.html
+    - text: "Tutorial 3"
+      href: tutorial3.html
     - text: "About"
       href: about.html
     - text: "License"

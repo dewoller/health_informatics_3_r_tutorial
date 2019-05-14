@@ -5,4 +5,4 @@ output:
     toc: false
 ---
 
-Describe your project.
+This tutorial is for health information management students at La Trobe University, studying in the Informatics 3 unit
