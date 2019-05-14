@@ -446,38 +446,10 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/2a92cfa753bc0dce82677603e1b7806f431aa4a9" target="_blank">2a92cfa</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/f2d8c4d6d4b0d64fe377b92046e13266abcd4d58" target="_blank">f2d8c4d</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
-Untracked files:
-    Untracked:  analysis/tutorial4.Rmd
-    Untracked:  myhospitals-average-length-of-stay-data.xlsx
-    Untracked:  screens/tutorial2_0_menu_new_file.jpg
-    Untracked:  screens/tutorial2_1_blank_file_window.jpg
-    Untracked:  screens/tutorial2_2_load_tidyverse.jpg
-    Untracked:  screens/tutorial2_3_view_mpg.jpg
-    Untracked:  screens/tutorial2_4_plot_mpg.jpg
-    Untracked:  screens/tutorial2_5_file_upload.jpg
-    Untracked:  screens/tutorial2_6_file_upload_2.jpg
-    Untracked:  screens/tutorial2_7_file_upload_done.jpg
-    Untracked:  screens/tutorial3_1_browse_excel.jpg
-    Untracked:  screens/tutorial3_2_import_excel_start.jpg
-    Untracked:  screens/tutorial3_3_import_excel_dialog.jpg
-
-Unstaged changes:
-    Modified:   analysis/_site.yml
-    Modified:   analysis/about.Rmd
-    Modified:   analysis/license.Rmd
-    Modified:   analysis/tutorial2.Rmd
-    Deleted:    screens/0_menu_new_file.jpg
-    Deleted:    screens/1_blank_file_window.jpg
-    Deleted:    screens/2_load_tidyverse.jpg
-    Deleted:    screens/3_view_mpg.jpg
-    Deleted:    screens/4_plot_mpg.jpg
-    Deleted:    screens/5_file_upload.jpg
-    Deleted:    screens/6_file_upload_2.jpg
-    Deleted:    screens/7_file_upload_done.jpg
-
+working directory clean
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
 </li>
@@ -510,6 +482,40 @@ Message
 Rmd
 </td>
 <td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/f2d8c4d6d4b0d64fe377b92046e13266abcd4d58/analysis/tutorial3.Rmd" target="_blank">f2d8c4d</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+<td style="text-align:left;">
+wflow_publish(“analysis/tutorial3.Rmd”)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/dewoller/health_informatics_3_r_tutorial/42de1f02420d03c0623d3c111bc3e4d3ffe6225a/docs/tutorial3.html" target="_blank">42de1f0</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
 <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/2a92cfa753bc0dce82677603e1b7806f431aa4a9/analysis/tutorial3.Rmd" target="_blank">2a92cfa</a>
 </td>
 <td style="text-align:left;">
@@ -532,28 +538,118 @@ wflow_publish(“analysis/tutorial3.Rmd”)
 <p>R has many ways to get data. This tutorial will demonstrate how importing data from Excel, and also, directly from a Postgres database. Create a new RScript file for this tutorial.</p>
 <p>To import data from Excel, first, we need some Excel data. [<a href="https://www.myhospitals.gov.au/excel-datasheets/myhospitals-average-length-of-stay-data.xlsx" class="uri">https://www.myhospitals.gov.au/excel-datasheets/myhospitals-average-length-of-stay-data.xlsx</a>] (Here is an Excel dataset containing hospital length of stay data). Download it and then upload it to Rstudio server.</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial3_1_browse_excel.jpg" alt="New File Menu" width="50%" />
+<img src="screens/tutorial3_1_browse_excel.jpg" alt="New File Menu" width="50%" />
 <p class="caption">
 New File Menu
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial3_1_browse_excel.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial3_1_browse_excel.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 <div id="import-excel-files-into-rstudio" class="section level2">
 <h2>Import Excel files into RStudio</h2>
 <p>We can load data from Excel to R directly from the command line, but Rstudio has a wizard that makes it easier. Left click on your uploaded Excel file, and choose <code>Import Dataset</code>.</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial3_2_import_excel_start.jpg" alt="How to start importing Excel files" width="50%" />
+<img src="screens/tutorial3_2_import_excel_start.jpg" alt="How to start importing Excel files" width="50%" />
 <p class="caption">
 How to start importing Excel files
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial3_2_import_excel_start.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial3_2_import_excel_start.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 <p>In the <code>Import Excel Data</code> dialog box, click on the <code>Update</code> button (top right). You will note that the actual data starts on line 15, so in the <code>Skip:</code> box, enter 15.</p>
 <p>We could just press ok and import the data, but we want to be able to replicate our work, so copy everything in the <code>Code Preview:</code> window, <code>Cancel</code> the import, and paste the resulting lines into your R file.</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial3_3_import_excel_dialog.jpg" alt="Import Excel Dialog box" width="100%" />
+<img src="screens/tutorial3_3_import_excel_dialog.jpg" alt="Import Excel Dialog box" width="100%" />
 <p class="caption">
 Import Excel Dialog box
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial3_3_import_excel_dialog.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial3_3_import_excel_dialog.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 <p>The copied code is here</p>
 <pre class="r"><code>library(readxl)
 myhospitals_average_length_of_stay_data &lt;- read_excel(&quot;myhospitals-average-length-of-stay-data.xlsx&quot;, skip = 15)</code></pre>
@@ -659,6 +755,36 @@ $ total_overnight_patient_bed_days &lt;dbl&gt; 356, 326, 351, 306, 431, 418, 6�
   facet_wrap( ~category )</code></pre>
 <pre><code>Warning: Removed 19770 rows containing non-finite values (stat_boxplot).</code></pre>
 <p><img src="figure/tutorial3.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<details> <summary><em>Expand here to see past versions of unnamed-chunk-4-1.png:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/42de1f02420d03c0623d3c111bc3e4d3ffe6225a/docs/figure/tutorial3.Rmd/unnamed-chunk-4-1.png" target="_blank">42de1f0</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 <div id="exercises-1" class="section level3">
 <h3>Exercises</h3>
 <ol style="list-style-type: decimal">
