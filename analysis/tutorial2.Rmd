@@ -13,13 +13,13 @@ Last week,  we typed all our commands directly into the console window.  THis is
 Rstudio has a file editor built directly into the environment.  Create a new R Script file by going to File -> New File -> R Script (or just type ctrl-shift-N)
 
 ```{r 0_menu_new_file.jpg, echo=FALSE, fig.cap="New File Menu", out.width='50%'}
-knitr::include_graphics("../screens/tutorial2_0_menu_new_file.jpg")
+knitr::include_graphics("screens/tutorial2_0_menu_new_file.jpg")
 ```
 ## R script editing window
 A blank R Script editing window pops up in the top left quadrant.  You can type your commands in here, and send them to the console window by pressing ctrl-enter.  As in pgadmin, you can also highlight a section of the line, and run it by pressing ctrl-enter.
  
 ```{r 1_blank_file_window.jpg, echo=FALSE, fig.cap="Blank R script window", out.width='50%'}
-knitr::include_graphics("../screens/tutorial2_1_blank_file_window.jpg")
+knitr::include_graphics("screens/tutorial2_1_blank_file_window.jpg")
 ```
 
 ## Typing commands in Rscript window
@@ -30,13 +30,13 @@ Now, running commands in RStudio is a two step process.  First type the commands
 Notice the informational messages that now show up in the console window, below.
 
 ```{r 2_load_tidyverse.jpg, echo=FALSE, fig.cap="2_load_tidyverse.jpg", out.width='50%'}
-knitr::include_graphics("../screens/tutorial2_2_load_tidyverse.jpg")
+knitr::include_graphics("screens/tutorial2_2_load_tidyverse.jpg")
 ```
 ## Viewing data
 It is also often useful to view your data.  View the `mpg` dataset.  Note how it shows up in the console window, below.
 
 ```{r 3_view_mpg.jpg, echo=FALSE, fig.cap="3_view_mpg.jpg", out.width='50%'}
-knitr::include_graphics("../screens/tutorial2_3_view_mpg.jpg")
+knitr::include_graphics("screens/tutorial2_3_view_mpg.jpg")
 ```
 ## Generating graphics
 When you generate a graphic, like last week, it shows up in the bottom right quadrant
@@ -56,7 +56,7 @@ ggplot(data = mpg) +
 
 
 ```{r 4_plot_mpg.jpg, echo=FALSE, fig.cap="4_plot_mpg.jpg", out.width='100%'}
-knitr::include_graphics("../screens/tutorial2_4_plot_mpg.jpg")
+knitr::include_graphics("screens/tutorial2_4_plot_mpg.jpg")
 
 ```
 
@@ -99,7 +99,7 @@ AND block_desc not like '%catheter%'
 AND block_desc not like 'Gated%'
 
 ```
-I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this.  [Download cardiac.zip](../data/cardiac.zip) to your desktop.  It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv. 
+I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this.  [Download cardiac.zip](data/cardiac.zip) to your desktop.  It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv. 
 
 ### Exercises
 
@@ -109,19 +109,19 @@ I downloaded the data from the above queries from pgadmin, using F8 to export it
 We will upload the cardiac datafiles to Rstudio, by using the Files-> Upload, found in Files tab of the bottom right quadrant.  
 
 ```{r 5_file_upload.jpg, echo=FALSE, fig.cap="Files tab", out.width='40%'}
-knitr::include_graphics("../screens/tutorial2_5_file_upload.jpg")
+knitr::include_graphics("screens/tutorial2_5_file_upload.jpg")
 ```
 
 ```{r 6_file_upload_2.jpg, echo=FALSE, fig.cap="Upload file selection box", out.width='40%'}
-knitr::include_graphics("../screens/tutorial2_6_file_upload_2.jpg")
+knitr::include_graphics("screens/tutorial2_6_file_upload_2.jpg")
 ```
 Rstudio has unzipped the files for you.  You can now see the uploaded cardiac files in the Files tab.
 
 ```{r 7_file_upload_done.jpg, echo=FALSE, fig.cap="Uploaded files complete", out.width='40%'}
-knitr::include_graphics("../screens/tutorial2_7_file_upload_done.jpg")
+knitr::include_graphics("screens/tutorial2_7_file_upload_done.jpg")
 ```
 ```{r XXX, echo=FALSE, fig.cap="XXX", out.width='100%', eval=F, results='hide'}
-knitr::include_graphics("../screens/tutorial2_XXX")
+knitr::include_graphics("screens/tutorial2_XXX")
 ```
 ## Reading in CSV files
 
