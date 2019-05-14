@@ -15,14 +15,14 @@ To import data from Excel, first, we need some Excel data. [https://www.myhospit
 
 
 ```{r tutorial_3_1, echo=FALSE, fig.cap="New File Menu", out.width='50%'}
-knitr::include_graphics("../screens/tutorial3_1_browse_excel.jpg")
+knitr::include_graphics("screens/tutorial3_1_browse_excel.jpg")
 ```
 
 ## Import Excel files into RStudio
 We can load data from Excel to R directly from the command line, but Rstudio has a wizard that makes it easier.  Left click on your uploaded Excel file, and choose `Import Dataset`.
 
 ```{r tutorial_3_2, echo=FALSE, fig.cap="How to start importing Excel files", out.width='50%'}
-knitr::include_graphics("../screens/tutorial3_2_import_excel_start.jpg")
+knitr::include_graphics("screens/tutorial3_2_import_excel_start.jpg")
 ```
 In the `Import Excel Data` dialog box, click on the `Update` button (top right). You will note that the actual data starts on line 15, so in the `Skip:` box, enter 15.  
 
@@ -30,7 +30,7 @@ We could just press ok and import the data, but we want to be able to replicate 
 
 
 ```{r tutorial_3_3, echo=FALSE, fig.cap="Import Excel Dialog box", out.width='100%'}
-knitr::include_graphics("../screens/tutorial3_3_import_excel_dialog.jpg")
+knitr::include_graphics("screens/tutorial3_3_import_excel_dialog.jpg")
 ```
 
 The copied code is here
