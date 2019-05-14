@@ -446,37 +446,10 @@ div.section {
 </details>
 </li>
 <li>
-<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/96b442e74c9ba68d414f875c50dccdd75a76a931" target="_blank">96b442e</a> </summary></p>
+<p><details> <summary> <strong style="color:blue;">✔</strong> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1" target="_blank">04acb0e</a> </summary></p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 <pre><code>
-Untracked files:
-    Untracked:  analysis/tutorial4.Rmd
-    Untracked:  myhospitals-average-length-of-stay-data.xlsx
-    Untracked:  screens/tutorial2_0_menu_new_file.jpg
-    Untracked:  screens/tutorial2_1_blank_file_window.jpg
-    Untracked:  screens/tutorial2_2_load_tidyverse.jpg
-    Untracked:  screens/tutorial2_3_view_mpg.jpg
-    Untracked:  screens/tutorial2_4_plot_mpg.jpg
-    Untracked:  screens/tutorial2_5_file_upload.jpg
-    Untracked:  screens/tutorial2_6_file_upload_2.jpg
-    Untracked:  screens/tutorial2_7_file_upload_done.jpg
-    Untracked:  screens/tutorial3_1_browse_excel.jpg
-    Untracked:  screens/tutorial3_2_import_excel_start.jpg
-    Untracked:  screens/tutorial3_3_import_excel_dialog.jpg
-
-Unstaged changes:
-    Modified:   analysis/_site.yml
-    Modified:   analysis/about.Rmd
-    Modified:   analysis/license.Rmd
-    Deleted:    screens/0_menu_new_file.jpg
-    Deleted:    screens/1_blank_file_window.jpg
-    Deleted:    screens/2_load_tidyverse.jpg
-    Deleted:    screens/3_view_mpg.jpg
-    Deleted:    screens/4_plot_mpg.jpg
-    Deleted:    screens/5_file_upload.jpg
-    Deleted:    screens/6_file_upload_2.jpg
-    Deleted:    screens/7_file_upload_done.jpg
-
+working directory clean
 </code></pre>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes. </details>
 </li>
@@ -504,6 +477,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+Rmd
+</td>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/analysis/tutorial2.Rmd" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+<td style="text-align:left;">
+wflow_publish(“analysis/tutorial2.Rmd”)
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+html
+</td>
+<td style="text-align:left;">
+<a href="https://cdn.rawgit.com/dewoller/health_informatics_3_r_tutorial/fa8c396078eea56d37008ac9c43cff0f53b80ff2/docs/tutorial2.html" target="_blank">fa8c396</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+<td style="text-align:left;">
+Build site.
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 Rmd
@@ -565,41 +572,161 @@ finished first tutorial
 <p>Last week, we typed all our commands directly into the console window. THis is useful for testing and small projects, but it is much better to capture our command in a file, so we can control them.</p>
 <p>Rstudio has a file editor built directly into the environment. Create a new R Script file by going to File -&gt; New File -&gt; R Script (or just type ctrl-shift-N)</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial2_0_menu_new_file.jpg" alt="New File Menu" width="50%" />
+<img src="screens/tutorial2_0_menu_new_file.jpg" alt="New File Menu" width="50%" />
 <p class="caption">
 New File Menu
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial2_0_menu_new_file.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial2_0_menu_new_file.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 <div id="r-script-editing-window" class="section level2">
 <h2>R script editing window</h2>
 <p>A blank R Script editing window pops up in the top left quadrant. You can type your commands in here, and send them to the console window by pressing ctrl-enter. As in pgadmin, you can also highlight a section of the line, and run it by pressing ctrl-enter.</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial2_1_blank_file_window.jpg" alt="Blank R script window" width="50%" />
+<img src="screens/tutorial2_1_blank_file_window.jpg" alt="Blank R script window" width="50%" />
 <p class="caption">
 Blank R script window
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial2_1_blank_file_window.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial2_1_blank_file_window.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="typing-commands-in-rscript-window" class="section level2">
 <h2>Typing commands in Rscript window</h2>
 <p>Now, running commands in RStudio is a two step process. First type the commands into the upper script window, and press ctrl-enter to run them in the console window, below. Like last week, type <code>library(tidyverse)</code> into the rscript window, and press ctrl-enter. It is conventional to load all your libraries at the start of the script.</p>
 <p>Notice the informational messages that now show up in the console window, below.</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial2_2_load_tidyverse.jpg" alt="2_load_tidyverse.jpg" width="50%" />
+<img src="screens/tutorial2_2_load_tidyverse.jpg" alt="2_load_tidyverse.jpg" width="50%" />
 <p class="caption">
 2_load_tidyverse.jpg
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial2_2_load_tidyverse.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial2_2_load_tidyverse.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="viewing-data" class="section level2">
 <h2>Viewing data</h2>
 <p>It is also often useful to view your data. View the <code>mpg</code> dataset. Note how it shows up in the console window, below.</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial2_3_view_mpg.jpg" alt="3_view_mpg.jpg" width="50%" />
+<img src="screens/tutorial2_3_view_mpg.jpg" alt="3_view_mpg.jpg" width="50%" />
 <p class="caption">
 3_view_mpg.jpg
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial2_3_view_mpg.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial2_3_view_mpg.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="generating-graphics" class="section level2">
 <h2>Generating graphics</h2>
@@ -607,11 +734,41 @@ Blank R script window
 <pre class="r"><code>ggplot(data = mpg) + 
   geom_point(mapping = aes(x = displ, y = hwy))</code></pre>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial2_4_plot_mpg.jpg" alt="4_plot_mpg.jpg" width="100%" />
+<img src="screens/tutorial2_4_plot_mpg.jpg" alt="4_plot_mpg.jpg" width="100%" />
 <p class="caption">
 4_plot_mpg.jpg
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial2_4_plot_mpg.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial2_4_plot_mpg.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="naming-your-file" class="section level2">
 <h2>Naming your file</h2>
@@ -649,7 +806,7 @@ AND bnt to come downlock_desc not like &#39;Closure%&#39;
 AND block_desc not like &#39;%catheter%&#39;
 AND block_desc not like &#39;Gated%&#39;
 </code></pre>
-<p>I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this. <a href="../data/cardiac.zip">Download cardiac.zip</a> to your desktop. It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv.</p>
+<p>I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this. <a href="data/cardiac.zip">Download cardiac.zip</a> to your desktop. It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv.</p>
 <div id="exercises" class="section level3">
 <h3>Exercises</h3>
 <ol style="list-style-type: decimal">
@@ -661,24 +818,114 @@ AND block_desc not like &#39;Gated%&#39;
 <h2>Uploading data</h2>
 <p>We will upload the cardiac datafiles to Rstudio, by using the Files-&gt; Upload, found in Files tab of the bottom right quadrant.</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial2_5_file_upload.jpg" alt="Files tab" width="40%" />
+<img src="screens/tutorial2_5_file_upload.jpg" alt="Files tab" width="40%" />
 <p class="caption">
 Files tab
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial2_5_file_upload.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial2_5_file_upload.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial2_6_file_upload_2.jpg" alt="Upload file selection box" width="40%" />
+<img src="screens/tutorial2_6_file_upload_2.jpg" alt="Upload file selection box" width="40%" />
 <p class="caption">
 Upload file selection box
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial2_6_file_upload_2.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial2_6_file_upload_2.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 <p>Rstudio has unzipped the files for you. You can now see the uploaded cardiac files in the Files tab.</p>
 <div class="figure" style="text-align: center">
-<img src="../screens/tutorial2_7_file_upload_done.jpg" alt="Uploaded files complete" width="40%" />
+<img src="screens/tutorial2_7_file_upload_done.jpg" alt="Uploaded files complete" width="40%" />
 <p class="caption">
 Uploaded files complete
 </p>
 </div>
+<details> <summary><em>Expand here to see past versions of tutorial2_7_file_upload_done.jpg:</em></summary>
+<table style="border-collapse:separate; border-spacing:5px;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Version
+</th>
+<th style="text-align:left;">
+Author
+</th>
+<th style="text-align:left;">
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/04acb0ec7677bfdd7e9c6f738b53c55c7d6b6cc1/docs/screens/tutorial2_7_file_upload_done.jpg" target="_blank">04acb0e</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+</tbody>
+</table>
+<p></details></p>
 </div>
 <div id="reading-in-csv-files" class="section level2">
 <h2>Reading in CSV files</h2>
@@ -937,6 +1184,17 @@ Date
 <tbody>
 <tr>
 <td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/fa8c396078eea56d37008ac9c43cff0f53b80ff2/docs/figure/tutorial2.Rmd/unnamed-chunk-14-1.png" target="_blank">fa8c396</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
 <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/91affaf74e609d5632e948cb01768c954709f2e4/docs/figure/tutorial2.Rmd/unnamed-chunk-14-1.png" target="_blank">91affaf</a>
 </td>
 <td style="text-align:left;">
@@ -983,6 +1241,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td style="text-align:left;">
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/fa8c396078eea56d37008ac9c43cff0f53b80ff2/docs/figure/tutorial2.Rmd/unnamed-chunk-15-1.png" target="_blank">fa8c396</a>
+</td>
+<td style="text-align:left;">
+Dennis Wollersheim
+</td>
+<td style="text-align:left;">
+2019-05-15
+</td>
+</tr>
 <tr>
 <td style="text-align:left;">
 <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/91affaf74e609d5632e948cb01768c954709f2e4/docs/figure/tutorial2.Rmd/unnamed-chunk-15-1.png" target="_blank">91affaf</a>
