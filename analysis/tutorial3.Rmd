@@ -33,7 +33,7 @@ We could just press ok and import the data, but we want to be able to replicate 
 knitr::include_graphics("screens/tutorial3_3_import_excel_dialog.jpg")
 ```
 
-The copied code is here
+The copied code is here:
 
 ```{r import, warning=F}
 

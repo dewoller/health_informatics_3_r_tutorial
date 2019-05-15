@@ -99,7 +99,7 @@ AND block_desc not like '%catheter%'
 AND block_desc not like 'Gated%'
 
 ```
-I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this.  [Download cardiac.zip](data/cardiac.zip) to your desktop.  It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv. 
+I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this.  [Download cardiac.zip](assets/cardiac.zip) to your desktop.  It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv. 
 
 ### Exercises
 
