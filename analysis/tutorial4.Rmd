@@ -7,15 +7,20 @@ output:
     toc: true
 ---
 
+<script src="js/hideOutput.js"></script>
+
 # Statistics in R
+
+Merilyn has asked you to do some statistics on her AHB assignment.  This section will show you how to do this.  We will retrieve some fracture information from the PBS database, and see if there is a difference between male and female occurence of fracture.  
+
+The dataset includes the fracture description, patient sex and year of birth, and both the fee charged and the scheduled fee.  Again, start this tutorial using a new RScript file, and load the `tidyverse` library.
 
 ```{r initial_setup, echo=TRUE, warnings=FALSE}
 
-# load the postgres library
-library("RPostgres")
-
+library(tidyverse)
+library("RPostgreSQL")
 query <- " 
- SELECT m.feecharged, m.schedfee, m.item,  m.supply_dt, d.description, p.sex, p.yob
+ SELECT m.feecharged, m.schedfee, m.item,  m.service_date, d.description, p.sex, p.yob
  FROM mbs m
  JOIN mbs_desc_latest d USING (item)
  JOIN patient p USING (pin)
@@ -26,191 +31,283 @@ con <- dbConnect(dbDriver("PostgreSQL"),
                  host = "himsql7.latrobe.edu.au", port = 5432,
                  user = "dewollershei-test", password = "healthGuru")
 #
-fractures <- dbGetQuery( con, query ) %>% as.tibble() 
+fracture <- dbGetQuery( con, query ) %>% as_tibble() 
 #
-fractures
+fracture
 #
 dbDisconnect( con )
 
-# Create the postgres connection to the pbs database
-con <- dbConnect(RPostgres::Postgres(), dbname = "pbs",
-                 host = "himsql7.latrobe.edu.au", port = 5432,
-                 user = "dewollershei-test", password = "healthGuru")
-
-fracture <- dbGetQuery 
 
 ```
-Notice that we now have a variable in the top right environment pane, called fracture.  Click on it to investigate it.  Close it when you are finished.
+Notice that we now have a new variable in the top right environment pane, called fracture.  Click on it to investigate it.  Close it when you are finished.
 
-![Fracture dataset](./dataset.png)
+![Fracture dataset](screens/tutorial4_1_fracture_dataset.png)
 
 
 # The process of data science
-![Data Science Exploration Process (Grolemund & Wickham, 2017](./data-science-explore.png)
+![Data Science Exploration Process (Grolemund & Wickham, 2017](screens/tutorial4_2_data-science-explore.png)
 
 Data science is the process of getting data, and manipulating , visualizing and modelling it.  This is this week's task.  
 
 # Data Transformation
-It is very useful to use *pipes* (signified by %>% and ->) to transform data step by step.  They are easy to test and visualise, in that you can highlight a small chunk of the pipe, and run it by itself. In this next section, we will add five variables to the fracture dataset:  charge_status, practicioner, year_of_service, age, and age_group_10 (10 year age group).  The data flows through a pipe, going from fracture, mutating into another variable, and then going back to fracture.  The mutations are done using transformation functions,  including: ifelse, substring, as.integer, and cut. 
+In the previous tutorials, we used pipes to select and summarise the data.  In this section, we will use pipes to `mutate` the data, adding calculated fields.  
 
-The function ifelse takes 3 arguments:  a condition, the return value if the condition is true, and the return value if the condition is false.   It is useful for creating categorical variables.  The cut function cuts a continuous variable into chunks at the position of designated breaks, in this case, 10 year age groups.
+We will add five fields to the fracture dataset:  charge_status, practicioner, service_year, age, and age_group_10 (10 year age group).  The data flows through a pipe, going from fracture, mutating into another variable, and then going back to fracture.  The mutations are done using transformation functions,  including: `ifelse`, `substring`, `as.integer`, and `cut`. 
+
+The function `ifelse` takes 3 arguments:  a condition, the return value if the condition is true, and the return value if the condition is false.   It is useful for creating categorical variables.  
+
+The `cut` function slices a continuous variable into chunks at the position of designated breaks, in this case, 10 year age groups.
+l;
 
 ```{r more_transformations}
 library(tidyverse)
 
-fracture %>%
-  mutate( charge_status =   ifelse( feecharged > schedfee,
-                                   "overcharged", 
-                                   "standard charge") ) -> fracture
+fracture <-
+  fracture %>%
+    mutate( charge_status =   ifelse( feecharged > schedfee,
+                                    "overcharged", 
+                                    "standard charge") ) 
 #
-fracture %>%
-  mutate( practicioner  =  ifelse( item=='07647',  
-                                  "Generalist", 
-                                  "Specialist") ) -> fracture
+fracture <- 
+  fracture %>%
+    mutate( practicioner  =  ifelse( item=='07647',  
+                                    "Generalist", 
+                                    "Specialist") ) 
 #
-fracture %>%
-  mutate( year_of_service = as.integer( substring( date_of_service, 1, 4 ))) -> fracture
-#
+fracture <- 
+  fracture %>%
+    mutate( service_year = as.integer( substring( service_date, 1, 4 ))) 
+  #
 
-fracture %>%
-  mutate( age = year_of_service - yob, 
-         age_group_10 = cut(age, breaks=10*(0:12))) -> fracture
+# note you can do 2 mutations in the same sentence
+fracture <- 
+  fracture %>%
+    mutate( age = service_year - yob, 
+          age_group_10 = cut(age, breaks=10*(0:12))) 
 
 ```
+### Exercises
 
 1. Highlight and run different chunks of the above statements, to see what the pipeline is doing.  
-2. Create and add to fracture another variable, called age_group_20, and put in it ages categorised into 20 year age groups.  
 
-# Visualise and cleanup a health dataset
-Firstly, we look at the distribution of fee charged.  
+2. Create another field in `fracture` to hold 20 year age groups.  
+
+# Visualise and clean the fractures dataset
+
+What is the distribution of the `fee charged` field.  
 
 ```{r error_histogram, warnings=FALSE}
 ggplot( fracture ) + 
   geom_histogram ( mapping=aes(x=feecharged))
 ```
 
-Note that feecharged ranges from -150,000 to 200,000. We will eliminate outliers by using a pipe to filter out these values. In the filter expression, *&* means AND.  The histogram has improved.  Note, I put the data into a new variable, called fracture_2, because we have irrevocably changed it. 
+Note that `feecharged` ranges from -150,000 to 200,000. We will eliminate outliers, using a pipe to filter out these values. In the filter expression, `&` means AND.  The histogram has improved.  
 
 ```{r filter, warnings=FALSE}
-fracture %>% 
-  filter( feecharged >=0 & feecharged <50000) -> fracture_2
 
-ggplot( fracture_2 ) + 
+# we want the records that have feecharged between 0 and 50000
+fracture <- 
+  fracture %>% 
+    filter( feecharged >=0 & feecharged <50000)
+
+ggplot( fracture ) + 
   geom_histogram ( mapping=aes(x=feecharged))
 
 ```
 
-# Model - Gender
-It is useful to start with demographics.  What gender gets ankle fractures?
+# Create a model of gender and ankle fractures
+
+What gender gets ankle fractures?  The first step is to plot the data.
 
 ```{r plot_age_sex}
-ggplot( fracture_2, mapping=aes(x=sex, fill=sex) ) + 
+
+ggplot( fracture, mapping=aes(x=sex, fill=sex) ) + 
   geom_bar( ) 
+
 ```
 
-We use a chi squared test to tell if this difference is statistically significant. We will pipe fracture_fixeds into the *table* function, which counts the number of levels of each variable.  *Prop.table* calculates the proportions for each variable (think percentages), and *chisq.test* performs the chisquared value. If P-value is less than 0.05, the difference is significant.
+## Statistical Significant Differences - Chi Squared test
+
+There is a difference between the number of men and women who get ankle fractures.  Is this difference statistically significant?
+
+The chi squared test tells us if this difference is statistically significant. We will pipe fracture into the `table` function, which counts the number of levels of each variable.  
+
 
 ```{r count_sex}
 
-fracture_2 %>% 
+fracture %>% 
   select(sex) %>% 
   table() 
 
-fracture_2 %>% 
+
+```
+`Prop.table` calculates the proportions for each variable (like percentages).  This standardises the value, putting them on the same base
+
+
+```{r prop_sex}
+
+fracture %>% 
   select(sex) %>% 
   table() %>% 
   prop.table()
 
-fracture_2 %>% 
+
+```
+ `chisq.test` performs the chisquared test. If P-value is less than 0.05, the difference is significant.  This means that this difference would happen by chance less than 5 / 100 times. 
+
+```{r chisq_sex}
+
+fracture %>% 
   select(sex) %>% 
   table() %>% 
   chisq.test()
+
 ```
+
+The chi squared test above tells us that this difference, between men and women, is not due to chance.
+
+
+### Exercises
+
 1. Is there a significant difference between generalist and specialist attendences?
 2. Is there a significant difference between the genders in the 40-50 year old range? (hint: use filter to exclude the other ages )
 
-Are women or men more likely go to specialists?  It is hard to tell from the graph alone, but the chi squared test rejects this hypothesis.
+## Modelling gender and specialist seeking behaviour
+Are women or men more likely go to specialists?    Again, we first plot the data.
 
 ```{r count_sex_practicioner}
-ggplot( fracture_2, mapping=aes(x=practicioner, fill=sex) ) + 
+ggplot( fracture, mapping=aes(x=practicioner, fill=sex) ) + 
   geom_bar( ) 
 
-fracture_2 %>% 
-  select(sex, practicioner) %>% 
-  table() %>% 
-  prop.table()
+```
 
-fracture_2 %>% 
+Again, the graph alone does not answer the question.  It appears that more women go than men, but this might be due to chance.  Let's do a 2 variable chisquared test.
+
+```{r chisq_sex_practicioner}
+
+
+fracture %>% 
   select(sex, practicioner) %>% 
   table() %>% 
   chisq.test()
 
 ```
+The chi squared test rejects this hypothesis that women are more likely to go to specialists, this difference may be due to chance.
+
 For more information on use of chisquared test in R, see: <a href="https://web.stanford.edu/class/psych252/cheatsheets/chisquare.html">https://web.stanford.edu/class/psych252/cheatsheets/chisquare.html</a>
 
-1. Are specialists more likely to overcharge than generalists? 
+### Exercises
+
+1. Are specialists more likely to overcharge than generalists?   (answer below)
 
 ```{r charge_answer, echo=FALSE, eval=FALSE}
 
-ggplot( fracture_2, mapping=aes(fill=practicioner, x=charge_status) ) + 
+ggplot( fracture, mapping=aes(fill=practicioner, x=charge_status) ) + 
   geom_bar( ) 
 
-fracture_2 %>% 
-  select(charge_status, practicioner) %>% 
-  table() %>% 
-  prop.table()
+```
+```{r chisq_chargestatus_practicioner}
 
-fracture_2 %>% 
+
+fracture %>% 
   select(charge_status, practicioner) %>% 
   table() %>% 
   chisq.test()
 ```
 
 # Modeling  - age and gender
-Is the age range of people who break their ankle different for the different genders?  Is this a significant difference?  A t-test can tell if the male ages are different from the female ages.  
-
+Is the age range of people who break their ankle different for the different genders?  We first look at the data.
 
 ```{r plot_gender_over_age, echo=TRUE}
-p<- ggplot( fracture_2, mapping=aes(x=age, fill=sex) ) 
-p+ geom_bar( ) 
-
-t.test( age~sex, data=fracture_2)
+ggplot( fracture, mapping=aes(x=age, fill=sex) )  + 
+  geom_bar( ) +
+  facet_wrap( ~sex )
 
 ```
+
+It appears that men break their ankle in their youth, while women (except for those 2 years of netball) are more likely to break their ankle when they get older. 
+
+A t-test can show if the set of male ages are significantly different from the set of female ages.  
+
+```{r t_test_age_sex}
+
+t.test( age~sex, data=fracture)
+
+```
+Again, because the Pvalue is less than .05, the different is unlikely due to chance.  
+
+### Exercises
 1. Is the age range different for people who go to specialist vs generalists?
 2. Is the age range different for people who are overcharged?
 
+Answers follow
 
 ```{r plot_gender_over_age_ANSWER, echo=FALSE, eval=FALSE}
-ggplot( fracture_2, mapping=aes(x=age, fill=practicioner) )  +
+ggplot( fracture, mapping=aes(x=age, fill=practicioner) )  + 
   geom_bar( ) 
-t.test( age~practioner, data=fracture_2)
 
-ggplot( fracture_2, mapping=aes(x=age, fill=charge_status) )  +
+```
+
+
+```{r t.test_age_practicioner}
+
+t.test( age~practicioner , data=fracture)
+
+
+```
+
+```{r}
+
+ggplot( fracture, mapping=aes(x=age, fill=charge_status) )  +
   geom_bar( ) 
-t.test( age~charge_status, data=fracture_2)
+
+```
+
+```{r}
+
+t.test( age~charge_status, data=fracture)
 
 ```
 
 # Modelling - is the price increasing over time?
 
-Is the price increasing?  Is the increase significant?
+Is the incidence of overcharging increasing over time?  To determine this, we will count the number of overcharges per year, and plot them.  Note, when we use `ggplot` in a pipe, we don't need to include the dataset, because the dataset is piped in.
 
-```{r plot_paid_over_time, warnings=FALSE}
-ggplot( fracture_2, mapping=aes(x=date_of_service, 
-                                y=feecharged, 
-                                color=practicioner) )  +
-                                    geom_point( )  + 
-                                    geom_smooth()
+
+```{r plot_overcharge_over_time, warnings=FALSE}
+
+fracture %>%
+  filter( charge_status == 'overcharged') %>%
+  count( service_year ) %>%
+  ggplot( mapping=aes(x=service_year, y=n ) )  +
+  geom_point( )  + 
+  geom_smooth(color='black')
+
 ```
+
+It is hard to tell if this is a real increase.   We can model it as a linear model, and see if the increase is significant.
+
+```{r}
+
+fracture.lm <-
+  fracture %>%
+  filter( charge_status == 'overcharged') %>%
+  count( service_year ) %>%
+  mutate( years = as.integer( service_year  - min(service_year ))) %>%
+  lm( years  ~ n, data=. )
+
+summary( fracture.lm )
+```
+
+The model says that the model is not a linear trend.
 
 # Merilyn's AHB assignment
 
-In Merilyn's AHB assignment, you have to 
+In Merilyn's AHB assignment, you have to :
 
 1. Using the ICD10 code(s) for your disease,  connect to the vaed_full database and retrieve your admissions
-2. Is there a significant diffence between the genders for your disease?
-3. Choose the 2 most popular versions of your disease.  Is there a significant difference between the length of stay (LOS) for these 2 versions?
+2. Is there a significant diffence in the incidence of your disease between the genders ?
+3. Choose 2 versions of your disease.  Is there a significant difference between the length of stay (LOS) for these 2 versions?
 
 
 

@@ -9,6 +9,10 @@ navbar:
       href: tutorial2.html
     - text: "Tutorial 3"
       href: tutorial3.html
+    - text: "4. Stats Tutorial"
+      href: tutorial4.html
+    - text: "5. VAED Tutorial"
+      href: tutorial5.html
     - text: "About"
       href: about.html
     - text: "License"
