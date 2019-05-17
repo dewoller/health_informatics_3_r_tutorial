@@ -1,0 +1,955 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Tutorial 4 - Statistics</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Health Informatics R Tutorial</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="tutorial2.html">Tutorial 2</a>
+</li>
+<li>
+  <a href="tutorial3.html">Tutorial 3</a>
+</li>
+<li>
+  <a href="tutorial4.html">4. Stats Tutorial</a>
+</li>
+<li>
+  <a href="tutorial5.html">5. VAED Tutorial</a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial 4 - Statistics</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-05-17
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 4 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 2
+</p>
+<p>
+<strong>Knit directory:</strong> <code>tutorials2-4/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.3.0.9000). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguncommittedchanges"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>R Markdown file:</strong> uncommitted changes </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguncommittedchanges" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The R Markdown file has unstaged changes. To know which version of the R Markdown file created these results, you’ll want to first commit it to the Git repo. If you’re still working on the analysis, you can ignore this warning. When you’re finished, you can run <code>wflow_publish</code> to commit the R Markdown file and build the HTML.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190513code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190513)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190513code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190513)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongunavailable"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Session information:</strong> unavailable </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongunavailable" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Recording the operating system, R version, and package versions is critical for reproducibility. To record the session information, add <code>sessioninfo: “sessionInfo()”</code> to _workflowr.yml. Alternatively, you could use <code>devtools::session_info()</code> or <code>sessioninfo::session_info()</code>. Lastly, you can manually add a code chunk to this file to run any one of these commands and then disable to automatic insertion by changing the workflowr setting to <code>sessioninfo: “”</code>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree87ae12138764f540d738d8dbe7cd5057d1cbcb54targetblank87ae121a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/87ae12138764f540d738d8dbe7cd5057d1cbcb54" target="_blank">87ae121</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree87ae12138764f540d738d8dbe7cd5057d1cbcb54targetblank87ae121a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Untracked files:
+    Untracked:  docs/figure/tutorial4.Rmd/
+    Untracked:  docs/js/
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+    Modified:   analysis/tutorial4.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/5f8784b8fe632f303f13ea2581a456e50767b6c6/analysis/tutorial4.Rmd" target="_blank">5f8784b</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-15
+</td>
+<td>
+finished tutorial 3
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<script src="js/hideOutput.js"></script>
+<div id="statistics-in-r" class="section level1">
+<h1>Statistics in R</h1>
+<p>Merilyn has asked you to do some statistics on her AHB assignment. This section will show you how to do this. We will retrieve some fracture information from the PBS database, and see if there is a difference between male and female occurence of fracture.</p>
+<p>The dataset includes the fracture description, patient sex and year of birth, and both the fee charged and the scheduled fee. Again, start this tutorial using a new RScript file, and load the <code>tidyverse</code> library.</p>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>✔ ggplot2 3.1.1       ✔ purrr   0.3.2  
+✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
+✔ tidyr   0.8.3       ✔ stringr 1.4.0  
+✔ readr   1.3.1       ✔ forcats 0.4.0  </code></pre>
+<pre><code>── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(&quot;RPostgreSQL&quot;)</code></pre>
+<pre><code>Loading required package: DBI</code></pre>
+<pre class="r"><code>query &lt;- &quot; 
+ SELECT m.feecharged, m.schedfee, m.item,  m.service_date, d.description, p.sex, p.yob
+ FROM mbs m
+ JOIN mbs_desc_latest d USING (item)
+ JOIN patient p USING (pin)
+ where item in  (&#39;07647&#39;, &#39;07652&#39;); 
+ &quot;
+con &lt;- dbConnect(dbDriver(&quot;PostgreSQL&quot;), 
+                 dbname   = &#39;pbs&#39;,
+                 host = &quot;himsql7.latrobe.edu.au&quot;, port = 5432,
+                 user = &quot;dewollershei-test&quot;, password = &quot;healthGuru&quot;)
+#
+fracture &lt;- dbGetQuery( con, query ) %&gt;% as_tibble() 
+#
+fracture</code></pre>
+<pre><code># A tibble: 3,206 x 7
+   feecharged schedfee item  service_date description           sex     yob
+        &lt;dbl&gt;    &lt;dbl&gt; &lt;chr&gt; &lt;date&gt;       &lt;chr&gt;                 &lt;chr&gt; &lt;int&gt;
+ 1      11200    12200 07647 1984-01-30   Ankle (Pott&#39;s fractu… M      1954
+ 2      13400    14400 07647 1986-09-24   Ankle (Pott&#39;s fractu… F      1969
+ 3      14000    16000 07647 1988-09-22   Ankle (Pott&#39;s fractu… F      1923
+ 4       7400     8400 07647 1990-06-14   Ankle (Pott&#39;s fractu… F      1938
+ 5      15000    17600 07647 1991-03-11   Ankle (Pott&#39;s fractu… M      1981
+ 6      21500    17200 07652 1984-05-26   Ankle (Pott&#39;s fractu… F      1927
+ 7      28936    17200 07652 1984-03-30   Ankle (Pott&#39;s fractu… M      1956
+ 8      19400    19400 07652 1985-10-10   Ankle (Pott&#39;s fractu… F      1919
+ 9       6645     7275 07652 1986-12-04   Ankle (Pott&#39;s fractu… F      1924
+10      22455    21825 07652 1986-12-04   Ankle (Pott&#39;s fractu… F      1924
+# … with 3,196 more rows</code></pre>
+<pre class="r"><code>#
+dbDisconnect( con )</code></pre>
+<pre><code>[1] TRUE</code></pre>
+<p>Notice that we now have a new variable in the top right environment pane, called fracture. Click on it to investigate it. Close it when you are finished.</p>
+<div class="figure">
+<img src="screens/tutorial4_1_fracture_dataset.png" alt="Fracture dataset" />
+<p class="caption">Fracture dataset</p>
+</div>
+</div>
+<div id="the-process-of-data-science" class="section level1">
+<h1>The process of data science</h1>
+<div class="figure">
+<img src="screens/tutorial4_2_data-science-explore.png" alt="Data Science Exploration Process (Grolemund &amp; Wickham, 2017" />
+<p class="caption">Data Science Exploration Process (Grolemund &amp; Wickham, 2017</p>
+</div>
+<p>Data science is the process of getting data, and manipulating , visualizing and modelling it. This is this week’s task.</p>
+</div>
+<div id="data-transformation" class="section level1">
+<h1>Data Transformation</h1>
+<p>In the previous tutorials, we used pipes to select and summarise the data. In this section, we will use pipes to <code>mutate</code> the data, adding calculated fields.</p>
+<p>We will add five fields to the fracture dataset: charge_status, practicioner, service_year, age, and age_group_10 (10 year age group). The data flows through a pipe, going from fracture, mutating into another variable, and then going back to fracture. The mutations are done using transformation functions, including: <code>ifelse</code>, <code>substring</code>, <code>as.integer</code>, and <code>cut</code>.</p>
+<p>The function <code>ifelse</code> takes 3 arguments: a condition, the return value if the condition is true, and the return value if the condition is false. It is useful for creating categorical variables.</p>
+<p>The <code>cut</code> function slices a continuous variable into chunks at the position of designated breaks, in this case, 10 year age groups. l;</p>
+<pre class="r"><code>library(tidyverse)
+
+fracture &lt;-
+  fracture %&gt;%
+    mutate( charge_status =   ifelse( feecharged &gt; schedfee,
+                                    &quot;overcharged&quot;, 
+                                    &quot;standard charge&quot;) ) 
+#
+fracture &lt;- 
+  fracture %&gt;%
+    mutate( practicioner  =  ifelse( item==&#39;07647&#39;,  
+                                    &quot;Generalist&quot;, 
+                                    &quot;Specialist&quot;) ) 
+#
+fracture &lt;- 
+  fracture %&gt;%
+    mutate( service_year = as.integer( substring( service_date, 1, 4 ))) 
+  #
+
+# note you can do 2 mutations in the same sentence
+fracture &lt;- 
+  fracture %&gt;%
+    mutate( age = service_year - yob, 
+          age_group_10 = cut(age, breaks=10*(0:12))) </code></pre>
+<div id="exercises" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li><p>Highlight and run different chunks of the above statements, to see what the pipeline is doing.</p></li>
+<li><p>Create another field in <code>fracture</code> to hold 20 year age groups.</p></li>
+</ol>
+</div>
+</div>
+<div id="visualise-and-clean-the-fractures-dataset" class="section level1">
+<h1>Visualise and clean the fractures dataset</h1>
+<p>What is the distribution of the <code>fee charged</code> field.</p>
+<pre class="r"><code>ggplot( fracture ) + 
+  geom_histogram ( mapping=aes(x=feecharged))</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/tutorial4.Rmd/error_histogram-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Note that <code>feecharged</code> ranges from -150,000 to 200,000. We will eliminate outliers, using a pipe to filter out these values. In the filter expression, <code>&amp;</code> means AND. The histogram has improved.</p>
+<pre class="r"><code># we want the records that have feecharged between 0 and 50000
+fracture &lt;- 
+  fracture %&gt;% 
+    filter( feecharged &gt;=0 &amp; feecharged &lt;50000)
+
+ggplot( fracture ) + 
+  geom_histogram ( mapping=aes(x=feecharged))</code></pre>
+<pre><code>`stat_bin()` using `bins = 30`. Pick better value with `binwidth`.</code></pre>
+<p><img src="figure/tutorial4.Rmd/filter-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="create-a-model-of-gender-and-ankle-fractures" class="section level1">
+<h1>Create a model of gender and ankle fractures</h1>
+<p>What gender gets ankle fractures? The first step is to plot the data.</p>
+<pre class="r"><code>ggplot( fracture, mapping=aes(x=sex, fill=sex) ) + 
+  geom_bar( ) </code></pre>
+<p><img src="figure/tutorial4.Rmd/plot_age_sex-1.png" width="672" style="display: block; margin: auto;" /></p>
+<div id="statistical-significant-differences---chi-squared-test" class="section level2">
+<h2>Statistical Significant Differences - Chi Squared test</h2>
+<p>There is a difference between the number of men and women who get ankle fractures. Is this difference statistically significant?</p>
+<p>The chi squared test tells us if this difference is statistically significant. We will pipe fracture into the <code>table</code> function, which counts the number of levels of each variable.</p>
+<pre class="r"><code>fracture %&gt;% 
+  select(sex) %&gt;% 
+  table() </code></pre>
+<pre><code>.
+   F    M 
+1358 1694 </code></pre>
+<p><code>Prop.table</code> calculates the proportions for each variable (like percentages). This standardises the value, putting them on the same base</p>
+<pre class="r"><code>fracture %&gt;% 
+  select(sex) %&gt;% 
+  table() %&gt;% 
+  prop.table()</code></pre>
+<pre><code>.
+        F         M 
+0.4449541 0.5550459 </code></pre>
+<p><code>chisq.test</code> performs the chisquared test. If P-value is less than 0.05, the difference is significant. This means that this difference would happen by chance less than 5 / 100 times.</p>
+<pre class="r"><code>fracture %&gt;% 
+  select(sex) %&gt;% 
+  table() %&gt;% 
+  chisq.test()</code></pre>
+<pre><code>
+    Chi-squared test for given probabilities
+
+data:  .
+X-squared = 36.991, df = 1, p-value = 1.187e-09</code></pre>
+<p>The chi squared test above tells us that this difference, between men and women, is not due to chance.</p>
+<div id="exercises-1" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li>Is there a significant difference between generalist and specialist attendences?</li>
+<li>Is there a significant difference between the genders in the 40-50 year old range? (hint: use filter to exclude the other ages )</li>
+</ol>
+</div>
+</div>
+<div id="modelling-gender-and-specialist-seeking-behaviour" class="section level2">
+<h2>Modelling gender and specialist seeking behaviour</h2>
+<p>Are women or men more likely go to specialists? Again, we first plot the data.</p>
+<pre class="r"><code>ggplot( fracture, mapping=aes(x=practicioner, fill=sex) ) + 
+  geom_bar( ) </code></pre>
+<p><img src="figure/tutorial4.Rmd/count_sex_practicioner-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>Again, the graph alone does not answer the question. It appears that more women go than men, but this might be due to chance. Let’s do a 2 variable chisquared test.</p>
+<pre class="r"><code>fracture %&gt;% 
+  select(sex, practicioner) %&gt;% 
+  table() %&gt;% 
+  chisq.test()</code></pre>
+<pre><code>
+    Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+
+data:  .
+X-squared = 3.0677, df = 1, p-value = 0.07986</code></pre>
+<p>The chi squared test rejects this hypothesis that women are more likely to go to specialists, this difference may be due to chance.</p>
+<p>For more information on use of chisquared test in R, see: <a href="https://web.stanford.edu/class/psych252/cheatsheets/chisquare.html">https://web.stanford.edu/class/psych252/cheatsheets/chisquare.html</a></p>
+<div id="exercises-2" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li>Are specialists more likely to overcharge than generalists? (answer below)</li>
+</ol>
+<pre class="r"><code>fracture %&gt;% 
+  select(charge_status, practicioner) %&gt;% 
+  table() %&gt;% 
+  chisq.test()</code></pre>
+<pre><code>
+    Pearson&#39;s Chi-squared test with Yates&#39; continuity correction
+
+data:  .
+X-squared = 396.61, df = 1, p-value &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</div>
+<div id="modeling---age-and-gender" class="section level1">
+<h1>Modeling - age and gender</h1>
+<p>Is the age range of people who break their ankle different for the different genders? We first look at the data.</p>
+<pre class="r"><code>ggplot( fracture, mapping=aes(x=age, fill=sex) )  + 
+  geom_bar( ) +
+  facet_wrap( ~sex )</code></pre>
+<p><img src="figure/tutorial4.Rmd/plot_gender_over_age-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>It appears that men break their ankle in their youth, while women (except for those 2 years of netball) are more likely to break their ankle when they get older.</p>
+<p>A t-test can show if the set of male ages are significantly different from the set of female ages.</p>
+<pre class="r"><code>t.test( age~sex, data=fracture)</code></pre>
+<pre><code>
+    Welch Two Sample t-test
+
+data:  age by sex
+t = 18.157, df = 2483.4, p-value &lt; 2.2e-16
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 12.67584 15.74534
+sample estimates:
+mean in group F mean in group M 
+       43.57364        29.36305 </code></pre>
+<p>Again, because the Pvalue is less than .05, the different is unlikely due to chance.</p>
+<div id="exercises-3" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li>Is the age range different for people who go to specialist vs generalists?</li>
+<li>Is the age range different for people who are overcharged?</li>
+</ol>
+<p>Answers follow</p>
+<pre class="r"><code>t.test( age~practicioner , data=fracture)</code></pre>
+<pre><code>
+    Welch Two Sample t-test
+
+data:  age by practicioner
+t = -4.0765, df = 2990.3, p-value = 4.691e-05
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ -4.817517 -1.688276
+sample estimates:
+mean in group Generalist mean in group Specialist 
+                34.11828                 37.37118 </code></pre>
+<pre class="r"><code>ggplot( fracture, mapping=aes(x=age, fill=charge_status) )  +
+  geom_bar( ) </code></pre>
+<p><img src="figure/tutorial4.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>t.test( age~charge_status, data=fracture)</code></pre>
+<pre><code>
+    Welch Two Sample t-test
+
+data:  age by charge_status
+t = 2.1728, df = 1260.6, p-value = 0.02998
+alternative hypothesis: true difference in means is not equal to 0
+95 percent confidence interval:
+ 0.1943797 3.8102061
+sample estimates:
+    mean in group overcharged mean in group standard charge 
+                     37.20488                      35.20259 </code></pre>
+</div>
+</div>
+<div id="modelling---is-the-price-increasing-over-time" class="section level1">
+<h1>Modelling - is the price increasing over time?</h1>
+<p>Is the incidence of overcharging increasing over time? To determine this, we will count the number of overcharges per year, and plot them. Note, when we use <code>ggplot</code> in a pipe, we don’t need to include the dataset, because the dataset is piped in.</p>
+<pre class="r"><code>fracture %&gt;%
+  filter( charge_status == &#39;overcharged&#39;) %&gt;%
+  count( service_year ) %&gt;%
+  ggplot( mapping=aes(x=service_year, y=n ) )  +
+  geom_point( )  + 
+  geom_smooth(color=&#39;black&#39;)</code></pre>
+<pre><code>`geom_smooth()` using method = &#39;loess&#39; and formula &#39;y ~ x&#39;</code></pre>
+<p><img src="figure/tutorial4.Rmd/plot_overcharge_over_time-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>It is hard to tell if this is a real increase. We can model it as a linear model, and see if the increase is significant.</p>
+<pre class="r"><code>fracture.lm &lt;-
+  fracture %&gt;%
+  filter( charge_status == &#39;overcharged&#39;) %&gt;%
+  count( service_year ) %&gt;%
+  mutate( years = as.integer( service_year  - min(service_year ))) %&gt;%
+  lm( years  ~ n, data=. )
+
+summary( fracture.lm )</code></pre>
+<pre><code>
+Call:
+lm(formula = years ~ n, data = .)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.5684 -0.5497 -0.4492  0.2203  3.4326 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)  -3.5940     3.0593  -1.175    0.285  
+n             0.0770     0.0324   2.377    0.055 .
+---
+Signif. codes:  0 &#39;***&#39; 0.001 &#39;**&#39; 0.01 &#39;*&#39; 0.05 &#39;.&#39; 0.1 &#39; &#39; 1
+
+Residual standard error: 1.899 on 6 degrees of freedom
+Multiple R-squared:  0.4849,    Adjusted R-squared:  0.3991 
+F-statistic: 5.649 on 1 and 6 DF,  p-value: 0.05501</code></pre>
+<p>The model says that the model is not a linear trend.</p>
+</div>
+<div id="merilyns-ahb-assignment" class="section level1">
+<h1>Merilyn’s AHB assignment</h1>
+<p>In Merilyn’s AHB assignment, you have to :</p>
+<ol style="list-style-type: decimal">
+<li>Using the ICD10 code(s) for your disease, connect to the vaed_full database and retrieve your admissions</li>
+<li>Is there a significant diffence in the incidence of your disease between the genders ?</li>
+<li>Choose 2 versions of your disease. Is there a significant difference between the length of stay (LOS) for these 2 versions?</li>
+</ol>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
