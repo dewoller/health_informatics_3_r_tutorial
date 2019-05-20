@@ -1,4 +1,3 @@
-
 ---
 title: "Tutorial 4 - Statistics"
 site: workflowr::wflow_site
@@ -52,33 +51,45 @@ Data science is the process of getting data, and manipulating , visualizing and 
 # Data Transformation
 In the previous tutorials, we used pipes to select and summarise the data.  In this section, we will use pipes to `mutate` the data, adding calculated fields.  
 
-We will add five fields to the fracture dataset:  charge_status, practicioner, service_year, age, and age_group_10 (10 year age group).  The data flows through a pipe, going from fracture, mutating into another variable, and then going back to fracture.  The mutations are done using transformation functions,  including: `ifelse`, `substring`, `as.integer`, and `cut`. 
+We will add five fields to the fracture dataset:  charge_status, practicioner, service_year, age, and age_group_10 (10 year age group).  The data flows through a pipe, using the mutate function to add (or change) a field.
 
-The function `ifelse` takes 3 arguments:  a condition, the return value if the condition is true, and the return value if the condition is false.   It is useful for creating categorical variables.  
+fracture -> mutate -> fracture.  
 
-The `cut` function slices a continuous variable into chunks at the position of designated breaks, in this case, 10 year age groups.
+The mutations use transformation functions: `ifelse`, `substring`, `as.integer`, and `cut`. 
+
+The function `ifelse` is similar to the `if` function in Excel. It takes 3 arguments:  
+1.  a condition, 
+1.  the return value if the condition is true, and 
+2.  the return value if the condition is false.   
+   
+It is useful for creating categorical variables.  
+
+The `cut` function slices a continuous variable into chunks, in this case, 10 year age groups.
 l;
 
 ```{r more_transformations}
 library(tidyverse)
 
+# we say it was overcharged if the practicioner charged more than the scheduled fee
 fracture <-
   fracture %>%
     mutate( charge_status =   ifelse( feecharged > schedfee,
                                     "overcharged", 
                                     "standard charge") ) 
-#
+# 07647 is the generalist code
 fracture <- 
   fracture %>%
     mutate( practicioner  =  ifelse( item=='07647',  
                                     "Generalist", 
                                     "Specialist") ) 
-#
+
+# The year is the first 4 digits of the date
 fracture <- 
   fracture %>%
     mutate( service_year = as.integer( substring( service_date, 1, 4 ))) 
-  #
 
+# first calculate the age at the time of service, and 
+# then use cut to slice up the ages into 10 year age groups
 # note you can do 2 mutations in the same sentence
 fracture <- 
   fracture %>%
@@ -88,13 +99,13 @@ fracture <-
 ```
 ### Exercises
 
-1. Highlight and run different chunks of the above statements, to see what the pipeline is doing.  
-
-2. Create another field in `fracture` to hold 20 year age groups.  
+1. Highlight and run `0:12` in the above sentence.  What does it do?  Highlight and run `10*(0:12)`.  What does it do?  
+1. What R phrase would create a list of numbers between 1 and 100?  How about the even numbers between 1 and 100?  What about the numbers 20,40,60,80 and 100?   
+1. Create another field in `fracture` to hold 20 year age groups.  
 
 # Visualise and clean the fractures dataset
 
-What is the distribution of the `fee charged` field.  
+What is the range and distribution of the `fee charged` field?
 
 ```{r error_histogram, warnings=FALSE}
 ggplot( fracture ) + 
@@ -117,7 +128,7 @@ ggplot( fracture ) +
 
 # Create a model of gender and ankle fractures
 
-What gender gets ankle fractures?  The first step is to plot the data.
+What gender gets these ankle fractures?  A good first step is to plot the data.
 
 ```{r plot_age_sex}
 
@@ -128,9 +139,7 @@ ggplot( fracture, mapping=aes(x=sex, fill=sex) ) +
 
 ## Statistical Significant Differences - Chi Squared test
 
-There is a difference between the number of men and women who get ankle fractures.  Is this difference statistically significant?
-
-The chi squared test tells us if this difference is statistically significant. We will pipe fracture into the `table` function, which counts the number of levels of each variable.  
+There appears to be a difference between the number of men and women who get ankle fractures.  Is this difference statistically significant?  The chi squared test answers this question. We select the `sex` field from fracture , and then pipe it into the `table` function. `table` counts the number of levels of each variable, in this case, M and F.
 
 
 ```{r count_sex}
@@ -141,18 +150,7 @@ fracture %>%
 
 
 ```
-`Prop.table` calculates the proportions for each variable (like percentages).  This standardises the value, putting them on the same base
 
-
-```{r prop_sex}
-
-fracture %>% 
-  select(sex) %>% 
-  table() %>% 
-  prop.table()
-
-
-```
  `chisq.test` performs the chisquared test. If P-value is less than 0.05, the difference is significant.  This means that this difference would happen by chance less than 5 / 100 times. 
 
 ```{r chisq_sex}
@@ -164,7 +162,7 @@ fracture %>%
 
 ```
 
-The chi squared test above tells us that this difference, between men and women, is not due to chance.
+The chi squared test above tells us that this difference, between men and women, is not due to chance.  Note, the value is expressed in scientific notation (`p-value = 1.187e-09`), because it is so small.  In regular notation, this would be 0.0000000001187!   
 
 
 ### Exercises
@@ -200,23 +198,9 @@ For more information on use of chisquared test in R, see: <a href="https://web.s
 
 1. Are specialists more likely to overcharge than generalists?   (answer below)
 
-```{r charge_answer, echo=FALSE, eval=FALSE}
 
-ggplot( fracture, mapping=aes(fill=practicioner, x=charge_status) ) + 
-  geom_bar( ) 
-
-```
-```{r chisq_chargestatus_practicioner}
-
-
-fracture %>% 
-  select(charge_status, practicioner) %>% 
-  table() %>% 
-  chisq.test()
-```
-
-# Modeling  - age and gender
-Is the age range of people who break their ankle different for the different genders?  We first look at the data.
+# Modeling - is there a difference between two groups?
+Do the different genders break their their ankles at different ages?  We first visualise.
 
 ```{r plot_gender_over_age, echo=TRUE}
 ggplot( fracture, mapping=aes(x=age, fill=sex) )  + 
@@ -234,44 +218,15 @@ A t-test can show if the set of male ages are significantly different from the s
 t.test( age~sex, data=fracture)
 
 ```
-Again, because the Pvalue is less than .05, the different is unlikely due to chance.  
+Again, because the p-value is less than .05, the different is unlikely due to chance.  
 
 ### Exercises
 1. Is the age range different for people who go to specialist vs generalists?
 2. Is the age range different for people who are overcharged?
 
-Answers follow
-
-```{r plot_gender_over_age_ANSWER, echo=FALSE, eval=FALSE}
-ggplot( fracture, mapping=aes(x=age, fill=practicioner) )  + 
-  geom_bar( ) 
-
-```
-
-
-```{r t.test_age_practicioner}
-
-t.test( age~practicioner , data=fracture)
-
-
-```
-
-```{r}
-
-ggplot( fracture, mapping=aes(x=age, fill=charge_status) )  +
-  geom_bar( ) 
-
-```
-
-```{r}
-
-t.test( age~charge_status, data=fracture)
-
-```
-
 # Modelling - is the price increasing over time?
 
-Is the incidence of overcharging increasing over time?  To determine this, we will count the number of overcharges per year, and plot them.  Note, when we use `ggplot` in a pipe, we don't need to include the dataset, because the dataset is piped in.
+Is the incidence of overcharging increasing over time?  To visualise this, we count the number of overcharges per year, and plot them.  When we use `ggplot` as part of a pipe, we don't need to include `ggplot( fracture )`, because the dataset is piped into ggplot.
 
 
 ```{r plot_overcharge_over_time, warnings=FALSE}
@@ -299,7 +254,7 @@ fracture.lm <-
 summary( fracture.lm )
 ```
 
-The model says that the model is not a linear trend.
+The model says that this is not a linear trend.
 
 # Merilyn's AHB assignment
 
