@@ -1,0 +1,313 @@
+---
+title: "Tutorial 5 - VAED"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+---
+
+
+# VAED in R
+
+## Working with R Notebooks
+
+The final exam for this informatics C is to create graphs that match your Tableau assignment in R.  The exam needs to be sumitted as a standalone R notebook, containing all the commands needed to recreate the graphs.
+
+Start in Rstudio, by creating a new R Notebook: `File -> New File -> R Notebook`.  Save the resulting notebook as `Tutorial5.Rmd`. Rmd is short for R Markdown, the language of the notebook.
+
+An R notebook is a combination of text and R commands, that, combined together, creates a finished document.  There are 3 parts to an R notebook.  
+
+1.  The header section, setting up the entire document.
+2.  Text, for documentation
+3.  R code, which is run, and the results displayed
+
+```{r Initial_r_notebook, echo=FALSE, fig.cap="Initial_r_notebook", out.width='50%'}
+knitr::include_graphics("screens/tutorial5_1_R_notebook.jpg")
+```
+
+To run the code in a section, click on the left hand arrow, or press *ctrl-shift-enter*.  To view the entire resulting document, press the `preview` button.  
+
+### Exercises
+1. Press the preview button.   Note how the code transforms into a figure.
+
+
+## Making your own R Notebook
+ Delete all but the header section in the document.  Change the header to say "Tutorial 5", and add the following two headings (Headings start with `#`).
+
+
+```{r rmd_headings, echo=FALSE, fig.cap="Notebook Headings", out.width='50%'}
+knitr::include_graphics("screens/tutorial5_1.5_R_headings.jpg")
+```
+
+Press `Preview`, and note the different levels of headings.
+
+## Loading Cardiac VAED data via SQL
+
+This tutorial recreates the second tableau tutorial, found [https://lms.latrobe.edu.au/mod/resource/view.php?id=3400237] (here), in R.
+
+To start, we load the libraries and query the databases, accessing the same cardiac procedures and diagnosis data we used in the above tutorial.
+
+```{r Tutorial_r_notebook, echo=FALSE, fig.cap="Initial Tutorial Notebook", out.width='50%'}
+knitr::include_graphics("screens/tutorial5_2_Tutorial_notebook.jpg")
+```
+The above is what the final document should look like.  The actual code is below.  
+
+### Load Libraries
+
+```{r library_setup, echo=TRUE, warnings=FALSE}
+
+library(tidyverse)
+library("RPostgreSQL")
+```
+### Get data from SQL
+
+```{r database_setup, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+con <- dbConnect(dbDriver("PostgreSQL"), 
+				 dbname   = 'vaed_full',
+				 host = "himsql7.latrobe.edu.au", port = 5432,
+				 user = "dewollershei-test", password = "healthGuru")
+
+query_diag <- " 
+select diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_diagnosis using (admission_id)
+join diagnosis_desc using (diag_code)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE diag_code between 'I21' AND 'I2399';
+ "
+
+cardiac_diag <- dbGetQuery( con, query_diag ) %>% as_tibble() 
+#
+
+query_proc <- " 
+select procedure_code, admission_id, age_years, los, sameday_id, drg, sex_desc, procedure_short_desc, block_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_procedure using (admission_id)
+join procedure_desc using (procedure_code)
+join block using (block)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE block_desc like '%cardiac%'
+AND block_desc not like 'Closure%'
+AND block_desc not like '%catheter%'
+AND block_desc not like 'Gated%' "
+
+#
+cardiac_proc <- dbGetQuery( con, query_proc ) %>% as_tibble() 
+#
+did_disconnect <- dbDisconnect( con )
+
+```
+
+## Load in Population Data
+
+```{r read_xl, echo=TRUE, warnings=FALSE, messages=FALSE}
+library('readxl')
+library('janitor')
+
+population <- 
+  read_excel('populationVictoria_2014_long.xlsx') %>%
+  clean_names()
+
+```
+# Replicate graphs from Tutorial 2
+
+## How many people get cardiac technology?
+
+As in tutorial 2, but this time, are using data that we have retrieved directly from the database.
+
+```{r raw_cardiac_repair, echo=TRUE, warnings=FALSE, messages=FALSE}
+library(scales)
+
+ggplot( cardiac_proc ) +
+  geom_bar( aes( block_desc, fill=sex_desc)) + 
+  coord_flip()+
+  ylab('Number of Patients') +
+  xlab('Block Description') +
+  scale_fill_discrete(name = 'Sex' ) +
+  scale_x_discrete(labels = wrap_format(40)) 
+
+```
+
+
+## What proportion of each gender get cardiac technology?
+
+The only difference between this graph and the one above is that geom_bar now has a parameter `position='fill'`.
+
+```{r proportional_cardiac_repair, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+ggplot( cardiac_proc ) +
+	geom_bar( aes( block_desc, fill=sex_desc), position = 'fill') + 
+	coord_flip()+
+	ylab('Proportion of Patients') +
+	xlab('Block Description') +
+	scale_fill_discrete(name = 'Sex' ) +
+	scale_x_discrete(labels = wrap_format(40)) 
+
+```
+
+
+## How many people, and at what age, do people have cardiac technology installed?
+
+
+```{r cardiac_technology_count, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+cardiac_proc %>%
+	mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %>%
+    ggplot( ) +
+      geom_bar( aes( ten_year_age_group, fill=sex_desc)) + 
+      ylab('Number of Patients') +
+      xlab('10 year age group') +
+      scale_fill_discrete(name = 'Sex' ) +
+      ggtitle( '10 year age group')
+
+```
+
+# What proportion of each gender have cardiac technology installed?
+
+
+```{r proportional_cardiac_tech, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+cardiac_proc %>%
+  mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %>%
+  ggplot( ) +
+  geom_bar( aes( ten_year_age_group, fill=sex_desc), position='fill') + 
+  ylab('Proportion of Patients') +
+  xlab('10 year age group') +
+  scale_fill_discrete(name = 'Sex' ) +
+  ggtitle( '10 year age group')
+
+```
+
+
+How many people, and at what age and gender, do people have cardiac infarct?
+
+
+```{r}
+cardiac_diag %>%
+  mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %>%
+  ggplot( ) +
+  geom_bar( aes( ten_year_age_group, fill=sex_desc)) + 
+  ylab('Number of Patients') +
+  xlab('10 year age group') +
+  scale_fill_discrete(name = 'Sex' ) +
+  ggtitle( '10 year age group')
+
+```
+
+
+What proportion of each gender have had cardiac Infarct?
+
+```{r}
+
+cardiac_diag %>%
+  mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %>%
+  ggplot( ) +
+  geom_bar( aes( ten_year_age_group, fill=sex_desc), position='fill') + 
+  ylab('Proportion of Patients') +
+  xlab('10 year age group') +
+  scale_fill_discrete(name = 'Sex' ) +
+  ggtitle( '10 year age group')
+
+```
+
+
+# What is the Victorian population gender breakdown
+## Summarising groups of records
+
+Here, we need to group together, and add up, the populations for each age group and gender.  The `sum` function in summarise adds up all the ages in the group.  In addition to `sum`, `min`, `max`, `mean`, and `median` are also usable in `summarise`.
+
+```{r}
+
+population %>%
+  mutate( ten_year_age_group = cut( age, breaks=10 * (0:12 ))) %>%
+  group_by(  gender, ten_year_age_group  ) %>% 
+  summarise( population = sum( population )) %>%
+  ggplot( ) +
+  geom_col( aes( ten_year_age_group, y=population, fill=gender)) + 
+  ylab('Population') +
+  xlab('10 year age group') +
+  scale_fill_discrete(name = 'Sex' ) +
+  ggtitle( '10 year age group')
+
+
+population %>%
+  mutate( ten_year_age_group = cut( age, breaks=10 * (0:12 ))) %>%
+  group_by(  gender, ten_year_age_group  ) %>% 
+  summarise( population = sum( population )) %>%
+  ggplot( ) +
+  geom_col( aes( ten_year_age_group, y=population, fill=gender), position='fill') + 
+  ylab('Population') +
+  xlab('10 year age group') +
+  scale_fill_discrete(name = 'Sex' ) +
+  ggtitle( '10 year age group')
+
+```
+
+# Computing standardised cardiac incidence by joining with population
+
+As noted in the tableau tutorial, it is very useful to be able to normalise incidence based on population figures.  To do this, we need the incidence numbers, and the population figures, in the same table.  R is able to `join` datasets more readily than Tableau.
+
+First, we compute the gender and 10 year age group incidence.
+
+```{r compute_incidence_summary}
+
+cardiac_summary <- 
+  cardiac_diag %>%
+    mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %>%
+    count( ten_year_age_group, sex_desc ) 
+
+cardiac_summary
+
+```
+Next, we compute the gender and 10 year age group population , and standardise the column names using `rename`.
+
+```{r compute_population_summary}
+
+
+population_summary <- 
+  population %>%
+  mutate( ten_year_age_group = cut( age, breaks=10 * (0:12 ))) %>%
+  group_by(  gender, ten_year_age_group  ) %>% 
+  summarise( population = sum( population )) %>%
+  rename( sex_desc =  gender ) 
+
+population_summary 
+
+```
+
+We then calculate the number of cardiac events per 10000 population.  We divide incidence by population, for each age group and gender.
+
+```{r compute_standardised_incidence}
+
+
+cardiac_standardised <- 
+  population_summary  %>%
+    inner_join( cardiac_summary, by=c('ten_year_age_group', 'sex_desc')) %>%
+    mutate( standard_rate = n * 10000 / population ) 
+
+cardiac_standardised 
+
+```
+Graph the result.  Maybe if you get to more than 100 years old, you are not as likely to have heart attack!
+
+```{r graph_standardise_incidence}
+
+cardiac_standardised %>%
+  ggplot( aes( x=ten_year_age_group, y=standard_rate, group=sex_desc, color=sex_desc )) +
+    geom_line () +
+    geom_point() +
+    ylab('Cardiac incidence per 10000 people population') +
+    xlab('Age Range') +
+    scale_fill_discrete(name = 'Sex' ) +
+    ggtitle( 'Standardised cardiac incidence for gender and population')
+
+                                    
+```
+
+This is a much more credible result than our previous work.
+
+
+
