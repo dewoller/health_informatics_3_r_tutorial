@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Tutorial 5 - VAED</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Health Informatics R Tutorial</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="tutorial2.html">2. Basic R </a>
+</li>
+<li>
+  <a href="tutorial3.html">3. Loading Data </a>
+</li>
+<li>
+  <a href="tutorial4.html">4. Statistics</a>
+</li>
+<li>
+  <a href="tutorial5.html">5. Working with VAED </a>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Tutorial 5 - VAED</h1>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2019-05-20
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>tutorials2-4/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.3.0.9000). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190513code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190513)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190513code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190513)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongunavailable"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Session information:</strong> unavailable </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongunavailable" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Recording the operating system, R version, and package versions is critical for reproducibility. To record the session information, add <code>sessioninfo: “sessionInfo()”</code> to _workflowr.yml. Alternatively, you could use <code>devtools::session_info()</code> or <code>sessioninfo::session_info()</code>. Lastly, you can manually add a code chunk to this file to run any one of these commands and then disable to automatic insertion by changing the workflowr setting to <code>sessioninfo: “”</code>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree813ce8ad27cebc320d0da453d90214c9ec380cd7targetblank813ce8aa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/813ce8ad27cebc320d0da453d90214c9ec380cd7" target="_blank">813ce8a</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree813ce8ad27cebc320d0da453d90214c9ec380cd7targetblank813ce8aa" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Untracked files:
+    Untracked:  docs/assets/populationVictoria_2014_long.xlsx
+    Untracked:  docs/screens/tutorial5_1.5_R_headings.jpg
+    Untracked:  docs/screens/tutorial5_1_R_notebook.jpg
+    Untracked:  docs/screens/tutorial5_2_Tutorial_notebook.jpg
+    Untracked:  populationVictoria_2014_long.xlsx
+
+Unstaged changes:
+    Modified:   analysis/_site.yml
+    Modified:   analysis/tutorial2.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the R Markdown and HTML files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view them.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/813ce8ad27cebc320d0da453d90214c9ec380cd7/analysis/tutorial5.Rmd" target="_blank">813ce8a</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-20
+</td>
+<td>
+wflow_publish(“analysis/tutorial5.Rmd”)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<div id="vaed-in-r" class="section level1">
+<h1>VAED in R</h1>
+<div id="working-with-r-notebooks" class="section level2">
+<h2>Working with R Notebooks</h2>
+<p>The final exam for this informatics C is to create graphs that match your Tableau assignment in R. The exam needs to be sumitted as a standalone R notebook, containing all the commands needed to recreate the graphs.</p>
+<p>Start in Rstudio, by creating a new R Notebook: <code>File -&gt; New File -&gt; R Notebook</code>. Save the resulting notebook as <code>Tutorial5.Rmd</code>. Rmd is short for R Markdown, the language of the notebook.</p>
+<p>An R notebook is a combination of text and R commands, that, combined together, creates a finished document. There are 3 parts to an R notebook.</p>
+<ol style="list-style-type: decimal">
+<li>The header section, setting up the entire document.</li>
+<li>Text, for documentation</li>
+<li>R code, which is run, and the results displayed</li>
+</ol>
+<div class="figure" style="text-align: center">
+<img src="screens/tutorial5_1_R_notebook.jpg" alt="Initial_r_notebook" width="50%" />
+<p class="caption">
+Initial_r_notebook
+</p>
+</div>
+<p>To run the code in a section, click on the left hand arrow, or press <em>ctrl-shift-enter</em>. To view the entire resulting document, press the <code>preview</code> button.</p>
+<div id="exercises" class="section level3">
+<h3>Exercises</h3>
+<ol style="list-style-type: decimal">
+<li>Press the preview button. Note how the code transforms into a figure.</li>
+</ol>
+</div>
+</div>
+<div id="making-your-own-r-notebook" class="section level2">
+<h2>Making your own R Notebook</h2>
+<p>Delete all but the header section in the document. Change the header to say “Tutorial 5”, and add the following two headings (Headings start with <code>#</code>).</p>
+<div class="figure" style="text-align: center">
+<img src="screens/tutorial5_1.5_R_headings.jpg" alt="Notebook Headings" width="50%" />
+<p class="caption">
+Notebook Headings
+</p>
+</div>
+<p>Press <code>Preview</code>, and note the different levels of headings.</p>
+</div>
+<div id="loading-cardiac-vaed-data-via-sql" class="section level2">
+<h2>Loading Cardiac VAED data via SQL</h2>
+<p>This tutorial recreates the second tableau tutorial, found [<a href="https://lms.latrobe.edu.au/mod/resource/view.php?id=3400237" class="uri">https://lms.latrobe.edu.au/mod/resource/view.php?id=3400237</a>] (here), in R.</p>
+<p>To start, we load the libraries and query the databases, accessing the same cardiac procedures and diagnosis data we used in the above tutorial.</p>
+<div class="figure" style="text-align: center">
+<img src="screens/tutorial5_2_Tutorial_notebook.jpg" alt="Initial Tutorial Notebook" width="50%" />
+<p class="caption">
+Initial Tutorial Notebook
+</p>
+</div>
+<p>The above is what the final document should look like. The actual code is below.</p>
+<div id="load-libraries" class="section level3">
+<h3>Load Libraries</h3>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
+<pre><code>✔ ggplot2 3.1.1       ✔ purrr   0.3.2  
+✔ tibble  2.1.1       ✔ dplyr   0.8.0.1
+✔ tidyr   0.8.3       ✔ stringr 1.4.0  
+✔ readr   1.3.1       ✔ forcats 0.4.0  </code></pre>
+<pre><code>── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(&quot;RPostgreSQL&quot;)</code></pre>
+<pre><code>Loading required package: DBI</code></pre>
+</div>
+<div id="get-data-from-sql" class="section level3">
+<h3>Get data from SQL</h3>
+<pre class="r"><code>con &lt;- dbConnect(dbDriver(&quot;PostgreSQL&quot;), 
+                 dbname   = &#39;vaed_full&#39;,
+                 host = &quot;himsql7.latrobe.edu.au&quot;, port = 5432,
+                 user = &quot;dewollershei-test&quot;, password = &quot;healthGuru&quot;)
+
+query_diag &lt;- &quot; 
+select diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_diagnosis using (admission_id)
+join diagnosis_desc using (diag_code)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE diag_code between &#39;I21&#39; AND &#39;I2399&#39;;
+ &quot;
+
+cardiac_diag &lt;- dbGetQuery( con, query_diag ) %&gt;% as_tibble() 
+#
+
+query_proc &lt;- &quot; 
+select procedure_code, admission_id, age_years, los, sameday_id, drg, sex_desc, procedure_short_desc, block_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_procedure using (admission_id)
+join procedure_desc using (procedure_code)
+join block using (block)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE block_desc like &#39;%cardiac%&#39;
+AND block_desc not like &#39;Closure%&#39;
+AND block_desc not like &#39;%catheter%&#39;
+AND block_desc not like &#39;Gated%&#39; &quot;
+
+#
+cardiac_proc &lt;- dbGetQuery( con, query_proc ) %&gt;% as_tibble() 
+#
+did_disconnect &lt;- dbDisconnect( con )</code></pre>
+</div>
+</div>
+<div id="load-in-population-data" class="section level2">
+<h2>Load in Population Data</h2>
+<pre class="r"><code>library(&#39;readxl&#39;)
+library(&#39;janitor&#39;)
+
+population &lt;- 
+  read_excel(&#39;populationVictoria_2014_long.xlsx&#39;) %&gt;%
+  clean_names()</code></pre>
+</div>
+</div>
+<div id="replicate-graphs-from-tutorial-2" class="section level1">
+<h1>Replicate graphs from Tutorial 2</h1>
+<div id="how-many-people-get-cardiac-technology" class="section level2">
+<h2>How many people get cardiac technology?</h2>
+<p>As in tutorial 2, but this time, are using data that we have retrieved directly from the database.</p>
+<pre class="r"><code>library(scales)</code></pre>
+<pre><code>
+Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:purrr&#39;:
+
+    discard</code></pre>
+<pre><code>The following object is masked from &#39;package:readr&#39;:
+
+    col_factor</code></pre>
+<pre class="r"><code>ggplot( cardiac_proc ) +
+  geom_bar( aes( block_desc, fill=sex_desc)) + 
+  coord_flip()+
+  ylab(&#39;Number of Patients&#39;) +
+  xlab(&#39;Block Description&#39;) +
+  scale_fill_discrete(name = &#39;Sex&#39; ) +
+  scale_x_discrete(labels = wrap_format(40)) </code></pre>
+<p><img src="figure/tutorial5.Rmd/raw_cardiac_repair-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="what-proportion-of-each-gender-get-cardiac-technology" class="section level2">
+<h2>What proportion of each gender get cardiac technology?</h2>
+<p>The only difference between this graph and the one above is that geom_bar now has a parameter <code>position='fill'</code>.</p>
+<pre class="r"><code>ggplot( cardiac_proc ) +
+    geom_bar( aes( block_desc, fill=sex_desc), position = &#39;fill&#39;) + 
+    coord_flip()+
+    ylab(&#39;Proportion of Patients&#39;) +
+    xlab(&#39;Block Description&#39;) +
+    scale_fill_discrete(name = &#39;Sex&#39; ) +
+    scale_x_discrete(labels = wrap_format(40)) </code></pre>
+<p><img src="figure/tutorial5.Rmd/proportional_cardiac_repair-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="how-many-people-and-at-what-age-do-people-have-cardiac-technology-installed" class="section level2">
+<h2>How many people, and at what age, do people have cardiac technology installed?</h2>
+<pre class="r"><code>cardiac_proc %&gt;%
+    mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %&gt;%
+    ggplot( ) +
+      geom_bar( aes( ten_year_age_group, fill=sex_desc)) + 
+      ylab(&#39;Number of Patients&#39;) +
+      xlab(&#39;10 year age group&#39;) +
+      scale_fill_discrete(name = &#39;Sex&#39; ) +
+      ggtitle( &#39;10 year age group&#39;)</code></pre>
+<p><img src="figure/tutorial5.Rmd/cardiac_technology_count-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="what-proportion-of-each-gender-have-cardiac-technology-installed" class="section level1">
+<h1>What proportion of each gender have cardiac technology installed?</h1>
+<pre class="r"><code>cardiac_proc %&gt;%
+  mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %&gt;%
+  ggplot( ) +
+  geom_bar( aes( ten_year_age_group, fill=sex_desc), position=&#39;fill&#39;) + 
+  ylab(&#39;Proportion of Patients&#39;) +
+  xlab(&#39;10 year age group&#39;) +
+  scale_fill_discrete(name = &#39;Sex&#39; ) +
+  ggtitle( &#39;10 year age group&#39;)</code></pre>
+<p><img src="figure/tutorial5.Rmd/proportional_cardiac_tech-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>How many people, and at what age and gender, do people have cardiac infarct?</p>
+<pre class="r"><code>cardiac_diag %&gt;%
+  mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %&gt;%
+  ggplot( ) +
+  geom_bar( aes( ten_year_age_group, fill=sex_desc)) + 
+  ylab(&#39;Number of Patients&#39;) +
+  xlab(&#39;10 year age group&#39;) +
+  scale_fill_discrete(name = &#39;Sex&#39; ) +
+  ggtitle( &#39;10 year age group&#39;)</code></pre>
+<p><img src="figure/tutorial5.Rmd/unnamed-chunk-1-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>What proportion of each gender have had cardiac Infarct?</p>
+<pre class="r"><code>cardiac_diag %&gt;%
+  mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %&gt;%
+  ggplot( ) +
+  geom_bar( aes( ten_year_age_group, fill=sex_desc), position=&#39;fill&#39;) + 
+  ylab(&#39;Proportion of Patients&#39;) +
+  xlab(&#39;10 year age group&#39;) +
+  scale_fill_discrete(name = &#39;Sex&#39; ) +
+  ggtitle( &#39;10 year age group&#39;)</code></pre>
+<p><img src="figure/tutorial5.Rmd/unnamed-chunk-2-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="what-is-the-victorian-population-gender-breakdown" class="section level1">
+<h1>What is the Victorian population gender breakdown</h1>
+<div id="summarising-groups-of-records" class="section level2">
+<h2>Summarising groups of records</h2>
+<p>Here, we need to group together, and add up, the populations for each age group and gender. The <code>sum</code> function in summarise adds up all the ages in the group. In addition to <code>sum</code>, <code>min</code>, <code>max</code>, <code>mean</code>, and <code>median</code> are also usable in <code>summarise</code>.</p>
+<pre class="r"><code>population %&gt;%
+  mutate( ten_year_age_group = cut( age, breaks=10 * (0:12 ))) %&gt;%
+  group_by(  gender, ten_year_age_group  ) %&gt;% 
+  summarise( population = sum( population )) %&gt;%
+  ggplot( ) +
+  geom_col( aes( ten_year_age_group, y=population, fill=gender)) + 
+  ylab(&#39;Population&#39;) +
+  xlab(&#39;10 year age group&#39;) +
+  scale_fill_discrete(name = &#39;Sex&#39; ) +
+  ggtitle( &#39;10 year age group&#39;)</code></pre>
+<p><img src="figure/tutorial5.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<pre class="r"><code>population %&gt;%
+  mutate( ten_year_age_group = cut( age, breaks=10 * (0:12 ))) %&gt;%
+  group_by(  gender, ten_year_age_group  ) %&gt;% 
+  summarise( population = sum( population )) %&gt;%
+  ggplot( ) +
+  geom_col( aes( ten_year_age_group, y=population, fill=gender), position=&#39;fill&#39;) + 
+  ylab(&#39;Population&#39;) +
+  xlab(&#39;10 year age group&#39;) +
+  scale_fill_discrete(name = &#39;Sex&#39; ) +
+  ggtitle( &#39;10 year age group&#39;)</code></pre>
+<p><img src="figure/tutorial5.Rmd/unnamed-chunk-3-2.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="computing-standardised-cardiac-incidence-by-joining-with-population" class="section level1">
+<h1>Computing standardised cardiac incidence by joining with population</h1>
+<p>As noted in the tableau tutorial, it is very useful to be able to normalise incidence based on population figures. To do this, we need the incidence numbers, and the population figures, in the same table. R is able to <code>join</code> datasets more readily than Tableau.</p>
+<p>First, we compute the gender and 10 year age group incidence.</p>
+<pre class="r"><code>cardiac_summary &lt;- 
+  cardiac_diag %&gt;%
+    mutate( ten_year_age_group = cut( age_years, breaks=10 * (0:12 ))) %&gt;%
+    count( ten_year_age_group, sex_desc ) 
+
+cardiac_summary</code></pre>
+<pre><code># A tibble: 20 x 3
+   ten_year_age_group sex_desc     n
+   &lt;fct&gt;              &lt;chr&gt;    &lt;int&gt;
+ 1 (0,10]             Female       1
+ 2 (10,20]            Male         1
+ 3 (20,30]            Female       6
+ 4 (20,30]            Male        12
+ 5 (30,40]            Female      40
+ 6 (30,40]            Male       139
+ 7 (40,50]            Female     173
+ 8 (40,50]            Male       585
+ 9 (50,60]            Female     352
+10 (50,60]            Male      1217
+11 (60,70]            Female     620
+12 (60,70]            Male      1707
+13 (70,80]            Female    1026
+14 (70,80]            Male      1801
+15 (80,90]            Female    1610
+16 (80,90]            Male      1546
+17 (90,100]           Female     475
+18 (90,100]           Male       267
+19 (100,110]          Female      10
+20 (100,110]          Male         2</code></pre>
+<p>Next, we compute the gender and 10 year age group population , and standardise the column names using <code>rename</code>.</p>
+<pre class="r"><code>population_summary &lt;- 
+  population %&gt;%
+  mutate( ten_year_age_group = cut( age, breaks=10 * (0:12 ))) %&gt;%
+  group_by(  gender, ten_year_age_group  ) %&gt;% 
+  summarise( population = sum( population )) %&gt;%
+  rename( sex_desc =  gender ) 
+
+population_summary </code></pre>
+<pre><code># A tibble: 22 x 3
+# Groups:   sex_desc [2]
+   sex_desc ten_year_age_group population
+   &lt;chr&gt;    &lt;fct&gt;                   &lt;dbl&gt;
+ 1 Female   (0,10]                 357321
+ 2 Female   (10,20]                338509
+ 3 Female   (20,30]                431151
+ 4 Female   (30,40]                418798
+ 5 Female   (40,50]                409483
+ 6 Female   (50,60]                371724
+ 7 Female   (60,70]                297490
+ 8 Female   (70,80]                186630
+ 9 Female   (80,90]                112938
+10 Female   (90,100]                27279
+# … with 12 more rows</code></pre>
+<p>We then calculate the number of cardiac events per 10000 population. We divide incidence by population, for each age group and gender.</p>
+<pre class="r"><code>cardiac_standardised &lt;- 
+  population_summary  %&gt;%
+    inner_join( cardiac_summary, by=c(&#39;ten_year_age_group&#39;, &#39;sex_desc&#39;)) %&gt;%
+    mutate( standard_rate = n * 10000 / population ) 
+
+cardiac_standardised </code></pre>
+<pre><code># A tibble: 20 x 5
+# Groups:   sex_desc [2]
+   sex_desc ten_year_age_group population     n standard_rate
+   &lt;chr&gt;    &lt;fct&gt;                   &lt;dbl&gt; &lt;int&gt;         &lt;dbl&gt;
+ 1 Female   (0,10]                 357321     1        0.0280
+ 2 Female   (20,30]                431151     6        0.139 
+ 3 Female   (30,40]                418798    40        0.955 
+ 4 Female   (40,50]                409483   173        4.22  
+ 5 Female   (50,60]                371724   352        9.47  
+ 6 Female   (60,70]                297490   620       20.8   
+ 7 Female   (70,80]                186630  1026       55.0   
+ 8 Female   (80,90]                112938  1610      143.    
+ 9 Female   (90,100]                27279   475      174.    
+10 Female   (100,110]                 783    10      128.    
+11 Male     (10,20]                356616     1        0.0280
+12 Male     (20,30]                438650    12        0.274 
+13 Male     (30,40]                414719   139        3.35  
+14 Male     (40,50]                394751   585       14.8   
+15 Male     (50,60]                357593  1217       34.0   
+16 Male     (60,70]                283135  1707       60.3   
+17 Male     (70,80]                170313  1801      106.    
+18 Male     (80,90]                 80679  1546      192.    
+19 Male     (90,100]                12351   267      216.    
+20 Male     (100,110]                 211     2       94.8   </code></pre>
+<p>Graph the result. Maybe if you get to more than 100 years old, you are not as likely to have heart attack!</p>
+<pre class="r"><code>cardiac_standardised %&gt;%
+  ggplot( aes( x=ten_year_age_group, y=standard_rate, group=sex_desc, color=sex_desc )) +
+    geom_line () +
+    geom_point() +
+    ylab(&#39;Cardiac incidence per 10000 people population&#39;) +
+    xlab(&#39;Age Range&#39;) +
+    scale_fill_discrete(name = &#39;Sex&#39; ) +
+    ggtitle( &#39;Standardised cardiac incidence for gender and population&#39;)</code></pre>
+<p><img src="figure/tutorial5.Rmd/graph_standardise_incidence-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>This is a much more credible result than our previous work.</p>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
