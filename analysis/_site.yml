@@ -5,13 +5,13 @@ navbar:
   left:
     - text: "Home"
       href: index.html
-    - text: "Tutorial 2"
+    - text: "2. Basic R "
       href: tutorial2.html
-    - text: "Tutorial 3"
+    - text: "3. Loading Data "
       href: tutorial3.html
-    - text: "4. Stats Tutorial"
+    - text: "4. Statistics"
       href: tutorial4.html
-    - text: "5. VAED Tutorial"
+    - text: "5. Working with VAED "
       href: tutorial5.html
     - text: "About"
       href: about.html

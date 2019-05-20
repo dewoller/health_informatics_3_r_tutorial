@@ -94,7 +94,7 @@ join block using (block)
 JOIN separation_mode USING (sep_mode_id)
 JOIN care_type USING (care_type_id)
 WHERE block_desc like '%cardiac%'
-AND bnt to come downlock_desc not like 'Closure%'
+AND block_desc not like 'Closure%'
 AND block_desc not like '%catheter%'
 AND block_desc not like 'Gated%'
 
