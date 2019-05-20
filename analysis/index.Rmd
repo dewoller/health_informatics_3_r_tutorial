@@ -8,4 +8,4 @@ output:
 
 Welcome to Health Informatics 3 
 
-This website contains the R tutorial, parts 2 and 3 
+This website contains the R tutorial, from part 2 onward.
