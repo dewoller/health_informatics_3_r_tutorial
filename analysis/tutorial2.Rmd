@@ -207,16 +207,8 @@ cardiac_procedures %>%
   count( procedure_short_desc, sort = TRUE )
 
 ```
-Another way to sort is to use `arrange`.  This next bit is identical to the chunk above, but it instead explicitly sorts the column `n` in descending order (`desc(n)`)
-
-```{r }
-
-cardiac_procedures %>%
-  count( procedure_short_desc) %>%
-  arrange( desc( n ))
-
-```
-## Creating a longer pipe
+# Two step pipes
+## Top N queries
 
 If we add the `head(5)` function to the end of the pipe, we get the top 5 procedures.  Our phrases are getting longer!
 
@@ -228,6 +220,17 @@ cardiac_procedures %>%
 
 ```
 
+ `count` has a descending sort built in to it, but sometimes we want to have more control over how we sort our data. Below, we use `arrange` to get the 10 *least* frequent procedures
+
+```{r }
+
+cardiac_procedures %>%
+  count( procedure_short_desc) %>%
+  arrange( n ) %>%
+  head(10)
+
+```
+
 ### Exercises
 
 1.  What is the most prevalent cardiac block?  Most prevalent los?  drg?  
@@ -236,7 +239,7 @@ cardiac_procedures %>%
 
 1.  How many different seperation modes are there?  How many drg's?
 
-1.  Create another tibble called top 5 diagnosis, containing the top 5 diagnosis codes
+1.  Create another tibble called `top_5_diagnosis`, containing the top 5 most frequent diagnosis codes
 
 
 ## Piping into ggplot
