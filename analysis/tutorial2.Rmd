@@ -108,7 +108,7 @@ I downloaded the data from the above queries from pgadmin, using F8 to export it
 ## Uploading data
 We will upload the cardiac datafiles to Rstudio, by using the Files-> Upload, found in Files tab of the bottom right quadrant.  
 
-```{r 5_file_upload.jpg, echo=FALSE, fig.cap="Files tab", out.width='40%'}
+```{r 5_file_upload.jpg, echo=FALSE, fig.cap="Files tab", out.width='100%'}
 knitr::include_graphics("screens/tutorial2_5_file_upload.jpg")
 ```
 
