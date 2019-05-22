@@ -164,7 +164,7 @@ cardiac_procedures %>%
 ```
 ##  `select` and `filter` functions
 
-There are a wide variety of functions you can use in a pipe.  Some useful ones that you will recognise are `select` and `filter`.  Let's explore them!
+There are many functions that can be used in a pipe.  Some useful ones that you will recognise are `select` and `filter`. `select` is for selecting columns, whereas `filter` selects out specific rows, just like the `where` clause in SQL. 
 
 ```{r }
 
@@ -182,7 +182,7 @@ cardiac_procedures %>%
 
 ### Exercises
 
-1.  How would you select only the diagnosis descriptions?
+1.  How do you select the diagnosis description?
 
 1.  How would you see the ages and lengths of stay of men who had a cardiac procedure?
 
@@ -205,6 +205,15 @@ If we add `sort = TRUE` to `count`, the results are sorted in descending order.
 
 cardiac_procedures %>%
   count( procedure_short_desc, sort = TRUE )
+
+```
+Another way to sort is to use `arrange`.  This next bit is identical to the chunk above, but it instead explicitly sorts the column `n` in descending order (`desc(n)`)
+
+```{r }
+
+cardiac_procedures %>%
+  count( procedure_short_desc) %>%
+  arrange( desc( n ))
 
 ```
 ## Creating a longer pipe
