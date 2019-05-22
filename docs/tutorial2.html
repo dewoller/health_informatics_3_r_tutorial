@@ -533,16 +533,18 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree4663174821da11cef3dee8c1c8a8729d9baa6d18targetblank4663174a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/4663174821da11cef3dee8c1c8a8729d9baa6d18" target="_blank">4663174</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree1af359ffa8c116a1b6b27048a38fbfbf5e93f4c9targetblank1af359fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/1af359ffa8c116a1b6b27048a38fbfbf5e93f4c9" target="_blank">1af359f</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree4663174821da11cef3dee8c1c8a8729d9baa6d18targetblank4663174a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree1af359ffa8c116a1b6b27048a38fbfbf5e93f4c9targetblank1af359fa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
 </p>
 <pre><code>
-working directory clean
+Untracked files:
+    Untracked:  qq
+
 </code></pre>
 <p>
 Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
@@ -580,6 +582,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/1af359ffa8c116a1b6b27048a38fbfbf5e93f4c9/analysis/tutorial2.Rmd" target="_blank">1af359f</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-22
+</td>
+<td>
+wflow_publish(“analysis/tutorial2.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/304eba14cfab476f356fbc8bd43c91f1d8a81d5d/docs/tutorial2.html" target="_blank">304eba1</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1318,7 +1354,7 @@ cols(
 9 Testing of cardiac pacemaker or defibrillator                            </code></pre>
 <div id="select-and-filter-functions" class="section level2">
 <h2><code>select</code> and <code>filter</code> functions</h2>
-<p>There are a wide variety of functions you can use in a pipe. Some useful ones that you will recognise are <code>select</code> and <code>filter</code>. Let’s explore them!</p>
+<p>There are many functions that can be used in a pipe. Some useful ones that you will recognise are <code>select</code> and <code>filter</code>. <code>select</code> is for selecting columns, whereas <code>filter</code> selects out specific rows, just like the <code>where</code> clause in SQL.</p>
 <pre class="r"><code>cardiac_procedures %&gt;%
   select( drg, sex_desc )</code></pre>
 <pre><code># A tibble: 9,087 x 2
@@ -1356,7 +1392,7 @@ cols(
 <div id="exercises-2" class="section level3">
 <h3>Exercises</h3>
 <ol style="list-style-type: decimal">
-<li><p>How would you select only the diagnosis descriptions?</p></li>
+<li><p>How do you select the diagnosis description?</p></li>
 <li><p>How would you see the ages and lengths of stay of men who had a cardiac procedure?</p></li>
 <li><p>How many different seperation modes are there? How many drg’s?</p></li>
 </ol>
@@ -1384,6 +1420,24 @@ cols(
 <p>If we add <code>sort = TRUE</code> to <code>count</code>, the results are sorted in descending order.</p>
 <pre class="r"><code>cardiac_procedures %&gt;%
   count( procedure_short_desc, sort = TRUE )</code></pre>
+<pre><code># A tibble: 51 x 2
+   procedure_short_desc                         n
+   &lt;chr&gt;                                    &lt;int&gt;
+ 1 Ins perm trnsven elec oth cham pcmkr      2346
+ 2 Insertion of cardiac pacemaker generator  2285
+ 3 Testing of other cardiac pacemaker        1118
+ 4 Replacement cardiac pacemaker generator    664
+ 5 Ins perm trnsven elec oth cham defib       490
+ 6 Insertion of cardiac defib generator       485
+ 7 Testing of cardiac defibrillator           428
+ 8 Replace cardiac defibrillator generator    322
+ 9 Test A-V seqtl rate respn / antchy pcmkr   190
+10 Ins perm trnsven elec L ventrl pcmkr       128
+# … with 41 more rows</code></pre>
+<p>Another way to sort is to use <code>arrange</code>. This next bit is identical to the chunk above, but it instead explicitly sorts the column <code>n</code> in descending order (<code>desc(n)</code>)</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  count( procedure_short_desc) %&gt;%
+  arrange( desc( n ))</code></pre>
 <pre><code># A tibble: 51 x 2
    procedure_short_desc                         n
    &lt;chr&gt;                                    &lt;int&gt;
@@ -1430,56 +1484,6 @@ cols(
   distinct( admission_id, sex_desc, block_desc ) %&gt;%
   ggplot() +
     geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) </code></pre>
-<p><img src="figure/tutorial2.Rmd/unnamed-chunk-13-1.png" width="672" style="display: block; margin: auto;" /></p>
-<p>
-<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-13-1">
-Past versions of unnamed-chunk-13-1.png
-</button>
-</p>
-<div id="fig-unnamed-chunk-13-1" class="collapse">
-<div class="table-responsive">
-<table class="table table-condensed table-hover">
-<thead>
-<tr>
-<th>
-Version
-</th>
-<th>
-Author
-</th>
-<th>
-Date
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>
-<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/91affaf74e609d5632e948cb01768c954709f2e4/docs/figure/tutorial2.Rmd/unnamed-chunk-13-1.png" target="_blank">91affaf</a>
-</td>
-<td>
-Dennis Wollersheim
-</td>
-<td>
-2019-05-13
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div>
-<div id="refining-a-graph---labelling" class="section level2">
-<h2>Refining a graph - labelling</h2>
-<p>The graph need better titles. Here, I modify the title, x and y labels and legend label.</p>
-<pre class="r"><code>cardiac_procedures %&gt;%
-  distinct( admission_id, sex_desc, block_desc ) %&gt;%
-  ggplot() +
-    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) +
-    ggtitle( &#39;Raw cardiac repair by gender and repair type&#39;) +
-    ylab(&#39;Number of Patients&#39;) +
-    xlab(&#39;Block Description&#39;) +
-    scale_fill_discrete(name = &#39;Sex&#39; )</code></pre>
 <p><img src="figure/tutorial2.Rmd/unnamed-chunk-14-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-14-1">
@@ -1530,22 +1534,17 @@ Dennis Wollersheim
 </div>
 </div>
 </div>
-<div id="refining-a-graph---label-text-wrapping" class="section level2">
-<h2>Refining a graph - label text wrapping</h2>
-<p>Pretty well anything you want to do in R, someone else has wanted to do it previously.</p>
-<p>I noted that the text on the x axis was too long, and after a few tries, I came up the the google search ‘how to wrap text on x axis ggplot’. The Stack Overflow site suggested using the <code>scales</code> package. After a few tries to get find the appropriate number of characters to wrap at, I came up with the following.</p>
-<pre class="r"><code>library(scales)
-
-cardiac_procedures %&gt;%
+<div id="refining-a-graph---labelling" class="section level2">
+<h2>Refining a graph - labelling</h2>
+<p>The graph need better titles. Here, I modify the title, x and y labels and legend label.</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
   distinct( admission_id, sex_desc, block_desc ) %&gt;%
   ggplot() +
     geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) +
     ggtitle( &#39;Raw cardiac repair by gender and repair type&#39;) +
     ylab(&#39;Number of Patients&#39;) +
     xlab(&#39;Block Description&#39;) +
-    scale_fill_discrete(name = &#39;Sex&#39; ) +
-    scale_x_discrete(labels = wrap_format(40)) +
-    coord_flip()</code></pre>
+    scale_fill_discrete(name = &#39;Sex&#39; )</code></pre>
 <p><img src="figure/tutorial2.Rmd/unnamed-chunk-15-1.png" width="672" style="display: block; margin: auto;" /></p>
 <p>
 <button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-15-1">
@@ -1595,6 +1594,24 @@ Dennis Wollersheim
 </table>
 </div>
 </div>
+</div>
+<div id="refining-a-graph---label-text-wrapping" class="section level2">
+<h2>Refining a graph - label text wrapping</h2>
+<p>Pretty well anything you want to do in R, someone else has wanted to do it previously.</p>
+<p>I noted that the text on the x axis was too long, and after a few tries, I came up the the google search ‘how to wrap text on x axis ggplot’. The Stack Overflow site suggested using the <code>scales</code> package. After a few tries to get find the appropriate number of characters to wrap at, I came up with the following.</p>
+<pre class="r"><code>library(scales)
+
+cardiac_procedures %&gt;%
+  distinct( admission_id, sex_desc, block_desc ) %&gt;%
+  ggplot() +
+    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) +
+    ggtitle( &#39;Raw cardiac repair by gender and repair type&#39;) +
+    ylab(&#39;Number of Patients&#39;) +
+    xlab(&#39;Block Description&#39;) +
+    scale_fill_discrete(name = &#39;Sex&#39; ) +
+    scale_x_discrete(labels = wrap_format(40)) +
+    coord_flip()</code></pre>
+<p><img src="figure/tutorial2.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
 <div id="exercises-4" class="section level3">
 <h3>Exercises</h3>
 <ol style="list-style-type: decimal">
