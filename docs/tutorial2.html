@@ -454,7 +454,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-05-22
+<strong>Last updated:</strong> 2019-05-23
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -533,10 +533,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree1af359ffa8c116a1b6b27048a38fbfbf5e93f4c9targetblank1af359fa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/1af359ffa8c116a1b6b27048a38fbfbf5e93f4c9" target="_blank">1af359f</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreea4594da364adb2442f7408ac06e6794e82c7f017targetblanka4594daa"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/a4594da364adb2442f7408ac06e6794e82c7f017" target="_blank">a4594da</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree1af359ffa8c116a1b6b27048a38fbfbf5e93f4c9targetblank1af359fa" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreea4594da364adb2442f7408ac06e6794e82c7f017targetblanka4594daa" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -582,6 +582,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/a4594da364adb2442f7408ac06e6794e82c7f017/analysis/tutorial2.Rmd" target="_blank">a4594da</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-23
+</td>
+<td>
+wflow_publish(“analysis/tutorial2.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/4947ebb2a4e6485cb4b156851f339b2579154fd9/docs/tutorial2.html" target="_blank">4947ebb</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-22
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -1434,27 +1468,12 @@ cols(
  9 Test A-V seqtl rate respn / antchy pcmkr   190
 10 Ins perm trnsven elec L ventrl pcmkr       128
 # … with 41 more rows</code></pre>
-<p>Another way to sort is to use <code>arrange</code>. This next bit is identical to the chunk above, but it instead explicitly sorts the column <code>n</code> in descending order (<code>desc(n)</code>)</p>
-<pre class="r"><code>cardiac_procedures %&gt;%
-  count( procedure_short_desc) %&gt;%
-  arrange( desc( n ))</code></pre>
-<pre><code># A tibble: 51 x 2
-   procedure_short_desc                         n
-   &lt;chr&gt;                                    &lt;int&gt;
- 1 Ins perm trnsven elec oth cham pcmkr      2346
- 2 Insertion of cardiac pacemaker generator  2285
- 3 Testing of other cardiac pacemaker        1118
- 4 Replacement cardiac pacemaker generator    664
- 5 Ins perm trnsven elec oth cham defib       490
- 6 Insertion of cardiac defib generator       485
- 7 Testing of cardiac defibrillator           428
- 8 Replace cardiac defibrillator generator    322
- 9 Test A-V seqtl rate respn / antchy pcmkr   190
-10 Ins perm trnsven elec L ventrl pcmkr       128
-# … with 41 more rows</code></pre>
 </div>
-<div id="creating-a-longer-pipe" class="section level2">
-<h2>Creating a longer pipe</h2>
+</div>
+<div id="two-step-pipes" class="section level1">
+<h1>Two step pipes</h1>
+<div id="top-n-queries" class="section level2">
+<h2>Top N queries</h2>
 <p>If we add the <code>head(5)</code> function to the end of the pipe, we get the top 5 procedures. Our phrases are getting longer!</p>
 <pre class="r"><code>cardiac_procedures %&gt;%
   count( procedure_short_desc, sort = TRUE )  %&gt;%
@@ -1467,13 +1486,31 @@ cols(
 3 Testing of other cardiac pacemaker        1118
 4 Replacement cardiac pacemaker generator    664
 5 Ins perm trnsven elec oth cham defib       490</code></pre>
+<p><code>count</code> has a descending sort built in to it, but sometimes we want to have more control over how we sort our data. Below, we use <code>arrange</code> to get the 10 <em>least</em> frequent procedures</p>
+<pre class="r"><code>cardiac_procedures %&gt;%
+  count( procedure_short_desc) %&gt;%
+  arrange( n ) %&gt;%
+  head(10)</code></pre>
+<pre><code># A tibble: 10 x 2
+   procedure_short_desc                         n
+   &lt;chr&gt;                                    &lt;int&gt;
+ 1 Adjust L ventrl elec defib thmy stmy sbx     1
+ 2 Ins perm epicardial elec pcmkr sbx appr      1
+ 3 R/O perm epicardl elec pcmkr sbx appr        1
+ 4 R/O perm L ventrl elec defib thmy stmy       1
+ 5 R/O perm trnsven elec of L ventrl pcmkr      1
+ 6 R/O temp epicardl elec f card pacemaker      1
+ 7 R/O trnsven elec ventrl defib extr dev       1
+ 8 Adjust ventrl elec pcmkr thmy stmy sbx       2
+ 9 Ins of patches for cardiac defibrillator     2
+10 Ins tempry epicardl elec card defib          2</code></pre>
 <div id="exercises-3" class="section level3">
 <h3>Exercises</h3>
 <ol style="list-style-type: decimal">
 <li><p>What is the most prevalent cardiac block? Most prevalent los? drg?</p></li>
 <li><p>Show only the ages and lengths of stay of men who had cardiac procedures.</p></li>
 <li><p>How many different seperation modes are there? How many drg’s?</p></li>
-<li><p>Create another tibble called top 5 diagnosis, containing the top 5 diagnosis codes</p></li>
+<li><p>Create another tibble called <code>top_5_diagnosis</code>, containing the top 5 most frequent diagnosis codes</p></li>
 </ol>
 </div>
 </div>
@@ -1507,6 +1544,17 @@ Date
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/4947ebb2a4e6485cb4b156851f339b2579154fd9/docs/figure/tutorial2.Rmd/unnamed-chunk-14-1.png" target="_blank">4947ebb</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-22
+</td>
+</tr>
 <tr>
 <td>
 <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/fa8c396078eea56d37008ac9c43cff0f53b80ff2/docs/figure/tutorial2.Rmd/unnamed-chunk-14-1.png" target="_blank">fa8c396</a>
@@ -1570,6 +1618,17 @@ Date
 <tbody>
 <tr>
 <td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/4947ebb2a4e6485cb4b156851f339b2579154fd9/docs/figure/tutorial2.Rmd/unnamed-chunk-15-1.png" target="_blank">4947ebb</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-22
+</td>
+</tr>
+<tr>
+<td>
 <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/fa8c396078eea56d37008ac9c43cff0f53b80ff2/docs/figure/tutorial2.Rmd/unnamed-chunk-15-1.png" target="_blank">fa8c396</a>
 </td>
 <td>
@@ -1612,6 +1671,43 @@ cardiac_procedures %&gt;%
     scale_x_discrete(labels = wrap_format(40)) +
     coord_flip()</code></pre>
 <p><img src="figure/tutorial2.Rmd/unnamed-chunk-16-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-16-1">
+Past versions of unnamed-chunk-16-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-16-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/4947ebb2a4e6485cb4b156851f339b2579154fd9/docs/figure/tutorial2.Rmd/unnamed-chunk-16-1.png" target="_blank">4947ebb</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-22
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <div id="exercises-4" class="section level3">
 <h3>Exercises</h3>
 <ol style="list-style-type: decimal">
