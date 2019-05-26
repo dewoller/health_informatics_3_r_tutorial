@@ -1,0 +1,262 @@
+---
+title:           
+author:          Dennis Wollersheim 
+date:            27.05.2019
+linkcolor:       cyan
+output:          html
+---
+```{r message=F, show=F}
+
+library(tidyverse)
+cardiac_diagnosis = read_csv("cardiac_diagnosis.csv") 
+
+
+```
+
+
+# Anthea's Original Question
+
+>Hi Dennis
+>
+>I am trying to attempt the following question:
+>
+>For the most frequent care type, what is the gender breakdown of patients?
+>
+>
+>I tried to select everything then filter by the most common care type, so I conjure the following:
+
+```{r  eval=F}
+ cardiac_diagnosis %>%
+     distinct(admission_id, care_type_desc, sex_desc) %>%
+     filter(
+         count(care_type_desc, sort=TRUE) %>%
+             head(1)
+     )
+
+```
+
+>It made no sense in R.... of course. The following is the error message:
+
+>Error in UseMethod("groups") : 
+>no applicable method for 'groups' applied to an object of class "character"
+
+>So I cheated by doing this:
+```{r }
+
+cardiac_diagnosis %>%
+     count(care_type_desc, sex_desc, sort=TRUE) %>%
+     head(2)
+
+```
+
+>But when I plot it, using the following command:
+
+```{r try2}
+
+ cardiac_diagnosis %>%
+     count(care_type_desc, sex_desc, sort=TRUE) %>%
+     head(2) %>%
+     ggplot()+
+     geom_bar(mapping=aes(x=care_type_desc,fill=sex_desc), position="dodge")+
+     labs(title="Most common care type, by gender", y="No. of patients")+
+     scale_fill_discrete(name='Gender')+
+     theme_classic()
+
+```
+
+
+>I think I am missing something here.
+
+>Is it ok if you can point me to the right direction? 
+
+>Many thanks
+
+
+# Dennis' response
+
+I am overjoyed to point you in the right direction!  Thanks so much for the question.  Response below
+
+
+## Attempt 1
+
+This is a great first attempt, trying to use the `filter` to filter out the rows having the most frequent `care_type_desc`.  
+
+```{r  eval=F}
+
+cardiac_diagnosis %>%
+  distinct(admission_id, care_type_desc, sex_desc) %>%
+  filter(
+         count(care_type_desc, sort=TRUE) %>%
+           head(1)
+  )
+
+```
+
+And as  you pointed out, it doesn't work. Technically, this is because `filter` expects a boolean condition, something that returns `TRUE` or `FALSE`, usually of the form `x=y`.   If your filter is in that form, it could actually work.  For example, if you knew what your most frequent care type was, for, by example, running this:
+
+```{r}
+
+  cardiac_diagnosis  %>%
+  distinct(admission_id, care_type_desc, sex_desc) %>%
+  count(care_type_desc, sort=TRUE) %>%
+  head(1) %>%
+  select( care_type_desc )
+
+```
+We would find that the most frequent care type was `Other care (Acute) inc Qualified Newborn`.  So, we could actually filter by that:
+
+```{r }
+
+cardiac_diagnosis %>%
+  distinct(admission_id, care_type_desc, sex_desc) %>%
+  filter( care_type_desc == 'Other care (Acute) inc Qualified Newborn' )
+
+```
+
+This could then be piped into ggplot, to answer your question.  
+
+```{r}
+
+cardiac_diagnosis %>%
+  distinct(admission_id, care_type_desc, sex_desc) %>%
+  filter( care_type_desc == 'Other care (Acute) inc Qualified Newborn' ) %>%
+  ggplot()+
+    geom_bar(mapping=aes(x=care_type_desc,fill=sex_desc), position="dodge")+
+    labs(title="Most common care type, by gender", y="No. of patients")+
+    scale_fill_discrete(name='Gender')+
+    theme_classic()
+
+```
+ I can tell that you already know all this!  It is just that you want to do it automatically, without human intervention.  So do I. I show you this because I want to demonstrate 1) `filter` is not wrong, and 2) later, I will show you how to do it with `filter`. It is just that the `filter` approach is a bit complex.
+
+## Try 2 - Cheating by selecting top 2 rows
+
+Your second attempt was as follows:
+
+```{r }
+ 
+cardiac_diagnosis %>%
+    count(care_type_desc, sex_desc, sort=TRUE) %>%
+    head(2) %>%
+    ggplot()+
+    geom_bar(mapping=aes(x=care_type_desc,fill=sex_desc), position="dodge")+
+    labs(title="Most common care type, by gender", y="No. of patients")+
+    scale_fill_discrete(name='Gender')+
+    theme_classic()
+
+```
+
+What a good try!  Very innovative.  The problem here, as you demonstrated and can see below, is that your data selection step, the first 3 lines of your code, only return 2 records.  `geom_bar` *counts* the records for you (by default), and it is only counting 2!
+
+```{r }
+
+cardiac_diagnosis %>%
+  count(care_type_desc, sex_desc, sort=TRUE) %>%
+  head(2) 
+
+```
+
+## Solution 2 - Cheating
+Now, if we could get `geom_bar` to use that `n` instead of counting, we would be sweet.  `geom_col` is the not so helpful version of `geom_bar`, it demands a `y` parameter, and it *does not count for you*.  Which is what you want.
+
+```{r }
+
+cardiac_diagnosis %>%
+  count(care_type_desc, sex_desc, sort=TRUE) %>%
+  head(2)  %>%
+  ggplot()+
+    geom_col(mapping=aes(x=care_type_desc,y=n, fill=sex_desc), position="dodge")+
+    labs(title="Most common care type, by gender", y="No. of patients")+
+    scale_fill_discrete(name='Gender')+
+    theme_classic()
+
+
+```
+
+So this makes your second, *cheating*, attempt work.  
+
+## Solution using `inner_join`
+
+But what if you did not want to cheat?  What if you wanted to do that `filter`, and find the actual most frequent care types? 
+
+The trick here is that `inner_join` also filters, *if the thing you are joining has a restricted number of records*.  First, we create a variable holding the most frequent `care_type_desc`.
+
+```{r}
+
+most_frequent_care_type <- 
+  cardiac_diagnosis  %>%
+    distinct(admission_id, care_type_desc, sex_desc) %>%
+    count(care_type_desc, sort=TRUE) %>%
+    head(1)
+
+most_frequent_care_type
+
+```
+
+Then, we `inner_join` `cardiac_diagnosis` with this.
+
+```{r}
+
+cardiac_diagnosis %>%
+  inner_join( most_frequent_care_type )
+
+```
+
+This has the effect of filtering out cardiac_diagnosis records with only this `care_type_desc`, as demonstrated below.
+
+```{r}
+
+cardiac_diagnosis %>%
+  inner_join( most_frequent_care_type ) %>%
+  distinct( care_type_desc )
+
+```
+We only have this single care_type_desc 
+
+Combining the `inner_join` filter and ggplot, we get the same graph.
+
+```{r}
+
+most_frequent_care_type <- 
+  cardiac_diagnosis  %>%
+  distinct(admission_id, care_type_desc, sex_desc) %>%
+  count(care_type_desc, sort=TRUE) %>%
+  head(1)
+
+cardiac_diagnosis %>%
+  inner_join( most_frequent_care_type ) %>%
+  ggplot()+
+    geom_bar(mapping=aes(x=care_type_desc,fill=sex_desc), position="dodge")+
+    labs(title="Most common care type, by gender", y="No. of patients")+
+    scale_fill_discrete(name='Gender')+
+    theme_classic()
+
+```
+
+## Solution using `filter` and `pluck`
+
+Instead of using `inner_join`, we can use filter directly, if *we know the name of the most frequent care type desc*.  We can extract out the actual name using the `pluck` command.  `pluck` extracts out a single value from a tibble. 
+
+
+```{r}
+
+most_frequent_care_type_desc <- 
+  cardiac_diagnosis  %>%
+  distinct(admission_id, care_type_desc, sex_desc) %>%
+  count(care_type_desc, sort=TRUE) %>%
+  head(1) %>%
+  pluck( 1 )
+
+most_frequent_care_type_desc 
+
+cardiac_diagnosis %>%
+  filter( care_type_desc == most_frequent_care_type_desc ) %>%
+  ggplot()+
+  geom_bar(mapping=aes(x=care_type_desc,fill=sex_desc), position="dodge")+
+  labs(title="Most common care type, by gender", y="No. of patients")+
+  scale_fill_discrete(name='Gender')+
+  theme_classic()
+
+```
+
+
