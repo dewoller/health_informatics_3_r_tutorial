@@ -10,6 +10,6 @@ Welcome to Health Informatics 3
 
 This website contains the R tutorial, from part 2 onward.
 
-Student Questions
+# Student Questions
 
-[Anthea 1 - how to display gender distribution of most frequent care type](Anthea_question_1.html)
+[ 2019-05-27 Anthea - how to display gender distribution of most frequent care type](Anthea_question_1.html)
