@@ -9,3 +9,7 @@ output:
 Welcome to Health Informatics 3 
 
 This website contains the R tutorial, from part 2 onward.
+
+Student Questions
+
+[Anthea 1 - how to display gender distribution of most frequent care type](Anthea_question_1.html)
