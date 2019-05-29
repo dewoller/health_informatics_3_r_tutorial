@@ -17,7 +17,7 @@ Start in Rstudio, by creating a new R Notebook: `File -> New File -> R Notebook`
 
 An R notebook is a combination of text and R commands, that, combined together, creates a finished document.  There are 3 parts to an R notebook.  
 
-1.  The header section, setting up the entire document.
+1.  The header section, setting up the entire document, starting and ending with ---
 2.  Text, for documentation
 3.  R code, which is run, and the results displayed
 
@@ -25,10 +25,10 @@ An R notebook is a combination of text and R commands, that, combined together, 
 knitr::include_graphics("screens/tutorial5_1_R_notebook.jpg")
 ```
 
-To run the code in a section, click on the left hand arrow, or press *ctrl-shift-enter*.  To view the entire resulting document, press the `preview` button.  
+To run one line of code, as in an R file, press *ctrl-shift-enter*.  To run all the code in an entire section, click on the left hand green arrow button (outlined in yellow highlight above).  To view the entire resulting document, press the `preview` button.  
 
 ### Exercises
-1. Press the preview button.   Note how the code transforms into a figure.
+1. Press the preview button (you might have to allow popups in your browser).  Which line of the original .Rmd notebook document turns into a header?  Which element of the .Rmd notebook turns into a hyperlink?
 
 
 ## Making your own R Notebook
@@ -43,9 +43,9 @@ Press `Preview`, and note the different levels of headings.
 
 ## Loading Cardiac VAED data via SQL
 
-This tutorial recreates the second tableau tutorial, found [https://lms.latrobe.edu.au/mod/resource/view.php?id=3400237] (here), in R.
+This tutorial recreates the second Tableau tutorial, found [https://lms.latrobe.edu.au/mod/resource/view.php?id=3400237] (here), in R.
 
-To start, we load the libraries and query the databases, accessing the same cardiac procedures and diagnosis data we used in the above tutorial.
+To start, we load the libraries and query the databases, accessing the same cardiac procedures and diagnosis data we used in the previous tutorials.
 
 ```{r Tutorial_r_notebook, echo=FALSE, fig.cap="Initial Tutorial Notebook", out.width='50%'}
 knitr::include_graphics("screens/tutorial5_2_Tutorial_notebook.jpg")
@@ -102,6 +102,9 @@ did_disconnect <- dbDisconnect( con )
 ```
 
 ## Load in Population Data
+
+Later in the tutorial, you will need the population data.  [Download the population dataset from here](https://github.com/dewoller/health_informatics_3_r_tutorial/raw/master/populationVictoria_2014_long.xlsx), and upload it to rstudio.
+
 
 ```{r read_xl, echo=TRUE, warnings=FALSE, messages=FALSE}
 library('readxl')
