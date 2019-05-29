@@ -1,0 +1,90 @@
+---
+title: "Tutorial 6 - Machine Learning"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+---
+
+
+# Machine Learning in R
+
+The question, is there a relationship between los and age?  Does age predict los?
+
+
+## Load Libraries
+
+```{r library_setup, echo=TRUE, warnings=FALSE}
+
+library(tidyverse)
+library("RPostgreSQL")
+library(healthcareai)
+
+```
+## Get data from SQL
+
+```{r database_setup, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+con <- dbConnect(dbDriver("PostgreSQL"), 
+				 dbname   = 'vaed_full',
+				 host = "himsql7.latrobe.edu.au", port = 5432,
+				 user = "dewollershei-test", password = "healthGuru")
+
+query_diag <- " 
+select diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
+from admission JOIN sex using (sex_id)
+join admission_diagnosis using (admission_id)
+join diagnosis_desc using (diag_code)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE diag_code between 'I21' AND 'I2399'
+AND position=1;
+ "
+
+#
+cardiac_diag <- dbGetQuery( con, query_diag ) %>% as_tibble() 
+#
+did_disconnect <- dbDisconnect( con )
+
+```
+
+# What does LOS look like?
+
+```{r raw_cardiac_repair, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+
+cardiac_diag %>%
+  ggplot( ) +
+    geom_point( aes( y=age_years, los)) 
+
+
+cardiac_diag %>%
+  ggplot( ) +
+  geom_bar( aes( sep_mode_desc)) 
+
+
+```
+
+
+
+
+```{r machine_learn}
+
+d=  split_train_test(d=cardiac_diag, outcome=sep_mode_desc, percent_train=.8) 
+
+
+  machine_learn( d$train, admission_id, outcome=sep_mode_desc) %>% 
+  { . } -> models
+
+models
+
+plot(models)
+summary(models)
+
+evaluate(models)
+predict(models, d$test) 
+
+
+
+```
+
