@@ -14,7 +14,9 @@ The question: If you enter hospital with a PD of Pneumonia, what factors determi
 
 ## Load Libraries
 
-```{r library_setup, echo=TRUE, warnings=FALSE}
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+library(knitr)
+opts_chunk$set(echo=F,warning=F,message=F,fig.width = 11,fig.height = 5,cache=F)
 
 library(tidyverse)
 library("RPostgreSQL")
@@ -31,15 +33,19 @@ con <- dbConnect(dbDriver("PostgreSQL"),
 				 user = "dewollershei-test", password = "healthGuru")
 #
 query_diag <- " 
-select position, diag_code, admission_id, age_years, los, 
+select ad.position, diag_code, admission_id, age_years, los, 
 sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
 sep_mode_id
+---, procedure_short_desc
 from admission JOIN sex using (sex_id)
-join admission_diagnosis using (admission_id)
+join admission_diagnosis ad using (admission_id)
 join diagnosis_desc using (diag_code)
+join admission_procedure ap USING (admission_id) 
+---join procedure_desc using (procedure_code)
 JOIN separation_mode USING (sep_mode_id)
 JOIN care_type USING (care_type_id)
 WHERE diag_short_desc like 'Pneumonia unspecified'
+---and ap.position=1
  "
 #
 pneumonia_diag <- dbGetQuery( con, query_diag ) %>% 
@@ -52,7 +58,8 @@ did_disconnect <- dbDisconnect( con )
 ```
 
 # Can we predict separation mode for pneumonia unspecified patients?
-Given our 7517 pneumonia unspecified patients, can we predict their separation mode?  First, what does separtion mode look like?
+
+Given our 7517 pneumonia unspecified patients, can we predict their separation mode?  First, what does separation mode look like?
 
 
 
@@ -60,7 +67,8 @@ Given our 7517 pneumonia unspecified patients, can we predict their separation m
 
 pneumonia_diag %>%
   ggplot( aes( sep_mode_desc, fill=diag_status)) +
-  geom_bar( ) 
+  geom_bar( ) +
+  coord_flip()
 
 pneumonia_diag %>%
   count(  sep_mode_id, sep_mode_desc)
@@ -68,16 +76,19 @@ pneumonia_diag %>%
 
 ```
 
-Let's separate out the people who died
+Let's separate out the people who died.  About 10% of patients with this diagnosis die.
 
-```{r filter_top_3}
+We exclude some columns that are not useful for the predictions (position, diag_code, diag_short_desc), and also, exclude columns that would make the prediction too easy (sep_mode_id and sep_mode_desc)
+
+```{r did_die}
+
 pneumonia_diag_did_die <- 
   pneumonia_diag %>%
     mutate( did_die = ifelse( sep_mode_id=='D', 'Y', 'N')) %>%
     select( -position, -diag_code, -diag_short_desc, -sep_mode_id, -sep_mode_desc )
 
   pneumonia_diag_did_die %>%
-    distinct( care_type_desc )
+    count( did_die )
 
 
 
@@ -89,7 +100,7 @@ pneumonia_diag_did_die <-
 
 Can we use machine learning to determine the likelihood of death, given other factors?
 
-First, we split the dataset into train and test data.
+First, we split the dataset into train and test data.  We will generate the machine learning model from the training set, and we then use the test set to see if our model is any good.
 
 ```{r machine_learn}
 
@@ -101,9 +112,9 @@ summary(split_data)
 
 ## Training a prediction model
 
-Then, we train the model on the training subset, held in the `train` component of the `split_data` variable `split_data$train`. 
+We train the model on the training subset, held in the `train` component of the `split_data` variable `split_data$train`. 
 
-I exclude `admission_id` because it is no use to try to train on a unique id column, because it holds no information.  The outcome variable is the one we are trying to predict, in this case, `did_die`. We also set `tune=F` so that the process finishes more quickly, but if  you have time, setting `tune=T` will give you a more accurate model.
+We exclude `admission_id` because it is no use to try to train on a unique id column, because it holds no information.  The outcome variable is the one we are trying to predict, in this case, `did_die`. We also set `tune=F` so that the process finishes more quickly, but if  you have time, setting `tune=T` will give you a more accurate model.
 
 ```{r}
 
