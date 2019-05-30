@@ -9,7 +9,7 @@ output:
 
 # Machine Learning in R
 
-The question, is there a relationship between los and age?  Does age predict los?
+The question: If you enter hospital with a PD of Pneumonia, what factors determine if you will survive?
 
 
 ## Load Libraries
@@ -29,60 +29,189 @@ con <- dbConnect(dbDriver("PostgreSQL"),
 				 dbname   = 'vaed_full',
 				 host = "himsql7.latrobe.edu.au", port = 5432,
 				 user = "dewollershei-test", password = "healthGuru")
-
+#
 query_diag <- " 
-select diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
+select position, diag_code, admission_id, age_years, los, 
+sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
+sep_mode_id
 from admission JOIN sex using (sex_id)
 join admission_diagnosis using (admission_id)
 join diagnosis_desc using (diag_code)
 JOIN separation_mode USING (sep_mode_id)
 JOIN care_type USING (care_type_id)
-WHERE diag_code between 'I21' AND 'I2399'
-AND position=1;
+WHERE diag_short_desc like 'Pneumonia unspecified'
  "
-
 #
-cardiac_diag <- dbGetQuery( con, query_diag ) %>% as_tibble() 
+pneumonia_diag <- dbGetQuery( con, query_diag ) %>% 
+  as_tibble() %>%
+  mutate( diag_status = ifelse( position==1, 'Pdx','Adx'))
 #
 did_disconnect <- dbDisconnect( con )
 
-```
-
-# What does LOS look like?
-
-```{r raw_cardiac_repair, echo=TRUE, warnings=FALSE, messages=FALSE}
-
-
-cardiac_diag %>%
-  ggplot( ) +
-    geom_point( aes( y=age_years, los)) 
-
-
-cardiac_diag %>%
-  ggplot( ) +
-  geom_bar( aes( sep_mode_desc)) 
-
 
 ```
 
+# Can we predict separation mode for pneumonia unspecified patients?
+Given our 7517 pneumonia unspecified patients, can we predict their separation mode?  First, what does separtion mode look like?
 
 
+
+```{r pneumonia_unspecified_distribution, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+pneumonia_diag %>%
+  ggplot( aes( sep_mode_desc, fill=diag_status)) +
+  geom_bar( ) 
+
+pneumonia_diag %>%
+  count(  sep_mode_id, sep_mode_desc)
+
+
+```
+
+Let's separate out the people who died
+
+```{r filter_top_3}
+pneumonia_diag_did_die <- 
+  pneumonia_diag %>%
+    mutate( did_die = ifelse( sep_mode_id=='D', 'Y', 'N')) %>%
+    select( -position, -diag_code, -diag_short_desc, -sep_mode_id, -sep_mode_desc )
+
+  pneumonia_diag_did_die %>%
+    distinct( care_type_desc )
+
+
+
+
+```
+
+
+# Machine learning
+
+Can we use machine learning to determine the likelihood of death, given other factors?
+
+First, we split the dataset into train and test data.
 
 ```{r machine_learn}
 
-d=  split_train_test(d=cardiac_diag, outcome=sep_mode_desc, percent_train=.8) 
+split_data <-  split_train_test(d=pneumonia_diag_did_die, outcome=did_die, percent_train=.8, seed=101001) 
 
+summary(split_data)
 
-  machine_learn( d$train, admission_id, outcome=sep_mode_desc) %>% 
+```
+
+## Training a prediction model
+
+Then, we train the model on the training subset, held in the `train` component of the `split_data` variable `split_data$train`. 
+
+I exclude `admission_id` because it is no use to try to train on a unique id column, because it holds no information.  The outcome variable is the one we are trying to predict, in this case, `did_die`. We also set `tune=F` so that the process finishes more quickly, but if  you have time, setting `tune=T` will give you a more accurate model.
+
+```{r}
+
+machine_learn( split_data$train, admission_id, outcome=did_die, tune=F) %>% 
   { . } -> models
 
 models
 
-plot(models)
+```
+
+Whew, we have calculated the model.  Actually, we have calculated many models, and had a contest to see which was the best predictor.  The 3 models types are `Random Forest`, `eXtreme Gradient Boosting`, and `glmnet`.  The default model scoring criteria used is called `AUROC`, short for area under the ROC curve, and it shows that our model had a 75% success rate at predicting death.
+ur 
+
+```{r}
 summary(models)
 
 evaluate(models)
-predict(models, d$test) 
+```
+## Visualising a prediction model
+
+There are various ways to visualise the results.  THe first is to look at what predictions would be made for the 'held back' training data.  `predict` does this, by adding a columm with the predicted `did_die` value, called `predicted_did_die`.  This contains the probability that this prediction will be `Y`. 
+
+```{r}
+
+predictions <- 
+  predict(models, newdata=split_data$test, outcome_groups=T) 
+
+predictions
+
+```
+
+We can plot the predictions.
+
+```{r plot_predictions}
+
+plot( predictions )
+
+
+```
+
+## How does the model work?
+
+We first look and see which variables are important in the model.
+
+```{r}
+
+
+get_variable_importance(models) %>%
+  plot()
+
+```
+
+Age and LOS are the most important variables.  Another way to explore the model is look at what happens to the prediction as you play around with the variables.  `explore` does this. By default, it explores the effect of changing the two most important variables in the model, in this case, `age_years` and `los`.
+
+
+```{r}
+
+explore(models) %>% 
+  plot()
+
+```
+
+We can also explore what happens as we explore other combinations of variables, in this case, `age` and `care_type_desc`.
+
+```{r}
+
+explore(models, vary=c('age_years', 'care_type_desc')) %>% 
+  plot()
+
+
+```
+
+### Exercises
+1. Extract another dataset, for example, number of procedures performed, and if the patient had physiotherapy.  Does this selection of data improve the model?
+2.  What is a plausible reason why a longer LOS leads to improved survival?
+3.  If we had enough data, we could predict ICD codes.  What would the effect of this on the hospital workforce?
+
+
+## Multiclass prediction
+The following code selects out the top 3 seperation modes, and excludes the other seperation modes.  See if you can predict one of 3 seperation modes.  Does that improve accuracy?
+
+
+
+
+```{r top3}
+
+
+top3 <- 
+  pneumonia_diag %>%
+  count(  sep_mode_id, sep_mode_desc, sort=TRUE) %>%
+  head(3)
+
+pneumonia_diag_top3 <- 
+  pneumonia_diag %>%
+  inner_join( top3 ) %>%
+  select( -position, -diag_code, -diag_short_desc, -sep_mode_desc, -n )
+
+
+split_data <-  split_train_test(d=pneumonia_diag_top3 , outcome=sep_mode_id, percent_train=.8, seed=101001) 
+
+
+machine_learn( split_data$train, admission_id, outcome=sep_mode_id, tune=F) %>% 
+  { . } -> models
+
+models
+
+get_variable_importance(models) %>%
+  plot()
 
 
 
