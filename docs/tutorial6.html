@@ -536,10 +536,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreefc4e7053368746d4028f698527d24ce471434169targetblankfc4e705a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/fc4e7053368746d4028f698527d24ce471434169" target="_blank">fc4e705</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreee985e150aa01cda8ed26dfd694599f01ca26a740targetblanke985e15a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/e985e150aa01cda8ed26dfd694599f01ca26a740" target="_blank">e985e15</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreefc4e7053368746d4028f698527d24ce471434169targetblankfc4e705a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreee985e150aa01cda8ed26dfd694599f01ca26a740targetblanke985e15a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -590,6 +590,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/e985e150aa01cda8ed26dfd694599f01ca26a740/analysis/tutorial6.Rmd" target="_blank">e985e15</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-30
+</td>
+<td>
+wflow_publish(“analysis/tutorial6.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/1e87e06ca9474d1b29a93bef45538e397263b26a/docs/tutorial6.html" target="_blank">1e87e06</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-30
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/fc4e7053368746d4028f698527d24ce471434169/analysis/tutorial6.Rmd" target="_blank">fc4e705</a>
 </td>
 <td>
@@ -631,20 +665,6 @@ inprogress
 <p>The question: If you enter hospital with a PD of Pneumonia, what factors determine if you will survive?</p>
 <div id="load-libraries" class="section level2">
 <h2>Load Libraries</h2>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<pre><code>── Attaching packages ────────────────────────────────── tidyverse 1.2.1 ──</code></pre>
-<pre><code>✔ ggplot2 3.1.1     ✔ purrr   0.3.2
-✔ tibble  2.1.1     ✔ dplyr   0.8.1
-✔ tidyr   0.8.3     ✔ stringr 1.4.0
-✔ readr   1.3.1     ✔ forcats 0.4.0</code></pre>
-<pre><code>── Conflicts ───────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-<pre class="r"><code>library(&quot;RPostgreSQL&quot;)</code></pre>
-<pre><code>Loading required package: DBI</code></pre>
-<pre class="r"><code>library(healthcareai)</code></pre>
-<pre><code>healthcareai version 2.3.0
-Please visit https://docs.healthcare.ai for full documentation and vignettes. Join the community at https://healthcare-ai.slack.com</code></pre>
 </div>
 <div id="get-data-from-sql" class="section level2">
 <h2>Get data from SQL</h2>
@@ -654,15 +674,19 @@ Please visit https://docs.healthcare.ai for full documentation and vignettes. Jo
                  user = &quot;dewollershei-test&quot;, password = &quot;healthGuru&quot;)
 #
 query_diag &lt;- &quot; 
-select position, diag_code, admission_id, age_years, los, 
+select ad.position, diag_code, admission_id, age_years, los, 
 sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
 sep_mode_id
+---, procedure_short_desc
 from admission JOIN sex using (sex_id)
-join admission_diagnosis using (admission_id)
+join admission_diagnosis ad using (admission_id)
 join diagnosis_desc using (diag_code)
+join admission_procedure ap USING (admission_id) 
+---join procedure_desc using (procedure_code)
 JOIN separation_mode USING (sep_mode_id)
 JOIN care_type USING (care_type_id)
 WHERE diag_short_desc like &#39;Pneumonia unspecified&#39;
+---and ap.position=1
  &quot;
 #
 pneumonia_diag &lt;- dbGetQuery( con, query_diag ) %&gt;% 
@@ -674,91 +698,93 @@ did_disconnect &lt;- dbDisconnect( con )</code></pre>
 </div>
 <div id="can-we-predict-separation-mode-for-pneumonia-unspecified-patients" class="section level1">
 <h1>Can we predict separation mode for pneumonia unspecified patients?</h1>
-<p>Given our 7517 pneumonia unspecified patients, can we predict their separation mode? First, what does separtion mode look like?</p>
+<p>Given our 7517 pneumonia unspecified patients, can we predict their separation mode? First, what does separation mode look like?</p>
 <pre class="r"><code>pneumonia_diag %&gt;%
   ggplot( aes( sep_mode_desc, fill=diag_status)) +
-  geom_bar( ) </code></pre>
-<p><img src="figure/tutorial6.Rmd/pneumonia_unspecified_distribution-1.png" width="672" style="display: block; margin: auto;" /></p>
+  geom_bar( ) +
+  coord_flip()</code></pre>
+<p><img src="figure/tutorial6.Rmd/pneumonia_unspecified_distribution-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-pneumonia_unspecified_distribution-1">
+Past versions of pneumonia_unspecified_distribution-1.png
+</button>
+</p>
+<div id="fig-pneumonia_unspecified_distribution-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/1e87e06ca9474d1b29a93bef45538e397263b26a/docs/figure/tutorial6.Rmd/pneumonia_unspecified_distribution-1.png" target="_blank">1e87e06</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-30
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <pre class="r"><code>pneumonia_diag %&gt;%
   count(  sep_mode_id, sep_mode_desc)</code></pre>
 <pre><code># A tibble: 8 x 3
   sep_mode_id sep_mode_desc                                               n
   &lt;chr&gt;       &lt;chr&gt;                                                   &lt;int&gt;
-1 A           Separation and transfer to mental health residential f…     3
-2 B           Separation and transfer to Transition Care bed based p…   191
-3 D           Death                                                    1674
-4 H           Separation to private residence/accommodation           13338
-5 N           Separation and transfer to aged care residential facil…  1244
-6 S           Statistical Separation                                    853
-7 T           Separation and transfer to acute hospital/extended care  3341
-8 Z           Left against medical advice                               126</code></pre>
-<p>Let’s separate out the people who died</p>
-<pre class="r"><code>pneumonia_diag_did_die &lt;- 
-  pneumonia_diag %&gt;%
-    mutate( did_die = ifelse( sep_mode_id==&#39;D&#39;, &#39;Y&#39;, &#39;N&#39;)) %&gt;%
-    select( -position, -diag_code, -diag_short_desc, -sep_mode_id, -sep_mode_desc )
-
-  pneumonia_diag_did_die %&gt;%
-    distinct( care_type_desc )</code></pre>
-<pre><code># A tibble: 13 x 1
-   care_type_desc                                 
-   &lt;chr&gt;                                          
- 1 Other care (Acute) inc Qualified Newborn       
- 2 Palliative Care Program                        
- 3 Geriatric Evaluation and Mgnt                  
- 4 Designated Rehab - Level 2                     
- 5 Acute Adult Mental Health Service              
- 6 Acute Aged Persons Mental Health Service (APMH)
- 7 Alcohol and Drug Program                       
- 8 Nursing Home Type (NHT)/Non-Acute              
- 9 Restorative Care Off site                      
-10 Designated Rehab - Level 1                     
-11 Restorative Care On site                       
-12 Acute Specialist Mental Health Service         
-13 Unqualified Newborn                            </code></pre>
+1 A           Separation and transfer to mental health residential f…     9
+2 B           Separation and transfer to Transition Care bed based p…   951
+3 D           Death                                                    6468
+4 H           Separation to private residence/accommodation           33067
+5 N           Separation and transfer to aged care residential facil…  3545
+6 S           Statistical Separation                                   4011
+7 T           Separation and transfer to acute hospital/extended care 13727
+8 Z           Left against medical advice                               287</code></pre>
+<p>Let’s separate out the people who died. About 10% of patients with this diagnosis die.</p>
+<p>We exclude some columns that are not useful for the predictions (position, diag_code, diag_short_desc), and also, exclude columns that would make the prediction too easy (sep_mode_id and sep_mode_desc)</p>
+<pre><code># A tibble: 2 x 2
+  did_die     n
+  &lt;chr&gt;   &lt;int&gt;
+1 N       55597
+2 Y        6468</code></pre>
 </div>
 <div id="machine-learning" class="section level1">
 <h1>Machine learning</h1>
 <p>Can we use machine learning to determine the likelihood of death, given other factors?</p>
-<p>First, we split the dataset into train and test data.</p>
-<pre class="r"><code>split_data &lt;-  split_train_test(d=pneumonia_diag_did_die, outcome=did_die, percent_train=.8, seed=101001) 
-
-summary(split_data)</code></pre>
+<p>First, we split the dataset into train and test data. We will generate the machine learning model from the training set, and we then use the test set to see if our model is any good.</p>
 <pre><code>      Length Class  Mode
 train 9      tbl_df list
 test  9      tbl_df list</code></pre>
 <div id="training-a-prediction-model" class="section level2">
 <h2>Training a prediction model</h2>
-<p>Then, we train the model on the training subset, held in the <code>train</code> component of the <code>split_data</code> variable <code>split_data$train</code>.</p>
-<p>I exclude <code>admission_id</code> because it is no use to try to train on a unique id column, because it holds no information. The outcome variable is the one we are trying to predict, in this case, <code>did_die</code>. We also set <code>tune=F</code> so that the process finishes more quickly, but if you have time, setting <code>tune=T</code> will give you a more accurate model.</p>
-<pre class="r"><code>machine_learn( split_data$train, admission_id, outcome=did_die, tune=F) %&gt;% 
-  { . } -&gt; models</code></pre>
-<pre><code>Training new data prep recipe...</code></pre>
-<pre><code>Variable(s) ignored in prep_data won&#39;t be used to tune models: admission_id</code></pre>
-<pre><code>
-did_die looks categorical, so training classification algorithms.</code></pre>
-<pre><code>
-After data processing, models are being trained on 21 features with 16,617 observations.
-Based on n_folds = 5 and hyperparameter settings, the following number of models will be trained: 5 rf&#39;s, 5 xgb&#39;s, and 50 glm&#39;s </code></pre>
-<pre><code>Training at fixed values: Random Forest</code></pre>
-<pre><code>Training at fixed values: eXtreme Gradient Boosting</code></pre>
-<pre><code>Training at fixed values: glmnet</code></pre>
-<pre><code>
-*** Models successfully trained. The model object contains the training data minus ignored ID columns. ***
-*** If there was PHI in training data, normal PHI protocols apply to the model object. ***</code></pre>
-<pre class="r"><code>models</code></pre>
+<p>We train the model on the training subset, held in the <code>train</code> component of the <code>split_data</code> variable <code>split_data$train</code>.</p>
+<p>We exclude <code>admission_id</code> because it is no use to try to train on a unique id column, because it holds no information. The outcome variable is the one we are trying to predict, in this case, <code>did_die</code>. We also set <code>tune=F</code> so that the process finishes more quickly, but if you have time, setting <code>tune=T</code> will give you a more accurate model.</p>
 <pre><code>Algorithms Trained: Random Forest, eXtreme Gradient Boosting, and glmnet
 Model Name: did_die
 Target: did_die
 Class: Classification
 Performance Metric: AUROC
-Number of Observations: 16617
-Number of Features: 21
-Models Trained: 2019-05-30 16:33:46 
+Number of Observations: 49653
+Number of Features: 18
+Models Trained: 2019-05-30 16:49:39 
 
 Models have not been tuned. Performance estimated via 5-fold cross validation at fixed hyperparameter values.
 Best model: eXtreme Gradient Boosting
-AUPR = 0.27, AUROC = 0.75
+AUPR = 0.52, AUROC = 0.84
 User-selected hyperparameter values:
   nrounds = 50
   max_depth = 6
@@ -768,19 +794,18 @@ User-selected hyperparameter values:
   min_child_weight = 1
   subsample = 0.7 </code></pre>
 <p>Whew, we have calculated the model. Actually, we have calculated many models, and had a contest to see which was the best predictor. The 3 models types are <code>Random Forest</code>, <code>eXtreme Gradient Boosting</code>, and <code>glmnet</code>. The default model scoring criteria used is called <code>AUROC</code>, short for area under the ROC curve, and it shows that our model had a 75% success rate at predicting death. ur</p>
-<pre class="r"><code>summary(models)</code></pre>
-<pre><code>Models trained: 2019-05-30 16:33:46
+<pre><code>Models trained: 2019-05-30 16:49:39
 
 Models have not been tuned. Performance estimated via 5-fold cross validation at fixed hyperparameter values.
-Best algorithm: eXtreme Gradient Boosting with AUPR = 0.27, AUROC = 0.75
+Best algorithm: eXtreme Gradient Boosting with AUPR = 0.52, AUROC = 0.84
 
 Out-of-fold performance of all trained models:
 
 $`Random Forest`
 # A tibble: 1 x 9
-   mtry splitrule  min.node.size AUROC   Sens  Spec  ROCSD SensSD   SpecSD
-  &lt;dbl&gt; &lt;chr&gt;              &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;
-1     4 extratrees             1 0.750 0.0746 0.999 0.0121 0.0209 0.000884
+   mtry splitrule min.node.size AUROC    Sens  Spec   ROCSD  SensSD  SpecSD
+  &lt;dbl&gt; &lt;chr&gt;             &lt;int&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;
+1     4 extratre…             1 0.727 0.00850 1.000 0.00809 0.00268 1.38e-4
 
 $`eXtreme Gradient Boosting`
 # A tibble: 1 x 13
@@ -792,67 +817,161 @@ $`eXtreme Gradient Boosting`
 
 $glmnet
 # A tibble: 10 x 8
-   alpha   lambda AUROC    Sens  Spec   ROCSD  SensSD   SpecSD
-   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;
- 1     1 0.000977 0.751 0.102   0.995 0.0139  0.0235  0.000788
- 2     1 0.00266  0.748 0.101   0.995 0.0129  0.0249  0.000847
- 3     1 0.00723  0.742 0.1     0.995 0.0115  0.0248  0.00102 
- 4     1 0.0197   0.707 0.00746 1.000 0.0181  0.00914 0.000179
- 5     1 0.0536   0.557 0       1     0.00982 0       0       
- 6     1 8        0.5   0       1     0       0       0       
- 7     1 2.94     0.5   0       1     0       0       0       
- 8     1 1.08     0.5   0       1     0       0       0       
- 9     1 0.397    0.5   0       1     0       0       0       
-10     1 0.146    0.5   0       1     0       0       0       </code></pre>
-<pre class="r"><code>evaluate(models)</code></pre>
+   alpha   lambda AUROC     Sens  Spec  ROCSD   SensSD    SpecSD
+   &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;
+ 1     1 0.000977 0.698 0.0319   0.996 0.0115 0.00659  0.000957 
+ 2     1 0.00266  0.694 0.0220   0.998 0.0123 0.00731  0.000894 
+ 3     1 0.00723  0.685 0.000386 1.000 0.0146 0.000529 0.0000941
+ 4     1 0.0197   0.607 0        1     0.0145 0        0        
+ 5     1 8        0.5   0        1     0      0        0        
+ 6     1 2.94     0.5   0        1     0      0        0        
+ 7     1 1.08     0.5   0        1     0      0        0        
+ 8     1 0.397    0.5   0        1     0      0        0        
+ 9     1 0.146    0.5   0        1     0      0        0        
+10     1 0.0536   0.5   0        1     0      0        0        </code></pre>
 <pre><code>     AUPR     AUROC 
-0.2711871 0.7528373 </code></pre>
+0.5166242 0.8383091 </code></pre>
 </div>
 <div id="visualising-a-prediction-model" class="section level2">
 <h2>Visualising a prediction model</h2>
 <p>There are various ways to visualise the results. THe first is to look at what predictions would be made for the ‘held back’ training data. <code>predict</code> does this, by adding a columm with the predicted <code>did_die</code> value, called <code>predicted_did_die</code>. This contains the probability that this prediction will be <code>Y</code>.</p>
-<pre class="r"><code>predictions &lt;- 
-  predict(models, newdata=split_data$test, outcome_groups=T) </code></pre>
-<pre><code>Warning in ready_with_prep(object, newdata, mi): The following variables(s) had the following value(s) in predict that were not observed in training. 
-    drg: A06D, B73Z, H01B, I06Z, I23Z, J01A, K06A, M01A, M62Z, N60B</code></pre>
-<pre><code>Prepping data based on provided recipe</code></pre>
-<pre class="r"><code>predictions</code></pre>
-<pre><code>&quot;predicted_did_die&quot; predicted by eXtreme Gradient Boosting last trained: 2019-05-30 16:33:46
-Performance in training: AUROC = 0.75</code></pre>
-<pre><code># A tibble: 4,153 x 11
+<pre><code># A tibble: 12,412 x 11
    did_die predicted_did_d… predicted_group admission_id age_years   los
  * &lt;fct&gt;              &lt;dbl&gt; &lt;fct&gt;                  &lt;int&gt;     &lt;int&gt; &lt;int&gt;
- 1 N               0.00547  N                   21000617         5     4
- 2 N               0.000191 N                   21000865         5     2
- 3 N               0.139    N                   21001870        77     2
- 4 N               0.104    N                   21001966        85     8
- 5 Y               0.806    Y                   21001999        69     3
- 6 N               0.0755   N                   21002340        89     5
- 7 N               0.186    N                   21002345        79    22
- 8 N               0.117    N                   21002515        85     1
- 9 N               0.154    N                   21003344        91    23
-10 Y               0.0763   N                   21003346        60    17
-# … with 4,143 more rows, and 5 more variables: sameday_id &lt;chr&gt;,
+ 1 Y                 0.591  Y                   21001608        61    35
+ 2 Y                 0.591  Y                   21001608        61    35
+ 3 Y                 0.591  Y                   21001608        61    35
+ 4 Y                 0.591  Y                   21001608        61    35
+ 5 Y                 0.591  Y                   21001608        61    35
+ 6 Y                 0.591  Y                   21001608        61    35
+ 7 N                 0.0213 N                   21001618        61     2
+ 8 Y                 0.210  N                   21001668        75     2
+ 9 Y                 0.210  N                   21001668        75     2
+10 Y                 0.210  N                   21001668        75     2
+# … with 12,402 more rows, and 5 more variables: sameday_id &lt;chr&gt;,
 #   drg &lt;chr&gt;, sex_desc &lt;chr&gt;, care_type_desc &lt;chr&gt;, diag_status &lt;chr&gt;</code></pre>
 <p>We can plot the predictions.</p>
-<pre class="r"><code>plot( predictions )</code></pre>
-<p><img src="figure/tutorial6.Rmd/plot_predictions-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/tutorial6.Rmd/plot_predictions-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-plot_predictions-1">
+Past versions of plot_predictions-1.png
+</button>
+</p>
+<div id="fig-plot_predictions-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/1e87e06ca9474d1b29a93bef45538e397263b26a/docs/figure/tutorial6.Rmd/plot_predictions-1.png" target="_blank">1e87e06</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-30
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 <div id="how-does-the-model-work" class="section level2">
 <h2>How does the model work?</h2>
 <p>We first look and see which variables are important in the model.</p>
-<pre class="r"><code>get_variable_importance(models) %&gt;%
-  plot()</code></pre>
-<p><img src="figure/tutorial6.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/tutorial6.Rmd/unnamed-chunk-5-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-5-1">
+Past versions of unnamed-chunk-5-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-5-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/1e87e06ca9474d1b29a93bef45538e397263b26a/docs/figure/tutorial6.Rmd/unnamed-chunk-5-1.png" target="_blank">1e87e06</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-30
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>Age and LOS are the most important variables. Another way to explore the model is look at what happens to the prediction as you play around with the variables. <code>explore</code> does this. By default, it explores the effect of changing the two most important variables in the model, in this case, <code>age_years</code> and <code>los</code>.</p>
-<pre class="r"><code>explore(models) %&gt;% 
-  plot()</code></pre>
-<pre><code>With 4 varying features and n_use = 2, using median to aggregate predicted outcomes across care_type_desc and drg. You could turn `n_use` up to see the impact of more features.</code></pre>
-<p><img src="figure/tutorial6.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/tutorial6.Rmd/unnamed-chunk-6-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-unnamed-chunk-6-1">
+Past versions of unnamed-chunk-6-1.png
+</button>
+</p>
+<div id="fig-unnamed-chunk-6-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/1e87e06ca9474d1b29a93bef45538e397263b26a/docs/figure/tutorial6.Rmd/unnamed-chunk-6-1.png" target="_blank">1e87e06</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-30
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <p>We can also explore what happens as we explore other combinations of variables, in this case, <code>age</code> and <code>care_type_desc</code>.</p>
-<pre class="r"><code>explore(models, vary=c(&#39;age_years&#39;, &#39;care_type_desc&#39;)) %&gt;% 
-  plot()</code></pre>
-<p><img src="figure/tutorial6.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/tutorial6.Rmd/unnamed-chunk-7-1.png" width="1056" style="display: block; margin: auto;" /></p>
 <div id="exercises" class="section level3">
 <h3>Exercises</h3>
 <ol style="list-style-type: decimal">
@@ -865,48 +984,19 @@ Performance in training: AUROC = 0.75</code></pre>
 <div id="multiclass-prediction" class="section level2">
 <h2>Multiclass prediction</h2>
 <p>The following code selects out the top 3 seperation modes, and excludes the other seperation modes. See if you can predict one of 3 seperation modes. Does that improve accuracy?</p>
-<pre class="r"><code>top3 &lt;- 
-  pneumonia_diag %&gt;%
-  count(  sep_mode_id, sep_mode_desc, sort=TRUE) %&gt;%
-  head(3)
-
-pneumonia_diag_top3 &lt;- 
-  pneumonia_diag %&gt;%
-  inner_join( top3 ) %&gt;%
-  select( -position, -diag_code, -diag_short_desc, -sep_mode_desc, -n )</code></pre>
-<pre><code>Joining, by = c(&quot;sep_mode_desc&quot;, &quot;sep_mode_id&quot;)</code></pre>
-<pre class="r"><code>split_data &lt;-  split_train_test(d=pneumonia_diag_top3 , outcome=sep_mode_id, percent_train=.8, seed=101001) 
-
-
-machine_learn( split_data$train, admission_id, outcome=sep_mode_id, tune=F) %&gt;% 
-  { . } -&gt; models</code></pre>
-<pre><code>Training new data prep recipe...</code></pre>
-<pre><code>Variable(s) ignored in prep_data won&#39;t be used to tune models: admission_id</code></pre>
-<pre><code>
-sep_mode_id looks multiclass, so training multiclass algorithms.</code></pre>
-<pre><code>
-After data processing, models are being trained on 21 features with 14,684 observations.
-Based on n_folds = 5 and hyperparameter settings, the following number of models will be trained: 5 rf&#39;s, 5 xgb&#39;s, and 50 glm&#39;s </code></pre>
-<pre><code>Training at fixed values: Random Forest</code></pre>
-<pre><code>Training at fixed values: eXtreme Gradient Boosting</code></pre>
-<pre><code>Training at fixed values: glmnet</code></pre>
-<pre><code>
-*** Models successfully trained. The model object contains the training data minus ignored ID columns. ***
-*** If there was PHI in training data, normal PHI protocols apply to the model object. ***</code></pre>
-<pre class="r"><code>models</code></pre>
 <pre><code>Algorithms Trained: Random Forest, eXtreme Gradient Boosting, and glmnet
 Model Name: sep_mode_id
 Target: sep_mode_id
 Class: Multiclass
 Performance Metric: Accuracy
-Number of Observations: 14684
-Number of Features: 21
+Number of Observations: 42611
+Number of Features: 18
 Number of Outcome Classes: 3
-Models Trained: 2019-05-30 16:34:18 
+Models Trained: 2019-05-30 16:50:54 
 
 Models have not been tuned. Performance estimated via 5-fold cross validation at fixed hyperparameter values.
 Best model: eXtreme Gradient Boosting
-Accuracy = 0.74, Kappa = 0.21
+Accuracy = 0.73, Kappa = 0.42
 User-selected hyperparameter values:
   nrounds = 50
   max_depth = 6
@@ -915,9 +1005,44 @@ User-selected hyperparameter values:
   colsample_bytree = 0.8
   min_child_weight = 1
   subsample = 0.7 </code></pre>
-<pre class="r"><code>get_variable_importance(models) %&gt;%
-  plot()</code></pre>
-<p><img src="figure/tutorial6.Rmd/top3-1.png" width="672" style="display: block; margin: auto;" /></p>
+<p><img src="figure/tutorial6.Rmd/top3-1.png" width="1056" style="display: block; margin: auto;" /></p>
+<p>
+<button type="button" class="btn btn-default btn-xs btn-workflowr btn-workflowr-fig" data-toggle="collapse" data-target="#fig-top3-1">
+Past versions of top3-1.png
+</button>
+</p>
+<div id="fig-top3-1" class="collapse">
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/1e87e06ca9474d1b29a93bef45538e397263b26a/docs/figure/tutorial6.Rmd/top3-1.png" target="_blank">1e87e06</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-05-30
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 </div>
 </div>
 
