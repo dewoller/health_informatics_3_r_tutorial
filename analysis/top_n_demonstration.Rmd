@@ -1,0 +1,83 @@
+
+---
+title:           
+author:          Dennis Wollersheim 
+date:            27.05.2019
+linkcolor:       cyan
+output:          html
+---
+```{r,warning=FALSE,message=FALSE,echo=FALSE}
+# load libraries
+library(knitr)
+opts_chunk$set(warning=F,message=F,fig.width = 11,fig.height = 5,cache=F)
+
+```
+
+
+# The Question - Top N filtering
+
+> I want to compare the age distribution between procedures, but there are too many procedures.  How can I get the age distribution for the top 4 procedures only?
+
+To demonstrate, I will use the `cardiac_procedures` dataset.
+
+
+## Setup Load Libraries and Data
+
+```{r}
+
+library(tidyverse)
+cardiac_procedures <- read_csv("cardiac_procedures.csv") 
+
+```
+
+## The problem
+THis graph demonstrates the problem.  There are too many categories.
+
+```{r}
+
+cardiac_procedures %>%
+  ggplot( aes( age_years ,fill = procedure_short_desc )) +
+  geom_histogram(bins=10)
+
+
+```
+
+
+## Finding the top 4 procedures
+It is easy to find the top 4 procedures, by first counting how many admissions for each procedure, sorting them in descending order, and throwing away everything from #5 onwards.
+
+```{r }
+
+cardiac_procedures %>%
+  count(procedure_short_desc, sort = TRUE) %>%
+  head( 4)
+
+```
+
+The problem is that now that we have the top 4 procedures we no longer have the other admission details, e.g. age.  
+
+# The full solution
+
+We do need these 4 procedures, but we need to use them in conjunction with the full dataset, to use them to filter the `cardiac_procedures` dataset, selecting the row containing these 4 procedures.  Finally, we can graph that filtered dataset.
+
+First, store away the top 4 procedures in a tibble called `top_4_cardiac_procedures`.
+
+```{r }
+
+top_4_cardiac_procedures <-
+  cardiac_procedures %>%
+    count(procedure_short_desc, sort = TRUE) %>%
+    head( 4)
+
+```
+
+Then, again, use `inner_join` to do the filtering, joining `top_4_cardiac_procedures` to the full `cardiac_procedures` dataset, and pipe the resulting filtered dataset into ggplot.
+
+```{r}
+
+cardiac_procedures %>%
+  inner_join( top_4_cardiac_procedures, by='procedure_short_desc') %>%
+  ggplot( aes( age_years ,fill = procedure_short_desc )) +
+  geom_histogram(bins=10)
+
+```
