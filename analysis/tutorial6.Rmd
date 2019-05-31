@@ -13,13 +13,17 @@ The question: If you enter hospital with a PD of Pneumonia, what factors determi
 
 
 ## Load Libraries
+We will use a library called `healthcareai`, which is a conglomeration of many other machine learning libraries, mashed together in one beautiful package. 
+
 
 ```{r,warning=FALSE,message=FALSE,echo=FALSE}
-library(knitr)
-opts_chunk$set(echo=F,warning=F,message=F,fig.width = 11,fig.height = 5,cache=F)
 
+# load libraries
+library(knitr)
+opts_chunk$set(warning=F,message=F,fig.width = 11,fig.height = 5,cache=F)
 library(tidyverse)
 library("RPostgreSQL")
+
 library(healthcareai)
 
 ```
@@ -27,11 +31,13 @@ library(healthcareai)
 
 ```{r database_setup, echo=TRUE, warnings=FALSE, messages=FALSE}
 
+# create connection to the database
 con <- dbConnect(dbDriver("PostgreSQL"), 
 				 dbname   = 'vaed_full',
 				 host = "himsql7.latrobe.edu.au", port = 5432,
 				 user = "dewollershei-test", password = "healthGuru")
 #
+# this is the query to get all tne pneumonia diagnois.  The 3 commented lines would also find the principal diagnosis
 query_diag <- " 
 select ad.position, diag_code, admission_id, age_years, los, 
 sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
@@ -48,10 +54,12 @@ WHERE diag_short_desc like 'Pneumonia unspecified'
 ---and ap.position=1
  "
 #
+# run the query against the database connection setup earlier
 pneumonia_diag <- dbGetQuery( con, query_diag ) %>% 
   as_tibble() %>%
   mutate( diag_status = ifelse( position==1, 'Pdx','Adx'))
 #
+# disconnnect the database connection
 did_disconnect <- dbDisconnect( con )
 
 
@@ -69,29 +77,30 @@ pneumonia_diag %>%
   ggplot( aes( sep_mode_desc, fill=diag_status)) +
   geom_bar( ) +
   coord_flip()
+```
+
+What is the frequency of each mode?
+```{r frequency}
 
 pneumonia_diag %>%
   count(  sep_mode_id, sep_mode_desc)
 
-
 ```
+About 10% of patients with this diagnosis die.
 
-Let's separate out the people who died.  About 10% of patients with this diagnosis die.
+## Data cleaning and manipulation
 
-We exclude some columns that are not useful for the predictions (position, diag_code, diag_short_desc), and also, exclude columns that would make the prediction too easy (sep_mode_id and sep_mode_desc)
+We create a new variable, `did_die`, which is 'Y' if they did die, and 'N' otherwise.  We also exclude some columns that are not useful for predicting (`admission_id`, `position`, `diag_code`, `diag_short_desc`), and also, exclude columns that would make the prediction too easy (`sep_mode_id` and `sep_mode_desc`).
 
 ```{r did_die}
 
 pneumonia_diag_did_die <- 
   pneumonia_diag %>%
     mutate( did_die = ifelse( sep_mode_id=='D', 'Y', 'N')) %>%
-    select( -position, -diag_code, -diag_short_desc, -sep_mode_id, -sep_mode_desc )
+    select( -admission_id, -position, -diag_code, -diag_short_desc, -sep_mode_id, -sep_mode_desc )
 
   pneumonia_diag_did_die %>%
     count( did_die )
-
-
-
 
 ```
 
@@ -114,24 +123,25 @@ summary(split_data)
 
 We train the model on the training subset, held in the `train` component of the `split_data` variable `split_data$train`. 
 
-We exclude `admission_id` because it is no use to try to train on a unique id column, because it holds no information.  The outcome variable is the one we are trying to predict, in this case, `did_die`. We also set `tune=F` so that the process finishes more quickly, but if  you have time, setting `tune=T` will give you a more accurate model.
+The outcome variable is the one we are trying to predict, in this case, `did_die`. We also set `tune=F` so that the process finishes more quickly, but if you have time, setting `tune=T` will give you a more accurate model.
 
 ```{r}
 
-machine_learn( split_data$train, admission_id, outcome=did_die, tune=F) %>% 
+machine_learn( split_data$train, outcome=did_die, tune=F) %>% 
   { . } -> models
 
 models
 
 ```
 
-Whew, we have calculated the model.  Actually, we have calculated many models, and had a contest to see which was the best predictor.  The 3 models types are `Random Forest`, `eXtreme Gradient Boosting`, and `glmnet`.  The default model scoring criteria used is called `AUROC`, short for area under the ROC curve, and it shows that our model had a 75% success rate at predicting death.
-ur 
+ `machine_learn` calculate *many* models, and has a contest to determine the best predictor.  The 3 models types are `Random Forest`, `eXtreme Gradient Boosting`, and `glmnet`.  The default model scoring criteria used is called `AUROC`, short for area under the ROC curve, and it shows that our model had a 84% success rate at predicting death, using the training set.  The best model was the `eXtreme Gradient Boosting` model.
+
+## Evaluating the trained models
+The final score is shown using the `evaluate` function
 
 ```{r}
-summary(models)
 
-evaluate(models)
+evaluate(models, all_models=TRUE)
 ```
 ## Visualising a prediction model
 
