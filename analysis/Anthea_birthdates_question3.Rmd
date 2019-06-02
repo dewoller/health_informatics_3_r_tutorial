@@ -1,0 +1,128 @@
+---
+title:           
+author:          Dennis Wollersheim 
+date:            27.05.2019
+linkcolor:       cyan
+output:          html
+---
+```{r message=F, show=F}
+
+library(tidyverse)
+library(readxl)
+
+
+```
+
+
+# Anthea's Birthdate Question
+Hi Dennis
+
+I am trying to convert birth_year to age. I did it successfully in a previous spreadsheet, but somehow this one went a bit funny.
+
+This is what I typed into R:
+```{r}
+
+
+firstFitted_ind_state <- read_excel("firstFitted_ind_state.xlsx")
+
+#
+
+colnames(firstFitted_ind_state)[colnames(firstFitted_ind_state)=="birth_year"] <-"age"
+
+#
+```
+
+```{r eval=F}
+
+firstFitted_ind_state <- firstFitted_ind_state %>%
+  mutate(age = as.numeric(2017-age))
+
+```
+
+And the following error occurred:
+
+`Error in 2017 - age : non-numeric argument to binary operator`
+
+# My answer
+
+
+## Renaming a field
+
+Very good!
+
+I like how you figured out how to rename the column name in your tibble from `birth_year` to `age` .  Whew, I am sure you tried a few things there.
+
+` colnames(firstFitted_ind_state)[colnames(firstFitted_ind_state)=="birth_year"] <-"age"`
+
+Myself, I like to use tidyverse and pipes for that, for example
+
+```{r}
+
+read_excel("firstFitted_ind_state.xlsx")  %>%
+  rename( age = birth_year )
+
+```
+
+## changing a field
+
+In fact, though, I would not rename in this case, because it is a bit unclear.  Instead, I would usually just create an age field, instead of transmuting an existing one.  I think it would be clearer this way, because if I transmuted age, there would be a time where the field was named `age` and it contained `birth_year` data. I don't like this unclear situation!
+
+Instead, I would create the age field directly
+
+```{r mutate, eval = F}
+
+read_excel("firstFitted_ind_state.xlsx")  %>%
+  mutate( age = 2017 - birth_year )
+
+
+```
+`Error: Evaluation error: non-numeric argument to binary operator.`
+
+The statement is clearer, but we still get the same error.  It is saying something about `non-numeric` when we are trying to do something to the `birth_year` column.  Looking at the tibble:
+
+```{r display}
+
+read_excel("firstFitted_ind_state.xlsx" )
+
+```
+
+The tibble has had `birth_year` read in as a `<chr>` value.  This is why R complained, because R cannot do mathematics with character values.   We can solve this by converting `birth_date` to a numeric before calculating.
+
+```{r}
+
+read_excel("firstFitted_ind_state.xlsx")  %>%
+  mutate( age = 2017 - as.numeric( birth_year ))
+
+```
+
+This creates your age column, but the error message points to the actual problem, the reason that the column was classified as character in the first place. It is saying that, when trying to coerce birth_year into `numeric`, there is a problem, probably that there is osme data that is not numeric. 
+
+The first 10 `birth_year` all look like numbers, so the character data must be somewhere else.  We could `View` it to find the error, but that would not be very R like!  Better, we could look for the `distinct` values, or `arrange` it ascending or descending, to try to find the problem values.
+
+```{r error_check}
+
+read_excel("firstFitted_ind_state.xlsx" ) %>%
+  distinct( birth_year )
+
+read_excel("firstFitted_ind_state.xlsx" ) %>%
+  arrange( birth_year )
+
+
+read_excel("firstFitted_ind_state.xlsx" ) %>%
+  arrange( desc( birth_year ))
+
+```
+## Filtering out problem rows
+
+The last row, with the `Total` `birth_year` value, is causing the problem.  Let's filter it out, and try again:
+
+```{r filter}
+
+read_excel("firstFitted_ind_state.xlsx")  %>%
+  filter( birth_year != 'Total' ) %>%
+  mutate( age = 2017 - as.numeric( birth_year ))
+
+```
+
+`
+
