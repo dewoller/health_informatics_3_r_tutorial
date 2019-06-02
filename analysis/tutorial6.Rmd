@@ -37,7 +37,7 @@ con <- dbConnect(dbDriver("PostgreSQL"),
 				 host = "himsql7.latrobe.edu.au", port = 5432,
 				 user = "dewollershei-test", password = "healthGuru")
 #
-# this is the query to get all tne pneumonia diagnois.  The 3 commented lines would also find the principal diagnosis
+# this is the query to get all tne pneumonia diagnois.  the 3 commented lines would also finn the principal procedure
 query_diag <- " 
 select ad.position, diag_code, admission_id, age_years, los, 
 sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
@@ -53,6 +53,7 @@ JOIN care_type USING (care_type_id)
 WHERE diag_short_desc like 'Pneumonia unspecified'
 ---and ap.position=1
  "
+
 #
 # run the query against the database connection setup earlier
 pneumonia_diag <- dbGetQuery( con, query_diag ) %>% 
