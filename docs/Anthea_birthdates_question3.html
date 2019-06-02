@@ -12,7 +12,7 @@
 <meta name="author" content="Dennis Wollersheim" />
 
 
-<title>Anthea_birthdates_question3.utf8.md</title>
+<title>How to approach obscure error messages</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -433,6 +433,9 @@ div.section {
 
 
 
+<h1 class="title toc-ignore">How to approach obscure error messages</h1>
+<h4 class="author">Dennis Wollersheim</h4>
+<h4 class="date">27.05.2019</h4>
 
 </div>
 
@@ -457,7 +460,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-06-02
+<strong>Last updated:</strong> 2019-06-03
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -536,10 +539,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreea2803fb80a68d595a8f204c72dbc7ddaac9ebb90targetblanka2803fba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/a2803fb80a68d595a8f204c72dbc7ddaac9ebb90" target="_blank">a2803fb</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreeef160e667d794deeb609033a864784c40b5f6093targetblankef160e6a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/ef160e667d794deeb609033a864784c40b5f6093" target="_blank">ef160e6</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreea2803fb80a68d595a8f204c72dbc7ddaac9ebb90targetblanka2803fba" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreeef160e667d794deeb609033a864784c40b5f6093targetblankef160e6a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -597,6 +600,40 @@ Message
 Rmd
 </td>
 <td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/ef160e667d794deeb609033a864784c40b5f6093/analysis/Anthea_birthdates_question3.Rmd" target="_blank">ef160e6</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-06-03
+</td>
+<td>
+wflow_publish(“analysis/Anthea_birthdates_question3.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/c31a8cdc49b03465cd2cd89e54eef618da8ac97d/docs/Anthea_birthdates_question3.html" target="_blank">c31a8cd</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-06-02
+</td>
+<td>
+Build site.
+</td>
+</tr>
+<tr>
+<td>
+Rmd
+</td>
+<td>
 <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/a2803fb80a68d595a8f204c72dbc7ddaac9ebb90/analysis/Anthea_birthdates_question3.Rmd" target="_blank">a2803fb</a>
 </td>
 <td>
@@ -618,15 +655,12 @@ wflow_publish(“analysis/Anthea_birthdates_question3.Rmd”)
 </div>
 <pre class="r"><code>library(tidyverse)
 library(readxl)</code></pre>
-<div id="antheas-birthdate-question" class="section level1">
-<h1>Anthea’s Birthdate Question</h1>
-<p>Hi Dennis</p>
-<p>I am trying to convert birth_year to age. I did it successfully in a previous spreadsheet, but somehow this one went a bit funny.</p>
-<p>This is what I typed into R:</p>
+<div id="the-question---non-numeric-argument-to-binary-operator" class="section level1">
+<h1>The Question - ‘non-numeric argument to binary operator’</h1>
+<p>I am trying to convert birth_year to age. … This is what I typed into R:</p>
 <pre class="r"><code>firstFitted_ind_state &lt;- read_excel(&quot;firstFitted_ind_state.xlsx&quot;)
 
-#
-
+# changing the column name from birth_year to age
 colnames(firstFitted_ind_state)[colnames(firstFitted_ind_state)==&quot;birth_year&quot;] &lt;-&quot;age&quot;
 
 #</code></pre>
@@ -635,14 +669,14 @@ colnames(firstFitted_ind_state)[colnames(firstFitted_ind_state)==&quot;birth_yea
 <p>And the following error occurred:</p>
 <p><code>Error in 2017 - age : non-numeric argument to binary operator</code></p>
 </div>
-<div id="my-answer" class="section level1">
-<h1>My answer</h1>
+<div id="solution" class="section level1">
+<h1>Solution</h1>
 <div id="renaming-a-field" class="section level2">
 <h2>Renaming a field</h2>
 <p>Very good!</p>
-<p>I like how you figured out how to rename the column name in your tibble from <code>birth_year</code> to <code>age</code> . Whew, I am sure you tried a few things there.</p>
+<p>I like how you figured out how to rename the column name in your tibble from <code>birth_year</code> to <code>age</code>.</p>
 <p><code>colnames(firstFitted_ind_state)[colnames(firstFitted_ind_state)=="birth_year"] &lt;-"age"</code></p>
-<p>Myself, I like to use tidyverse and pipes for that, for example</p>
+<p>I like to use tidyverse and pipes for that, for example:</p>
 <pre class="r"><code>read_excel(&quot;firstFitted_ind_state.xlsx&quot;)  %&gt;%
   rename( age = birth_year )</code></pre>
 <pre><code># A tibble: 27 x 10
@@ -662,12 +696,11 @@ colnames(firstFitted_ind_state)[colnames(firstFitted_ind_state)==&quot;birth_yea
 </div>
 <div id="changing-a-field" class="section level2">
 <h2>changing a field</h2>
-<p>In fact, though, I would not rename in this case, because it is a bit unclear. Instead, I would usually just create an age field, instead of transmuting an existing one. I think it would be clearer this way, because if I transmuted age, there would be a time where the field was named <code>age</code> and it contained <code>birth_year</code> data. I don’t like this unclear situation!</p>
-<p>Instead, I would create the age field directly</p>
+<p>Instead of changing <code>birth_date</code>, I would create an additional <code>age</code> field.</p>
 <pre class="r"><code>read_excel(&quot;firstFitted_ind_state.xlsx&quot;)  %&gt;%
   mutate( age = 2017 - birth_year )</code></pre>
 <p><code>Error: Evaluation error: non-numeric argument to binary operator.</code></p>
-<p>The statement is clearer, but we still get the same error. It is saying something about <code>non-numeric</code> when we are trying to do something to the <code>birth_year</code> column. Looking at the tibble:</p>
+<p>We get the same error. The most important word here is <code>non-numeric</code>. We are trying to do something to the <code>birth_year</code> column. Looking at the input tibble:</p>
 <pre class="r"><code>read_excel(&quot;firstFitted_ind_state.xlsx&quot; )</code></pre>
 <pre><code># A tibble: 27 x 10
    birth_year   NSW   VIC   QLD    WA    SA   TAS   ACT    NT National
@@ -683,7 +716,7 @@ colnames(firstFitted_ind_state)[colnames(firstFitted_ind_state)==&quot;birth_yea
  9 2000          17     4    25    14     3     2     0    18       83
 10 2001          20     3    27    24    13     0     1    15      103
 # … with 17 more rows</code></pre>
-<p>The tibble has had <code>birth_year</code> read in as a <code>&lt;chr&gt;</code> value. This is why R complained, because R cannot do mathematics with character values. We can solve this by converting <code>birth_date</code> to a numeric before calculating.</p>
+<p><code>birth_year</code> is as a <code>&lt;chr&gt;</code> type This is reason for the error, because you cannot do math with character values. Convert <code>birth_date</code> to a numeric before calculating.</p>
 <pre class="r"><code>read_excel(&quot;firstFitted_ind_state.xlsx&quot;)  %&gt;%
   mutate( age = 2017 - as.numeric( birth_year ))</code></pre>
 <pre><code>Warning in rlang::eval_tidy(~2017 - as.numeric(birth_year), &lt;environment&gt;):
@@ -702,8 +735,11 @@ NAs introduced by coercion</code></pre>
  9 2000          17     4    25    14     3     2     0    18       83
 10 2001          20     3    27    24    13     0     1    15      103
 # … with 17 more rows, and 1 more variable: age &lt;dbl&gt;</code></pre>
-<p>This creates your age column, but the error message points to the actual problem, the reason that the column was classified as character in the first place. It is saying that, when trying to coerce birth_year into <code>numeric</code>, there is a problem, probably that there is osme data that is not numeric.</p>
-<p>The first 10 <code>birth_year</code> all look like numbers, so the character data must be somewhere else. We could <code>View</code> it to find the error, but that would not be very R like! Better, we could look for the <code>distinct</code> values, or <code>arrange</code> it ascending or descending, to try to find the problem values.</p>
+<p>This creates your age column, but the warning points to the actual problem, the reason that the column was classified as character in the first place. There is some data that is not numeric.</p>
+</div>
+<div id="searching-for-problematic-values-in-birth_date" class="section level2">
+<h2>Searching for problematic values in <code>birth_date</code></h2>
+<p>The first 10 <code>birth_year</code> all look like numbers, so the character data must be somewhere else. We could <code>View</code> it to find the error, or look at the <code>distinct</code> values, or <code>arrange</code> it ascending or descending.</p>
 <pre class="r"><code>read_excel(&quot;firstFitted_ind_state.xlsx&quot; ) %&gt;%
   distinct( birth_year )</code></pre>
 <pre><code># A tibble: 27 x 1
@@ -753,8 +789,8 @@ NAs introduced by coercion</code></pre>
 10 2009          19     6    54    24    10     0     0    63      176
 # … with 17 more rows</code></pre>
 </div>
-<div id="filtering-out-problem-rows" class="section level2">
-<h2>Filtering out problem rows</h2>
+<div id="filtering-out-the-problem-rows" class="section level2">
+<h2>Filtering out the problem rows</h2>
 <p>The last row, with the <code>Total</code> <code>birth_year</code> value, is causing the problem. Let’s filter it out, and try again:</p>
 <pre class="r"><code>read_excel(&quot;firstFitted_ind_state.xlsx&quot;)  %&gt;%
   filter( birth_year != &#39;Total&#39; ) %&gt;%
@@ -773,7 +809,7 @@ NAs introduced by coercion</code></pre>
  9 2000          17     4    25    14     3     2     0    18       83
 10 2001          20     3    27    24    13     0     1    15      103
 # … with 16 more rows, and 1 more variable: age &lt;dbl&gt;</code></pre>
-<p>`</p>
+<p>Problem solved</p>
 </div>
 </div>
 
