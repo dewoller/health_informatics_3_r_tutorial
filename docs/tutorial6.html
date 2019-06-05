@@ -457,7 +457,7 @@ div.section {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2019-06-03
+<strong>Last updated:</strong> 2019-06-05
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 5 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -536,10 +536,10 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree8f0eafcf8cf0ee177b6da4593abff5482b5d7ee2targetblank8f0eafca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/8f0eafcf8cf0ee177b6da4593abff5482b5d7ee2" target="_blank">8f0eafc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreec7d72eee6b66c87fb43355cf3d2566f26eae90b9targetblankc7d72eea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/c7d72eee6b66c87fb43355cf3d2566f26eae90b9" target="_blank">c7d72ee</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree8f0eafcf8cf0ee177b6da4593abff5482b5d7ee2targetblank8f0eafca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreec7d72eee6b66c87fb43355cf3d2566f26eae90b9targetblankc7d72eea" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility. The version displayed above was the version of the Git repository at the time these results were generated. <br><br> Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -589,6 +589,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/c7d72eee6b66c87fb43355cf3d2566f26eae90b9/analysis/tutorial6.Rmd" target="_blank">c7d72ee</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-06-05
+</td>
+<td>
+wflow_publish(“analysis/tutorial6.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/f7d9a99a7d85159aaa8afbafcb85352fe0bc4f5b/docs/tutorial6.html" target="_blank">f7d9a99</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2019-06-03
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -738,6 +772,13 @@ inprogress
 <div id="load-libraries" class="section level2">
 <h2>Load Libraries</h2>
 <p>We will use a library called <code>healthcareai</code>, which is a conglomeration of many other machine learning libraries, mashed together in one beautiful package.</p>
+<pre class="r"><code># load libraries
+library(knitr)
+opts_chunk$set(warning=F,message=F,fig.width = 11,fig.height = 5,cache=F, echo=T)
+library(tidyverse)
+library(&quot;RPostgreSQL&quot;)
+
+library(healthcareai)</code></pre>
 </div>
 <div id="get-data-from-sql" class="section level2">
 <h2>Get data from SQL</h2>
@@ -887,7 +928,7 @@ Class: Classification
 Performance Metric: AUROC
 Number of Observations: 49653
 Number of Features: 18
-Models Trained: 2019-06-03 08:38:47 
+Models Trained: 2019-06-05 15:41:41 
 
 Models have not been tuned. Performance estimated via 5-fold cross validation at fixed hyperparameter values.
 Best model: eXtreme Gradient Boosting
@@ -1172,7 +1213,7 @@ Performance Metric: Accuracy
 Number of Observations: 42611
 Number of Features: 18
 Number of Outcome Classes: 3
-Models Trained: 2019-06-03 08:40:06 
+Models Trained: 2019-06-05 15:42:51 
 
 Models have not been tuned. Performance estimated via 5-fold cross validation at fixed hyperparameter values.
 Best model: eXtreme Gradient Boosting
