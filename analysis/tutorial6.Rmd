@@ -16,11 +16,11 @@ The question: If you enter hospital with a PD of Pneumonia, what factors determi
 We will use a library called `healthcareai`, which is a conglomeration of many other machine learning libraries, mashed together in one beautiful package. 
 
 
-```{r,warning=FALSE,message=FALSE,echo=FALSE}
+```{r,warning=FALSE,message=FALSE,echo=TRUE}
 
 # load libraries
 library(knitr)
-opts_chunk$set(warning=F,message=F,fig.width = 11,fig.height = 5,cache=F)
+opts_chunk$set(warning=F,message=F,fig.width = 11,fig.height = 5,cache=F, echo=T)
 library(tidyverse)
 library("RPostgreSQL")
 
