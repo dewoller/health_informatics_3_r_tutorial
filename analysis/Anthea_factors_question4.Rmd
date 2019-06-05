@@ -1,0 +1,122 @@
+---
+title:           How to approach obscure error messages
+author:          Dennis Wollersheim 
+date:            27.05.2019
+linkcolor:       cyan
+output:          html
+---
+
+
+# Anthea's question about factors
+
+Initially, I tried to identify admissions with HAC and without HAC by:
+
+## load libraries
+```{r libraries, echo=TRUE, warnings=FALSE, messages=FALSE}
+# load libraries
+library(tidyverse)
+library("RPostgreSQL")
+
+```
+## Get data from SQL
+
+```{r database_setup, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+# create connection to the database
+con <- dbConnect(dbDriver("PostgreSQL"), 
+                 dbname   = 'vaed_full',
+                 host = "himsql7.latrobe.edu.au", port = 5432,
+                 user = "dewollershei-test", password = "healthGuru")
+
+query_diag <-"
+SELECT  
+    admission_id,
+    sex_desc,
+    age_years,
+    los,
+    sameday_id,
+    care_type_id,
+    care_type_desc,
+    drg_description,
+    diag_code,
+    procedure_code,
+    block
+FROM admission
+JOIN sex USING (sex_id)
+JOIN admission_diagnosis USING (admission_id)
+JOIN admission_procedure USING (admission_id)
+JOIN procedure_desc USING (procedure_code)
+JOIN diagnosis_desc USING (diag_code)
+JOIN drg USING (drg)
+JOIN care_type USING (care_type_id)
+WHERE 
+    block BETWEEN '672' and '679'
+"
+
+bypass <- dbGetQuery(con, query_diag) %>%
+  as_tibble() %>%
+  mutate(hac_status = ifelse(diag_code == 'Y832', 'HAC', 'No HAC')) 
+
+```
+  I count to confirm that it's correct:
+
+```{r}
+
+bypass %>%
+  count(hac_status)
+
+```
+
+The results match PgAdmin using SELECT DISTINCT
+
+But then... I was thinking, if R reads line by line, there will be lines where the admission_id remains the same but the code is not 'Y832' (Surgical operation with anastomosis, bypass or graft) as diag_code to admission_id is M:1. So I decided to assign `no HAC` to all admissions that fits in the admission_id that contains `Y832`.
+
+(Note, I changed your query to use `bypass1` instead of `bypass` so I didn't overwrite the original bypass
+
+```{r}
+
+query_hac <-"
+  SELECT admission_id
+  FROM admission_diagnosis
+  WHERE diag_code = 'Y832'
+"
+#
+bypass1 <- dbGetQuery(con, query_hac) %>%
+  as_tibble() %>%
+  mutate(hac = ifelse(admission_id == query_hac, 'HAC', 'No HAC')) 
+
+```
+
+When I check with 
+
+```{r}
+
+bypass1 %>%
+  count(hac)
+
+```
+It assigns all admissions as 'No HAC'
+What happened here?
+
+Anthea
+
+# My answer
+
+Let's investigate:  what is in bypass1?
+
+
+```{r}
+
+bypass1 
+
+
+```
+`query_hac` is a very simple query, it only retrieves `admission_id`, and you add in `hac` using `mutate` in the next line. The `mutate` condition depends on `admission_id` and `query_hac`, so, what is in `query_hac`?
+
+```{r}
+query_hac
+```
+`admission_id` is never equivalent to `query_hac`, so, it always says `No Hac`
+
+I don't think that was your intention, but I am not sure what you are trying to do...
+
