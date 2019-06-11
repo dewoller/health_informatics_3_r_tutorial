@@ -1,140 +1,21 @@
 
 ---
-title: "Tutorial 3 - Loading Data"
+title: "Question 4 - Costs"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: true
 ---
 
-# Load data from Excel
-
-R has many ways to get data.  This tutorial will demonstrate how importing data from Excel, and also, directly from a Postgres database.  Create a new RScript file for this tutorial.
-
-To import data from Excel, first, we need some Excel data. [https://www.myhospitals.gov.au/excel-datasheets/myhospitals-average-length-of-stay-data.xlsx] (Here is an Excel dataset containing hospital length of stay data).  Download it and then upload it to Rstudio server.
-
-
-```{r tutorial_3_1, echo=FALSE, fig.cap="New File Menu", out.width='50%'}
-knitr::include_graphics("screens/tutorial3_1_browse_excel.jpg")
-```
-
-## Import Excel files into RStudio
-We can load data from Excel to R directly from the command line, but Rstudio has a wizard that makes it easier.  Left click on your uploaded Excel file, and choose `Import Dataset`.
-
-```{r tutorial_3_2, echo=FALSE, fig.cap="How to start importing Excel files", out.width='50%'}
-knitr::include_graphics("screens/tutorial3_2_import_excel_start.jpg")
-```
-In the `Import Excel Data` dialog box, click on the `Update` button (top right). You will note that the actual data starts on line 15, so in the `Skip:` box, enter 15.  
-
-We could just press ok and import the data, but we want to be able to replicate our work, so copy everything in the `Code Preview:` window, `Cancel` the import, and paste the resulting lines into your R file.
-
-
-```{r tutorial_3_3, echo=FALSE, fig.cap="Import Excel Dialog box", out.width='100%'}
-knitr::include_graphics("screens/tutorial3_3_import_excel_dialog.jpg")
-```
-
-The copied code is here:
-
-```{r import, warning=F}
-
-library(readxl)
-myhospitals_average_length_of_stay_data <- read_excel("myhospitals-average-length-of-stay-data.xlsx", skip = 15)
-View( myhospitals_average_length_of_stay_data  )
-
-```
-
-## Data Cleaning and Piping Data Between Tibbles
-
-Data from Excel is often quite messy. For example, is is best if the field names are lowercase, with no spaces, and the field names of the hospitals dataset do not comply. 
-
-R has tools to clean this.  First, we standardise the field names, using the `clean_names` function of the `janitor` package.  Then, eliminate the empty columns using janitor's `remove_empty` function, and put the resulting cleaned up dataset into the avg_los tibble.  As usual, we will need the tidyverse library.
-
-
-```{r cleanup, warning=F}
-library(tidyverse)
-
-library( janitor )
-
-avg_los <- 
-  myhospitals_average_length_of_stay_data  %>%
-  clean_names () %>%
-  remove_empty ('cols')
-
-```
-When `readxl` imported the data, the numeric columns were imported as type `character`.  If the data is character, we cannot plot it.   Why are these columns character?  
-
-
-```{r }
-
-avg_los %>%
-  count( total_number_of_stays, sort=TRUE)
-
-```
-This column was imported as `character` because `<5` is not a number! We will force R to convert these columns to numbers, using `as.numeric` function.  The `<5` rows will be converted to `NA`, short for `not applicable`. `NA` values are generally ignored.
-
-```{r, warning=F}
-
-avg_los %>%
-  mutate( total_number_of_stays = as.numeric( total_number_of_stays ) ) %>%
-  mutate( number_of_overnight_stays= as.numeric( number_of_overnight_stays) ) %>%
-  mutate( percentage_of_overnight_stays= as.numeric( percentage_of_overnight_stays) ) %>%
-  mutate( average_length_of_stay_days= as.numeric( average_length_of_stay_days) ) %>%
-  mutate( peer_group_average_days= as.numeric( peer_group_average_days) ) %>%
-  mutate( total_overnight_patient_bed_days= as.numeric( total_overnight_patient_bed_days) ) %>% 
-  { . } -> avg_los_numeric
-
-```
-
-## Exploring the data
-
-Now that we have cleaned the data, we explore it.  `glimpse` gives an overview.  You can zoom into selected columns using the tools you already know, such as `count` and `distinct`.
-
-```{r}
-glimpse( avg_los_numeric )
-
-avg_los_numeric %>%
-  count( state )
-
-```
-
-### Exercises
-
-1. How would you show the distinct categories?
-   
-
-
-## Exploring the data
-
-The following is a sample graph, showing the average LOS days as a boxplot, for the range of hospitals in each state, for each category of service.
-
-```{r}
-
-avg_los_numeric %>%
-  ggplot( ) +
-  geom_boxplot( aes( x=state, y=average_length_of_stay_days ) ) +
-  facet_wrap( ~category )
-
-```
-
-
-### Exercises
-
-1.  Show the total number of bed days, as a bar plot, for each state.  Color each category of service.  
-
-
-# Getting Data Directly from a database
-
-R can directly access postgres databases using the  `RPostgreSQL` library.  Like Tableau, R passes SQL queries directly to the database, and recieves the data back.
-
-Make sure you disconnect the connection ( `dbDisconnnect( con )` ) when you are finished retrieving the query ( `dbGetQuery` ), because the server has a limited pool of connections.
-
-Note, `dbGetQuery` returns a `data.frame`, which is not quite as useful as a tibble.  We transform it to tibble.
+# Get cost data
 
 ```{r echo=TRUE, eval=T,  warning=F, message=F}
+library(tidyverse)
 
 query <- " 
 SELECT * 
 FROM admission
+JOIN drg using (drg)
 WHERE age_years < 10 AND sex_id=1
 "
 
@@ -144,18 +25,44 @@ con <- dbConnect(dbDriver("PostgreSQL"),
                   host = "himsql7.latrobe.edu.au", port = 5432,
                  user = "dewollershei-test", password = "healthGuru")
 
-young_men <- dbGetQuery( con, query ) %>% as.tibble() 
+young_men_costs <- dbGetQuery( con, query ) %>% as.tibble() 
 #
-young_men
+young_men_costs
 #
 dbDisconnect( con )
 
 ```
 
-### Exercises
 
-1.  Using R, count how many women there are in the admission table in the vaed_sample database.
-1.  Show all the chronic diseases in the chronic_disease table in the pbs database.  The pbs database is on the same server as the vaed_sample database
+
+```{r}
+
+young_men_costs <- 
+  young_men_costs %>% 
+    mutate( cost = cost_weight * 4000  ) %>%
+    mutate( cost_per_day = cost / los ) 
+
+
+young_men_costs %>%
+  ggplot( aes( los, cost_per_day )) +
+    geom_point()
+
+young_men_costs %>% 
+  ggplot( aes( y=cost_weight, x=age_years, group=age_years )) +
+  geom_boxplot() 
+
+young_men_costs %>% 
+  ggplot( aes( y=cost_weight, x=age_years, group=age_years )) +
+  geom_boxplot() +
+  scale_y_log10()
+
+young_men_costs %>% 
+  ggplot( aes( y=cost_weight, x=los, group=los )) +
+  geom_violin() +
+  scale_y_log10()
+
+
+```
 
 
 
