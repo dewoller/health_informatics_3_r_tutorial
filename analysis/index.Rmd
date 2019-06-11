@@ -20,7 +20,7 @@ This website contains the R tutorial, from part 2 onward.
 
 - [2019-06-06 Joining datasets?](Anthea_factors_question4.html)
 
-- [2019-06-07 Hanna_debugging_errors](Hanna_debugging_errors_5.html)
+- [2019-06-07 Hanaa debugging errors](Hanaa_debugging_errors_5.html)
 
-- [2019-06-07 Hanaa Costs Example](Hanna_costs_question6.html)
+- [2019-06-07 Hanaa Costs Example](Hanaa_costs_question6.html)
 
