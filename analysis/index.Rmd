@@ -24,3 +24,7 @@ This website contains the R tutorial, from part 2 onward.
 
 - [2019-06-07 Hanaa Costs Example](Hanaa_costs_question6.html)
 
+
+- [2019-06-12 Anthea Money SQL data type](Anthea_money_question_6.html)
+  
+
