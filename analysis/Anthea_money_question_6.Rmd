@@ -1,0 +1,87 @@
+---
+title:           Money
+author:          Dennis Wollersheim 
+date:            27.05.2019
+linkcolor:       cyan
+output:          html
+---
+```{r libraries, message=F, show=F}
+library(tidyverse)
+library(readxl)
+library(RPostgreSQL)
+
+```
+
+# Money Data types
+
+```{r getdata}
+
+con <- dbConnect(dbDriver("PostgreSQL"), 
+                 dbname   = 'pbs',
+                 host = "himsql7.latrobe.edu.au", port = 5432,
+                 user = "dewollershei-test", password = "healthGuru")
+
+query <- " 
+select brand_premium from pbs_item_manufacturer limit 10
+ "
+
+money_data <- dbGetQuery( con, query) %>% as_tibble() 
+
+#
+
+```
+We get a warning, but the data is retrieved.  The probelm is that the data is of type chararacter (chr), and so we cannot do arithmetic on it. 
+
+We try to convert it to numeric data
+
+```{r convert}
+
+money_data %>% 
+  mutate (brand_premium = as.numeric( brand_premium ))
+
+```
+
+That doesn't work very well, because R doesn't know what to do with the $ sign.  
+
+We will use the str_remove function from the stingr package (part of tidyverse) to get rid of the $.
+
+
+
+```{r modify_and_convert}
+
+money_data %>% 
+  mutate (brand_premium = str_remove( string=brand_premium, pattern='\\$') ) %>%
+  mutate (brand_premium = as.numeric( brand_premium ))
+
+```
+
+Note,  because str_remove expects to remove regular expression pattern, and $ has special meaning in the regular expression language, we have to `escape` the $, by putting the \\ in front of it. 
+
+## Try # 2 - do the conversion in the database
+
+Well, that was hard!  Better, because postgres knows what a money type is, we can fix it in SQL - we can get postgres to convert it to a number, using
+
+```{SQL}
+
+select cast(brand_premium as numeric ) from pbs_item_manufacturer
+
+```
+
+Here is the R code to prove it works
+
+
+```{r take2}
+
+query1 <- " 
+select cast( brand_premium as numeric ) as brand_premium from pbs_item_manufacturer limit 10
+"
+
+money_data <- dbGetQuery( con, query1) %>% as_tibble() 
+
+money_data
+
+
+```
+
+
+
