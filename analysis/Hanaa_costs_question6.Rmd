@@ -1,0 +1,68 @@
+
+---
+title: "Question 4 - Costs"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+---
+
+# Get cost data
+
+```{r echo=TRUE, eval=T,  warning=F, message=F}
+library(tidyverse)
+
+query <- " 
+SELECT * 
+FROM admission
+JOIN drg using (drg)
+WHERE age_years < 10 AND sex_id=1
+"
+
+library("RPostgreSQL")
+con <- dbConnect(dbDriver("PostgreSQL"), 
+                 dbname   = 'vaed_sample',
+                  host = "himsql7.latrobe.edu.au", port = 5432,
+                 user = "dewollershei-test", password = "healthGuru")
+
+young_men_costs <- dbGetQuery( con, query )   %>% as.tibble() 
+#
+young_men_costs
+#
+dbDisconnect( con )
+
+```
+
+
+
+```{r}
+
+young_men_costs <- 
+  young_men_costs %>% 
+    mutate( cost = cost_weight * 4000  ) %>%
+    mutate( cost_per_day = cost / los ) 
+
+
+young_men_costs %>%
+  ggplot( aes( los, cost_per_day )) +
+    geom_point()
+
+young_men_costs %>% 
+  ggplot( aes( y=cost_weight, x=age_years, group=age_years )) +
+  geom_boxplot() 
+
+young_men_costs %>% 
+  ggplot( aes( y=cost_weight, x=age_years, group=age_years )) +
+  geom_boxplot() +
+  scale_y_log10()
+
+young_men_costs %>% 
+  ggplot( aes( y=cost_weight, x=los, group=los )) +
+  geom_violin() +
+  scale_y_log10()
+
+
+```
+
+
+
