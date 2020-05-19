@@ -8,23 +8,7 @@ output:
 
 Welcome to Health Informatics 3 
 
-This website contains the R tutorial, from part 2 onward.
-
-# Student Questions
-
-- [2019-05-27 Anthea - how to display gender distribution of most frequent care type](Anthea_question_1.html)
-
-- [2019-05-31 How to filter by and graph top N ](top_n_demonstration.html)
-
-- [2019-06-02 How to debug an obscure error message?](Anthea_birthdates_question3.html)
-
-- [2019-06-06 Joining datasets?](Anthea_factors_question4.html)
-
-- [2019-06-07 Hanaa debugging errors](Hanaa_debugging_errors_5.html)
-
-- [2019-06-07 Hanaa Costs Example](Hanaa_costs_question6.html)
+This website contains the R tutorial.  See menu above.
 
 
-- [2019-06-12 Anthea Money SQL data type](Anthea_money_question_6.html)
-  
 

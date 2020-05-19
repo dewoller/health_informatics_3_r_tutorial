@@ -1,0 +1,77 @@
+---
+title: "Tutorial 6 - Machine Learning"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+---
+
+
+# Top N queries in R
+
+
+## Load Libraries
+
+
+```{r,warning=FALSE,message=FALSE,echo=TRUE}
+
+# load libraries
+library(knitr)
+opts_chunk$set(warning=F,message=F,fig.width = 11,fig.height = 5,cache=F, echo=T)
+library(tidyverse)
+library("RPostgreSQL")
+library("forcats")
+
+```
+## Get data from SQL
+
+```{r database_setup, echo=TRUE, warnings=FALSE, messages=FALSE}
+
+# create connection to the database
+con <- dbConnect(dbDriver("PostgreSQL"),
+				 dbname   = 'vaed_full',
+				 host = "himsql7.latrobe.edu.au", port = 5432,
+				 user = "dewollershei-test", password = "healthGuru")
+#
+# this is the query to get all tne pneumonia diagnois.  the 3 commented lines would also finn the principal procedure
+```
+
+```{sql connection=con, output.var="morbidities"}
+
+SELECT ad.position, ad_morbidity.diag_code, admission_id, age_years, los,
+sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
+sep_mode_id
+FROM admission JOIN sex USING (sex_id)
+JOIN admission_diagnosis ad_morbidity USING (admission_id)
+JOIN diagnosis_desc USING (diag_code)
+JOIN admission_diagnosis ad USING (admission_id)
+JOIN admission_procedure ap USING (admission_id)
+JOIN separation_mode USING (sep_mode_id)
+JOIN care_type USING (care_type_id)
+WHERE diag_short_desc = 'Pneumonia unspecified'
+AND ad_morbidity.position = 1
+
+```
+
+```{r}
+
+morbidities
+
+```
+
+#
+# run the query against the database connection setup earlier
+pneumonia_diag <- dbGetQuery( con, query_diag ) %>%
+  as_tibble()
+
+pneumonia_diag %>%
+  mutate( diag_status = ifelse( position==1, 'Pdx','Adx')) %>%
+  mutate
+#
+# disconnnect the database connection
+did_disconnect <- dbDisconnect( con
+
+
+```
+
+# Can we predict separation mode for pneumonia unspecified patients?
