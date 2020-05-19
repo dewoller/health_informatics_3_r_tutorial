@@ -3,12 +3,13 @@ title:           How to approach obscure error messages
 author:          Dennis Wollersheim 
 date:            27.05.2019
 linkcolor:       cyan
-output:          html
+output:          htmll
 ---
 ```{r message=F, show=F}
 
 library(tidyverse)
 library(readxl)
+options(workflowr.sysgit='')
 
 
 ```

@@ -1,26 +1,32 @@
-name: "Health Informatics 3 R Tutorial"
+name: "Informatics C - R Tutorial"
 output_dir: "../docs"
 navbar:
   title: "Health Informatics R Tutorial"
   left:
     - text: "Home"
       href: index.html
-    - text: "1. Introduction"
-      href: tutorial1.html
-    - text: "2. Basic R "
-      href: tutorial2.html
-    - text: "3. Loading Data "
-      href: tutorial3.html
-    - text: "4. Statistics"
-      href: tutorial4.html
-    - text: "5. Working with VAED "
-      href: tutorial5.html
-    - text: "6. Machine Learning (AI)"
-      href: tutorial6.html
-    - text: "7. Machine Learning (AI)"
-      href: tutorial.html
-    - text: "Q. Student Questions"
-      href: questions.html
+    - text: Tutorials
+      menu:
+      - text: "1. Introduction"
+        href: tutorial1.html
+      - text: "2. Basic R "
+        href: tutorial2.html
+      - text: "3. Loading Data "
+        href: tutorial3.html
+      - text: "4. Statistics"
+        href: tutorial4.html
+      - text: "5. Working with VAED "
+        href: tutorial5.html
+      - text: "6. Machine Learning (AI)"
+        href: tutorial6.html
+      - text: "7. Machine Learning (AI)"
+        href: tutorial.html
+    - text: "Student Questions"
+      menu:
+      - text: "2019 Student Questions"
+        href: questions_2019.html
+      - text: "2020 Student Questions"
+        href: questions_2020.html
     - text: "About"
       href: about.html
     - text: "License"

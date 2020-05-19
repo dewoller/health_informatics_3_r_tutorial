@@ -44,34 +44,37 @@ sep_mode_id
 FROM admission JOIN sex USING (sex_id)
 JOIN admission_diagnosis ad_morbidity USING (admission_id)
 JOIN diagnosis_desc USING (diag_code)
-JOIN admission_diagnosis ad USING (admission_id)
+JOIN admission_diagnosis ad_pneumonia USING (admission_id)
 JOIN admission_procedure ap USING (admission_id)
 JOIN separation_mode USING (sep_mode_id)
 JOIN care_type USING (care_type_id)
-WHERE diag_short_desc = 'Pneumonia unspecified'
+WHERE ad_pneumonia.diag_code = 'J189'
 AND ad_morbidity.position = 1
+LIMIT 10
 
 ```
 
 ```{r}
+#morbidities %>%
+#  as_tibble() %>%
+#  { . } -> morbidities
 
 morbidities
 
 ```
 
-#
-# run the query against the database connection setup earlier
-pneumonia_diag <- dbGetQuery( con, query_diag ) %>%
-  as_tibble()
 
-pneumonia_diag %>%
-  mutate( diag_status = ifelse( position==1, 'Pdx','Adx')) %>%
-  mutate
-#
-# disconnnect the database connection
-did_disconnect <- dbDisconnect( con
+# What are the top 5 morbidites of pneumonia
 
+```{r top_5}
+
+
+morbidities
+#%>%
+#  mutate( diag_short_desc = fct_lump_prop(diag_short_desc,0.10)) %>%
+#  count( diag_short_desc, sort=TRUE)
 
 ```
 
-# Can we predict separation mode for pneumonia unspecified patients?
+
+
