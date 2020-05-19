@@ -10,7 +10,7 @@ output:
 
 # What is R?
 
-R is software very useful for data manipulation, graphing, and statistics.   Table 1 compares it to other software.  Of note,  R uses a command language, like SQL, and because of this, it is a much better tool for principled data analysis. 
+R is software very useful for data manipulation, graphing, and statistics.   Table 1 compares it to other software.  Of note,  R uses a command language, like SQL, and because of this, it is a much better tool for principled data analysis.
 
 Table 1 - Comparison of R, SQL, Excel and Access for data manipulation
 
@@ -27,7 +27,7 @@ Table 1 - Comparison of R, SQL, Excel and Access for data manipulation
 
 # Using R
 
-The easiest way to use R is through Rstudio, an environment that aids access to R’s features.  There are 2 ways to get to Rstudio:  
+The easiest way to use R is through Rstudio, an environment that aids access to R’s features.  There are 2 ways to get to Rstudio:
 
  1) via the web (like SQL), or
  1) installed on your own computer.  If you want to do this, the instructions for installing it on your own computer are on LMS.
@@ -48,27 +48,35 @@ Whenever I mention R henceforth, I assume that you are accessing R through Rstud
 1) Where is the command window?
 1) Where is the plot tab?
 
+# Introduction to the Tidyverse
 
+The functionality of the base R program is augmented through the use of packages.  Packages are libraries which add substantial functionality.
 
-<img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" width="200" height="50"/>
+When you start R for the first time, it has no packages loaded.  To use a package, you use the library command, for example,
 
+    library( tidyverse )
 
-# Introduction to the Tidyverse  ()
+Tidyverse is a massive collection of 25 packages which make R much easier to use.
 
-R itself has substantial functionality, but this functionality is greatly supplemented through the use of packages.  The tidyverse is a massive collection of 25 packages which make R much easier to use.
+If the package you want to use is not installed, the library command will give you an error, for example:
 
-When you start R for the first time, it has no packages loaded.  To use a package, you use the library command, for example, 
+    Error in library(tidyverse) : there is no package called ‘tidyverse’
 
-library( tidyverse )
+To get past this, you will need to install the package, using the install.packages command, for example:
 
-If the package you want to use is not yet loaded, the library command will give you an error, for example.  
+    install.packages('tidyverse')
 
-Error in library(tidyverse) : there is no package called ‘tidyverse’
+You do not need to do this at https://him-rstudio.latrobe.edu.au/ , it is already done.
 
+# What is Data Science
 
-To get past this, you will need to install the package, using the install.packages command, for example (you do  not need to do this at https://him-rstudio.latrobe.edu.au/ , it is already done)
+The process of data science involves getting data, making it usable, and exploring it.  R is very functional in this regards, especially when using the tidyverse framework.
 
-Install.packages('tidyverse')
+<img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" />
 
-Now, go to https://r4ds.had.co.nz/data-visualisation.html, and answer the questions in sections 3.1 – 3.6. This will help you with the final exam.
+# Tutorial - Exploring Graphics with R
+
+Go to: https://r4ds.had.co.nz/data-visualisation.html
+
+Answer questions in sections 3.1 – 3.6.
 
