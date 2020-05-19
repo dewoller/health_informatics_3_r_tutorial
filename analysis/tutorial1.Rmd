@@ -76,7 +76,17 @@ The process of data science involves getting data, making it usable, and explori
 
 # Tutorial - Exploring Graphics with R
 
-Go to: https://r4ds.had.co.nz/data-visualisation.html
+ - Go to: https://him-rstudio.latrobe.edu.au/
+ - Create a new .Rmd file (File -> new -> R Notebook)
+ - Delete the text, leaving ```plot(cars)``` as a single R code section
+ - Run the code,  noting the results
+ - Now, go to: https://r4ds.had.co.nz/data-visualisation.html.
+ - Do the exercises in sections 3.1 – 3.6.
+ - Do each exercise in a new R code section in your notebook.  Write notes as necessary
 
-Answer questions in sections 3.1 – 3.6.
+# Initial R notebook
+knitr::include_graphics("screens/tutorial1_1_initial_rmd.jpg")
+```
+
+
 
