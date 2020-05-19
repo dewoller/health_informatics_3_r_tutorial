@@ -42,14 +42,18 @@ Login using the chunk of your email address that is before '@students.latrobe.ed
 
 The left side of the screen holds the command window, and also, any files you are currently editing. The top right quadrant  mainly lists your data, while the bottom right displays help text, graphics, and files in your directory.
 
-
 Whenever I mention R henceforth, I assume that you are accessing R through Rstudio.
 
 ## Exercises
 1) Where is the command window?
 1) Where is the plot tab?
 
-# Introduction to the Tidyverse
+
+
+<img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" width="200" height="50"/>
+
+
+# Introduction to the Tidyverse  ()
 
 R itself has substantial functionality, but this functionality is greatly supplemented through the use of packages.  The tidyverse is a massive collection of 25 packages which make R much easier to use.
 
@@ -64,7 +68,7 @@ Error in library(tidyverse) : there is no package called ‘tidyverse’
 
 To get past this, you will need to install the package, using the install.packages command, for example (you do  not need to do this at https://him-rstudio.latrobe.edu.au/ , it is already done)
 
-Install.packages('tidyverse ')
+Install.packages('tidyverse')
 
 Now, go to https://r4ds.had.co.nz/data-visualisation.html, and answer the questions in sections 3.1 – 3.6. This will help you with the final exam.
 
