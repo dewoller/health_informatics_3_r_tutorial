@@ -23,7 +23,7 @@ library("RPostgreSQL")
 library("forcats")
 
 ```
-## Get data from SQL
+## Setup Connection
 
 ```{r database_setup, echo=TRUE, warnings=FALSE, messages=FALSE}
 
@@ -36,43 +36,98 @@ con <- dbConnect(dbDriver("PostgreSQL"),
 # this is the query to get all tne pneumonia diagnois.  the 3 commented lines would also finn the principal procedure
 ```
 
-```{sql connection=con, output.var="morbidities"}
-
-SELECT ad.position, ad_morbidity.diag_code, admission_id, age_years, los,
-sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
-sep_mode_id
+## Setup Query
+```{r setup_query}
+query = "
+SELECT ad_morbidity.position, ad_morbidity.diag_code, diag_short_desc, admission_id, age_years, los
 FROM admission JOIN sex USING (sex_id)
 JOIN admission_diagnosis ad_morbidity USING (admission_id)
 JOIN diagnosis_desc USING (diag_code)
 JOIN admission_diagnosis ad_pneumonia USING (admission_id)
-JOIN admission_procedure ap USING (admission_id)
-JOIN separation_mode USING (sep_mode_id)
-JOIN care_type USING (care_type_id)
 WHERE ad_pneumonia.diag_code = 'J189'
 AND ad_morbidity.position = 1
-LIMIT 10
+"
 
 ```
+
+## Get data from database
+
+we want to get rid of records with the J189, because we want the other morbidities
 
 ```{r}
-#morbidities %>%
-#  as_tibble() %>%
-#  { . } -> morbidities
 
-morbidities
+dbGetQuery( con, query ) %>%
+  as_tibble() %>%
+  filter( diag_code != 'J189') %>%
+  { . } -> morbidities
+
+```
+
+# What are the morbidites that have an additional diagnosis of pneumonia
+
+note, there are 1400 morbidities
+
+```{r what morbitidies }
+
+morbidities %>%
+  count( diag_short_desc, sort=TRUE)
+
+morbidities %>%
+  ggplot( aes( x=diag_short_desc )) +
+  geom_bar()
 
 ```
 
 
-# What are the top 5 morbidites of pneumonia
+
+# What can we do about this?
+
+We can lump together the smaller categories into an 'other' category
 
 ```{r top_5}
 
+morbidities %>%
+  filter( diag_code != 'J189') %>%
+  mutate( diag_short_desc = fct_lump_prop(diag_short_desc,0.05)) %>%
+  count( diag_short_desc, sort=TRUE)
 
-morbidities
-#%>%
-#  mutate( diag_short_desc = fct_lump_prop(diag_short_desc,0.10)) %>%
-#  count( diag_short_desc, sort=TRUE)
+morbidities %>%
+  filter( diag_code != 'J189') %>%
+  mutate( diag_short_desc = fct_lump_n(diag_short_desc,10)) %>%
+  count( diag_short_desc, sort=TRUE)
+```
+
+#  Graphing it
+
+```{r}
+
+morbidities %>%
+  filter( diag_code != 'J189') %>%
+  mutate( diag_short_desc = fct_lump_n(diag_short_desc,10)) %>%
+  filter(diag_short_desc != 'Other') %>%
+  ggplot( aes( x=diag_short_desc, fill=diag_short_desc )) +
+  geom_bar()+
+  coord_flip()
+
+```
+
+# Graph is better if ordered by largest values
+
+We need to count the morbidities first, so we know how to order them.  Once they are counted, we use geom_col to graph them
+
+```{r}
+
+morbidities %>%
+  filter( diag_code != 'J189') %>%
+  mutate( diag_short_desc = fct_lump_n(diag_short_desc,10)) %>%
+  filter(diag_short_desc != 'Other') %>%
+  count( diag_short_desc) %>%
+  mutate( diag_short_desc = fct_reorder(diag_short_desc, n)) %>%
+  ggplot( aes( x=diag_short_desc, y = n, fill=diag_short_desc )) +
+  geom_col()+
+  coord_flip()
+
+
 
 ```
 
