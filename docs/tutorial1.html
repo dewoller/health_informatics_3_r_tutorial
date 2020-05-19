@@ -484,16 +484,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree5e87e2758ea0b5eedbe0cbb9997005f66f960909targetblank5e87e27a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/5e87e2758ea0b5eedbe0cbb9997005f66f960909" target="_blank">5e87e27</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree54ad57005ab80f123a4613b5e876e16fc61929edtargetblank54ad570a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/54ad57005ab80f123a4613b5e876e16fc61929ed" target="_blank">54ad570</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree5e87e2758ea0b5eedbe0cbb9997005f66f960909targetblank5e87e27a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree54ad57005ab80f123a4613b5e876e16fc61929edtargetblank54ad570a" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/5e87e2758ea0b5eedbe0cbb9997005f66f960909" target="_blank">5e87e27</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/54ad57005ab80f123a4613b5e876e16fc61929ed" target="_blank">54ad570</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -539,6 +539,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/54ad57005ab80f123a4613b5e876e16fc61929ed/analysis/tutorial1.Rmd" target="_blank">54ad570</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-19
+</td>
+<td>
+workflowr::wflow_publish(“analysis/tutorial1.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/0b9fa6b57d5238226564537685276c42801d7c03/docs/tutorial1.html" target="_blank">0b9fa6b</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -719,19 +753,29 @@ workflowr::wflow_publish(“analysis/index.Rmd”)
 <li>Where is the command window?</li>
 <li>Where is the plot tab?</li>
 </ol>
-<p><img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" width="200" height="50"/></p>
 </div>
 </div>
 <div id="introduction-to-the-tidyverse" class="section level1">
-<h1>Introduction to the Tidyverse ()</h1>
-<p>R itself has substantial functionality, but this functionality is greatly supplemented through the use of packages. The tidyverse is a massive collection of 25 packages which make R much easier to use.</p>
+<h1>Introduction to the Tidyverse</h1>
+<p>The functionality of the base R program is augmented through the use of packages. Packages are libraries which add substantial functionality.</p>
 <p>When you start R for the first time, it has no packages loaded. To use a package, you use the library command, for example,</p>
-<p>library( tidyverse )</p>
-<p>If the package you want to use is not yet loaded, the library command will give you an error, for example.</p>
-<p>Error in library(tidyverse) : there is no package called ‘tidyverse’</p>
-<p>To get past this, you will need to install the package, using the install.packages command, for example (you do not need to do this at <a href="https://him-rstudio.latrobe.edu.au/" class="uri">https://him-rstudio.latrobe.edu.au/</a> , it is already done)</p>
-<p>Install.packages(‘tidyverse’)</p>
-<p>Now, go to <a href="https://r4ds.had.co.nz/data-visualisation.html" class="uri">https://r4ds.had.co.nz/data-visualisation.html</a>, and answer the questions in sections 3.1 – 3.6. This will help you with the final exam.</p>
+<pre><code>library( tidyverse )</code></pre>
+<p>Tidyverse is a massive collection of 25 packages which make R much easier to use.</p>
+<p>If the package you want to use is not installed, the library command will give you an error, for example:</p>
+<pre><code>Error in library(tidyverse) : there is no package called ‘tidyverse’</code></pre>
+<p>To get past this, you will need to install the package, using the install.packages command, for example:</p>
+<pre><code>install.packages(&#39;tidyverse&#39;)</code></pre>
+<p>You do not need to do this at <a href="https://him-rstudio.latrobe.edu.au/" class="uri">https://him-rstudio.latrobe.edu.au/</a> , it is already done.</p>
+</div>
+<div id="what-is-data-science" class="section level1">
+<h1>What is Data Science</h1>
+<p>The process of data science involves getting data, making it usable, and exploring it. R is very functional in this regards, especially when using the tidyverse framework.</p>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" /></p>
+</div>
+<div id="tutorial---exploring-graphics-with-r" class="section level1">
+<h1>Tutorial - Exploring Graphics with R</h1>
+<p>Go to: <a href="https://r4ds.had.co.nz/data-visualisation.html" class="uri">https://r4ds.had.co.nz/data-visualisation.html</a></p>
+<p>Answer questions in sections 3.1 – 3.6.</p>
 </div>
 
 
