@@ -361,32 +361,50 @@ div.tocify {
         <li>
   <a href="index.html">Home</a>
 </li>
-<li>
-  <a href="tutorial1.html">1. Introduction</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tutorial1.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="tutorial2.html">2. Basic R </a>
+    </li>
+    <li>
+      <a href="tutorial3.html">3. Loading Data </a>
+    </li>
+    <li>
+      <a href="tutorial4.html">4. Statistics</a>
+    </li>
+    <li>
+      <a href="tutorial5.html">5. Working with VAED </a>
+    </li>
+    <li>
+      <a href="tutorial6.html">6. Machine Learning (AI)</a>
+    </li>
+    <li>
+      <a href="tutorial.html">7. Machine Learning (AI)</a>
+    </li>
+  </ul>
 </li>
-<li>
-  <a href="tutorial2.html">2. Basic R </a>
-</li>
-<li>
-  <a href="tutorial3.html">3. Loading Data </a>
-</li>
-<li>
-  <a href="tutorial4.html">4. Statistics</a>
-</li>
-<li>
-  <a href="tutorial5.html">5. Working with VAED </a>
-</li>
-<li>
-  <a href="tutorial6.html">6. Machine Learning (AI)</a>
-</li>
-<li>
-  <a href="tutorial.html">7. Machine Learning (AI)</a>
-</li>
-<li>
-  <a href="questions_2019.html">Q. Student Questions 2019</a>
-</li>
-<li>
-  <a href="questions_2020.html">Q. Student Questions 2020</a>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Student Questions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="questions_2019.html">2019 Student Questions</a>
+    </li>
+    <li>
+      <a href="questions_2020.html">2020 Student Questions</a>
+    </li>
+  </ul>
 </li>
 <li>
   <a href="about.html">About</a>
@@ -529,16 +547,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree5c168ae057b3496f687706004b2a14531af9a00ftargetblank5c168aea"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/5c168ae057b3496f687706004b2a14531af9a00f" target="_blank">5c168ae</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree65873ad623dea445ce5cbe7917b82483a5741d37targetblank65873ada"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/65873ad623dea445ce5cbe7917b82483a5741d37" target="_blank">65873ad</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree5c168ae057b3496f687706004b2a14531af9a00ftargetblank5c168aea" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree65873ad623dea445ce5cbe7917b82483a5741d37targetblank65873ada" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/5c168ae057b3496f687706004b2a14531af9a00f" target="_blank">5c168ae</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/65873ad623dea445ce5cbe7917b82483a5741d37" target="_blank">65873ad</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -547,21 +565,11 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    code/analysis/
 
-Unstaged changes:
-    Unmerged:   .Rprofile
-    Modified:   analysis/_site.yml
-    Modified:   analysis/index.Rmd
-    Modified:   analysis/tutorial7_forcats.Rmd
+Untracked files:
+    Untracked:  screens
 
-Staged changes:
-    Deleted:    analysis/Hanna_debugging_errors_5.Rmd
-    Modified:   analysis/_site.yml
-    Modified:   analysis/index.Rmd
-    New:        analysis/questions_2019.Rmd
-    New:        analysis/questions_2020.Rmd
-    New:        analysis/tutorial1.Rmd
-    New:        analysis/tutorial7_forcats.Rmd
-    New:        figures/Rstudio_initial_screen.jpg
+Unstaged changes:
+    Modified:   analysis/tutorial7_forcats.Rmd
 
 </code></pre>
 <p>
@@ -600,6 +608,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/17ff3a39366c370344da8b149b80294fc68040d7/analysis/Anthea_birthdates_question3.Rmd" target="_blank">17ff3a3</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-19
+</td>
+<td>
+2020
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/17ff3a39366c370344da8b149b80294fc68040d7/docs/Anthea_birthdates_question3.html" target="_blank">17ff3a3</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-19
+</td>
+<td>
+2020
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -676,7 +718,8 @@ wflow_publish(“analysis/Anthea_birthdates_question3.Rmd”)
 </div>
 </div>
 <pre class="r"><code>library(tidyverse)
-library(readxl)</code></pre>
+library(readxl)
+options(workflowr.sysgit=&#39;&#39;)</code></pre>
 <div id="the-question---non-numeric-argument-to-binary-operator" class="section level1">
 <h1>The Question - ‘non-numeric argument to binary operator’</h1>
 <p>I am trying to convert birth_year to age. … This is what I typed into R:</p>
