@@ -1,12 +1,17 @@
 
 ---
-title: "Tutorial 1 – Data Science with R"
+title: "Introduction to Data Science with R"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: true
 ---
 
+# What is Data Science
+
+The process of data science involves getting data, making it usable, and exploring it.  R is very functional in this regards, especially when using the tidyverse framework.
+
+<img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" />
 
 # What is R?
 
@@ -48,7 +53,7 @@ Whenever I mention R henceforth, I assume that you are accessing R through Rstud
 1) Where is the command window?
 1) Where is the plot tab?
 
-# Introduction to the Tidyverse
+# Install the Tidyverse (if using R on home computer)
 
 The functionality of the base R program is augmented through the use of packages.  Packages are libraries which add substantial functionality.
 
@@ -68,27 +73,46 @@ To get past this, you will need to install the package, using the install.packag
 
 You do not need to do this at https://him-rstudio.latrobe.edu.au/ , it is already done.
 
-# What is Data Science
-
-The process of data science involves getting data, making it usable, and exploring it.  R is very functional in this regards, especially when using the tidyverse framework.
-
-<img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" />
 
 # Tutorial - Exploring Graphics with R
 
- - Go to: https://him-rstudio.latrobe.edu.au/
- - Create a new .Rmd file (File -> new -> R Notebook)
- - Delete the text, leaving ```plot(cars)``` as a single R code section
- - Run the code,  noting the results
- - Now, go to: https://r4ds.had.co.nz/data-visualisation.html.
- - Do the exercises in sections 3.1 – 3.6.
- - Do each exercise in a new R code section in your notebook.  Write notes as necessary
+## Open two webbrowser windows,
+ https://him-rstudio.latrobe.edu.au/
+ https://r4ds.had.co.nz/data-visualisation.html#first-steps
 
-# Initial R notebook
-```{r}
-knitr::include_graphics("screens/tutorial1_1_initial_rmd.jpg")
+## In Rstudio, create a new .Rmd file (File -> new -> R Notebook)
+
+```{r tutorial1_1_new_file, echo=FALSE, fig.cap="Create New Rmd File", out.width='50%'}
+knitr::include_graphics("screens/tutorial1_1_new_file.jpg")
+```
+## Delete the text in lines 6-18 (leave the header intact), and insert a single R code section
+```{r tutorial1_2_delete_boiler_plate_text, echo=FALSE, fig.cap="Delete boiler plate text", out.width='100%'}
+knitr::include_graphics("screens/tutorial1_2_delete_boiler_plate_text.jpg")
 ```
 
+## Insert an R code segment
+```{r tutorial1_3_insert_r_code, echo=FALSE, fig.cap="Insert R code template", out.width='20%'}
+knitr::include_graphics("screens/tutorial1_3_insert_r_code.jpg")
+```
+```{r tutorial1_4_first_segment, echo=FALSE, fig.cap="First segment inserted", out.width='30%'}
+knitr::include_graphics("screens/tutorial1_4_first_segment.jpg")
+```
+
+## Load the tidyverse library
+```{r tutorial1_5_tidyverse, echo=FALSE, fig.cap="Load tidyverse", out.width='30%'}
+knitr::include_graphics("screens/tutorial1_5_tidyverse.jpg")
+```
+
+## Do each exercise in a new R code section in your notebook.  Write notes as necessary
+
+
+```{r tutorial1_6_mpg, echo=FALSE, fig.cap="Show mpg dataset", out.width='100%'}
+knitr::include_graphics("screens/tutorial1_6_mpg.jpg")
+```
+
+```{r tutorial1_7_graph, echo=FALSE, fig.cap="Your first graph", out.width='100%'}
+knitr::include_graphics("screens/tutorial1_7_graph.jpg")
+```
 
 
 
