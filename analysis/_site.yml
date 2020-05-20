@@ -19,8 +19,8 @@ navbar:
         href: tutorial5.html
       - text: "6. Machine Learning (AI)"
         href: tutorial6.html
-      - text: "7. Machine Learning (AI)"
-        href: tutorial.html
+      - text: "7. Top N Grouping"
+        href: tutorial7_forcats.html
     - text: "Student Questions"
       menu:
       - text: "2019 Student Questions"

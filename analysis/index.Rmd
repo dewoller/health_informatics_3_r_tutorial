@@ -1,12 +1,10 @@
 ---
-title: "Introduction to Data Science with R"
+title: "Health Informatics C - Introduction to Data Science with R"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: false
 ---
-
-Welcome to Health Informatics C - R section
 
 # What is Data Science
 
