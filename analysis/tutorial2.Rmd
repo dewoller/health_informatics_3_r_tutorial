@@ -1,112 +1,28 @@
 
 ---
-title: "Tutorial 2"
+title: "Tutorial 2 - Reading in CSV Files, data pipelines"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: true
 ---
 
+```{r initial_setup, echo=FALSE, warnings=FALSE}
+
+suppressMessages(suppressWarnings(library(tidyverse)))
+
+```
+
 # Putting your commands in files
-In the SQL assignment, we typed our commands into an Rmd file.  In this tutorial, we will type into an R file.  This is a simpler format, where the whole file is filled with R commands alone (no SQL or markdown content).  Don't worry, we will get back to Rmd, for the final assignment.
-
-Create a new R Script file by going to File -> New File -> R Script (or just type ctrl-shift-N)
-
-```{r 0_menu_new_file.jpg, echo=FALSE, fig.cap="New File Menu", out.width='50%'}
-knitr::include_graphics("screens/tutorial2_0_menu_new_file.jpg")
-```
-## R script editing window
-A blank R Script editing window pops up in the top left quadrant.  Commands here are sent to the console window by pressing ctrl-enter.  You can also highlight a section of content and run it by pressing ctrl-enter.
- 
-```{r 1_blank_file_window.jpg, echo=FALSE, fig.cap="Blank R script window", out.width='50%'}
-knitr::include_graphics("screens/tutorial2_1_blank_file_window.jpg")
-```
-
-## Typing commands in Rscript window
-
-
-Running commands in RStudio is a two step process.  First type the commands into the upper script window, and press ctrl-enter to run them in the console window, below.  Like last week, type `library(tidyverse)` into the rscript window, and press ctrl-enter.  It is conventional to load all your libraries at the start of the script.
-
-Notice the informational messages that now show up in the console window, below.
-
-```{r 2_load_tidyverse.jpg, echo=FALSE, fig.cap="2_load_tidyverse.jpg", out.width='50%'}
-knitr::include_graphics("screens/tutorial2_2_load_tidyverse.jpg")
-```
-## Viewing data
-It is also often useful to view your data.  View the `mpg` dataset.  Note how it shows up in the console window, below.
-
-```{r 3_view_mpg.jpg, echo=FALSE, fig.cap="3_view_mpg.jpg", out.width='50%'}
-knitr::include_graphics("screens/tutorial2_3_view_mpg.jpg")
-```
-## Generating graphics
-When you generate a graphic, like last week, it shows up in the bottom right quadrant
-
-```{r, echo=F, results='hide', message=F, warning=F}
-
-library(tidyverse)
-
-```
-
-```{r, eval=F}
-
-ggplot(data = mpg) + 
-  geom_point(mapping = aes(x = displ, y = hwy))
-
-```
-
-
-```{r 4_plot_mpg.jpg, echo=FALSE, fig.cap="4_plot_mpg.jpg", out.width='100%'}
-knitr::include_graphics("screens/tutorial2_4_plot_mpg.jpg")
-
-```
-
-## Naming your file
-At some point it is useful to save your file. I named my file `vaed_explore.R`, by going to File -> Save as -> vaed_explore.R 
-
-You can see `vaed_explore.R` in the bottom right Files quadrant. If you want to download files from the server, select them using left hand tick box, then File -> More -> Export.
+Create a new Rmd notebook file (file -> new_ -> R notebook). Save your file, by going to File -> Save as -> Tutorial2.Rmd
 
 # Importing Health Data
 
-We will now work with health data. The following two queries select the same data we used in the second Tableau tutorial.
+## Download data from the web
+This tutorial will work with health data, specifically, the same data we used in the second Tableau tutorial. The data is in a zip file. [Download cardiac.zip](assets/cardiac.zip) to your desktop.  It contains the two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv.
 
-## SQL Query for cardiac_diagnosis.csv
-
-```{sql, eval=F }
-
-SELECT diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
-FROM admission JOIN sex USING (sex_id)
-JOIN admission_diagnosis USING (admission_id)
-JOIN diagnosis_desc USING (diag_code)
-JOIN separation_mode USING (sep_mode_id)
-JOIN care_type USING (care_type_id)
-WHERE diag_code BETWEEN 'I21' AND 'I2399';
-
-```
-## SQL Query for cardiac_procedures.csv
-
-```{sql, eval=F}
-
-SELECT procedure_code, admission_id, age_years, los, sameday_id, drg, sex_desc, procedure_short_desc, block_desc, sep_mode_desc, care_type_desc
-FROM admission JOIN sex USING (sex_id)
-JOIN admission_procedure USING (admission_id)
-JOIN procedure_desc USING (procedure_code)
-JOIN block USING (block)
-JOIN separation_mode USING (sep_mode_id)
-JOIN care_type USING (care_type_id)
-WHERE block_desc LIKE '%cardiac%'
-AND block_desc NOT LIKE 'Closure%'
-AND block_desc NOT LIKE '%catheter%'
-AND block_desc NOT LIKE 'Gated%'
-
-```
-The data from the above queries are in a zip file. [Download cardiac.zip](assets/cardiac.zip) to your desktop.  It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv. 
-
-### Exercises
-
-1.  Write the SQL query that would get the diagnosis information for your assigned AHD disease. 
-
-## Uploading data
-We will upload the cardiac zip datafile to Rstudio, by using the Files-> Upload, found in Files tab of the bottom right quadrant.  
+## Upload data to Rstudio
+We will upload the cardiac zip datafile to Rstudio, by using the Files-> Upload, found in Files tab of the bottom right quadrant.
 
 ```{r 5_file_upload.jpg, echo=FALSE, fig.cap="Files tab", out.width='100%'}
 knitr::include_graphics("screens/tutorial2_5_file_upload.jpg")
@@ -120,12 +36,9 @@ Rstudio has unzipped the files for you.  You can now see the uploaded cardiac fi
 ```{r 7_file_upload_done.jpg, echo=FALSE, fig.cap="Uploaded files complete", out.width='40%'}
 knitr::include_graphics("screens/tutorial2_7_file_upload_done.jpg")
 ```
-```{r XXX, echo=FALSE, fig.cap="XXX", out.width='100%', eval=F, results='hide'}
-knitr::include_graphics("screens/tutorial2_XXX")
-```
 ## Reading in CSV files
 
-The best way to read CSV files into R is by using the read_csv function.  This is part of the readr package, already loaded in as part of the tidyverse. Type the following code into your Rscript file, and press Ctrl-enter.
+The best way to read CSV files into R is by using the read_csv function. Type the following code into your Rscript file, and press Ctrl-enter.
 
 ```{r }
 
@@ -134,11 +47,11 @@ read_csv("cardiac_procedures.csv")
 ```
 ## Reading CSV files into the environment
 
-While we could do so, it is inefficient to read the data in from the original CSV file every time we use it.  Instead, we will read it into a `tibble`, a structure in the R environment that we can use repeatedly.
+Read the CSV procedures data into the cardiac_procedures variable in the R environment, so that it is handy to use repeatedly.
 
 ```{r }
 
-cardiac_procedures <- read_csv("cardiac_procedures.csv") 
+cardiac_procedures <- read_csv("cardiac_procedures.csv")
 
 ```
 
@@ -152,9 +65,9 @@ cardiac_procedures <- read_csv("cardiac_procedures.csv")
 
 The best thing about R, and language in general, is that you can build up meaningful phrases based on relatively simple fragments.  For example, ggplot produces many different graphs by combining two types of chunks, `ggplot` and `geom_` functions, joining the chunks of the phrase using the plus sign `+` .
 
-When we combine *data* phrases, we call it a data pipeline, and we join them using the pipe symbol, `%>%` . 
+When we combine tidyverse *data* phrases, we call it a data pipeline, and we join them using the pipe symbol, `%>%` .
 
-For example, the following command finds all the distinct block descriptions in the cardiac procedures dataset.  
+For example, the following command finds all the distinct block descriptions in the cardiac procedures dataset.
 
 ```{r }
 
@@ -164,7 +77,7 @@ cardiac_procedures %>%
 ```
 ##  `select` and `filter` functions
 
-There are many functions that can be used in a pipe.  Some useful ones that you will recognise are `select` and `filter`. `select` is for selecting columns, whereas `filter` selects out specific rows, just like the `where` clause in SQL. 
+There are many functions that can be used in a pipe.  Some useful ones that you will recognise are `select` and `filter`. `select` is for selecting columns, whereas `filter` selects out specific rows, just like the `where` clause in SQL.
 
 ```{r }
 
@@ -233,7 +146,7 @@ cardiac_procedures %>%
 
 ### Exercises
 
-1.  What is the most prevalent cardiac block?  Most prevalent los?  drg?  
+1.  What is the most prevalent cardiac block?  Most prevalent los?  drg?
 
 1.  Show only the ages and lengths of stay of men who had cardiac procedures.
 
@@ -251,7 +164,7 @@ You can also plot directly from a pipe.  Lets compare the number of men and wome
 cardiac_procedures %>%
   distinct( admission_id, sex_desc, block_desc ) %>%
   ggplot() +
-    geom_bar(mapping = aes(x = block_desc, fill=sex_desc)) 
+    geom_bar(mapping = aes(x = block_desc, fill=sex_desc))
 
 ```
 
@@ -273,7 +186,7 @@ cardiac_procedures %>%
 
 ## Refining a graph - label text wrapping
 
-Pretty well anything you want to do in R, someone else has wanted to do it previously. 
+Pretty well anything you want to do in R, someone else has wanted to do it previously.
 
 I noted that the text on the x axis was too long, and after a few tries, I came up the the google search 'how to wrap text on x axis ggplot'.  The Stack Overflow site suggested using the `scales` package.  After a few tries to get find the appropriate number of characters to wrap at, I came up with the following.
 
