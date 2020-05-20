@@ -24,7 +24,7 @@ We can load data from Excel to R directly from the command line, but Rstudio has
 ```{r tutorial_3_2, echo=FALSE, fig.cap="How to start importing Excel files", out.width='50%'}
 knitr::include_graphics("screens/tutorial3_2_import_excel_start.jpg")
 ```
-In the `Import Excel Data` dialog box, click on the `Update` button (top right). You will note that the actual data starts on line 15, so in the `Skip:` box, enter 15.  
+In the `Import Excel Data` dialog box, click on the `Update` button (top right). You will note that the actual headers start on line 15, so in the `Skip:` box, enter 15.
 
 We could just press ok and import the data, but we want to be able to replicate our work, so copy everything in the `Code Preview:` window, `Cancel` the import, and paste the resulting lines into your R file.
 
@@ -45,7 +45,7 @@ View( myhospitals_average_length_of_stay_data  )
 
 ## Data Cleaning and Piping Data Between Tibbles
 
-Data from Excel is often quite messy. For example, is is best if the field names are lowercase, with no spaces, and the field names of the hospitals dataset do not comply. 
+Data from Excel is often quite messy. For example, is is best if the field names are lowercase, with no spaces, and the field names of the hospitals dataset do not comply.
 
 R has tools to clean this.  First, we standardise the field names, using the `clean_names` function of the `janitor` package.  Then, eliminate the empty columns using janitor's `remove_empty` function, and put the resulting cleaned up dataset into the avg_los tibble.  As usual, we will need the tidyverse library.
 
@@ -55,13 +55,13 @@ library(tidyverse)
 
 library( janitor )
 
-avg_los <- 
+avg_los <-
   myhospitals_average_length_of_stay_data  %>%
   clean_names () %>%
   remove_empty ('cols')
 
 ```
-When `readxl` imported the data, the numeric columns were imported as type `character`.  If the data is character, we cannot plot it.   Why are these columns character?  
+When `readxl` imported the data, the numeric columns were imported as type `character`.  If the data is character, we cannot plot it.   Why are these columns character?
 
 
 ```{r }
@@ -80,7 +80,7 @@ avg_los %>%
   mutate( percentage_of_overnight_stays= as.numeric( percentage_of_overnight_stays) ) %>%
   mutate( average_length_of_stay_days= as.numeric( average_length_of_stay_days) ) %>%
   mutate( peer_group_average_days= as.numeric( peer_group_average_days) ) %>%
-  mutate( total_overnight_patient_bed_days= as.numeric( total_overnight_patient_bed_days) ) %>% 
+  mutate( total_overnight_patient_bed_days= as.numeric( total_overnight_patient_bed_days) ) %>%
   { . } -> avg_los_numeric
 
 ```
@@ -100,7 +100,7 @@ avg_los_numeric %>%
 ### Exercises
 
 1. How would you show the distinct categories?
-   
+
 
 
 ## Exploring the data
@@ -119,7 +119,7 @@ avg_los_numeric %>%
 
 ### Exercises
 
-1.  Show the total number of bed days, as a bar plot, for each state.  Color each category of service.  
+1.  Show the total number of bed days, as a bar plot, for each state.  Color each category of service.
 
 
 # Getting Data Directly from a database
@@ -132,19 +132,19 @@ Note, `dbGetQuery` returns a `data.frame`, which is not quite as useful as a tib
 
 ```{r echo=TRUE, eval=T,  warning=F, message=F}
 
-query <- " 
-SELECT * 
+query <- "
+SELECT *
 FROM admission
 WHERE age_years < 10 AND sex_id=1
 "
 
 library("RPostgreSQL")
-con <- dbConnect(dbDriver("PostgreSQL"), 
+con <- dbConnect(dbDriver("PostgreSQL"),
                  dbname   = 'vaed_sample',
                   host = "himsql7.latrobe.edu.au", port = 5432,
                  user = "dewollershei-test", password = "healthGuru")
 
-young_men <- dbGetQuery( con, query ) %>% as.tibble() 
+young_men <- dbGetQuery( con, query ) %>% as.tibble()
 #
 young_men
 #
