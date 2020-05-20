@@ -16,36 +16,40 @@ In this tutorial, you will be going using two web browser windows, reading notes
 
 ## In Rstudio, create a new .Rmd file (File -> new -> R Notebook)
 
-```{r tutorial1_1_new_file, echo=FALSE, fig.cap="Create New Rmd File", out.width='50%'}
+```{r tutorial1_1_new_file, echo=FALSE, fig.cap="Create New Rmd File", out.width='50%', fig.align='left' }
 knitr::include_graphics("screens/tutorial1_1_new_file.jpg")
 ```
 ## Delete Boilerplate text
 Delete the default boilerplate text in lines 6-18 (leave the header intact), and insert a single R code section.
 
-```{r tutorial1_2_delete_boiler_plate_text, echo=FALSE, fig.cap="Delete boiler plate text", out.width='100%'}
+```{r tutorial1_2_delete_boiler_plate_text, echo=FALSE, fig.cap="Delete boiler plate text", out.width='100%', fig.align='left' }
 knitr::include_graphics("screens/tutorial1_2_delete_boiler_plate_text.jpg")
 ```
-```{r tutorial1_3_insert_r_code, echo=FALSE, fig.cap="Insert R code template", out.width='20%'}
-knitr::include_graphics("screens/tutorial1_3_insert_r_code.jpg")
-```
-```{r tutorial1_4_first_segment, echo=FALSE, fig.cap="First segment inserted", out.width='30%'}
+```{r tutorial1_4_first_segment, echo=FALSE, fig.cap="First segment inserted", out.width='100%', fig.align='left' }
 knitr::include_graphics("screens/tutorial1_4_first_segment.jpg")
 ```
 
 ## Load the tidyverse library
-```{r tutorial1_5_tidyverse, echo=FALSE, fig.cap="Load tidyverse", out.width='30%'}
+Ignore the library load warning text.  Note, you only get this text the first time you load the library
+```{r tutorial1_5_tidyverse, echo=FALSE, fig.cap="Load tidyverse", out.width='30%', fig.align='left' }
 knitr::include_graphics("screens/tutorial1_5_tidyverse.jpg")
 ```
 
 ## [R for Data Science exercises](https://r4ds.had.co.nz/data-visualisation.html#first-steps)
 
-Do each exercise from https://r4ds.had.co.nz/data-visualisation.html#first-steps in a new R code section in your notebook. Write notes in the white space between code sections. The first 2 code examples follow.
+Do each exercise from from section 3.2 to 3.6 in https://r4ds.had.co.nz/data-visualisation.html#first-steps in a new R code section in your notebook.
 
-```{r tutorial1_6_mpg, echo=FALSE, fig.cap="Show mpg dataset", out.width='100%'}
+ - Write notes in the white space between code sections.
+ - Only type / paste in the dark blue code;  the lighter blue text shows the expected results
+ - For example, the images below show what you need to type for the first two examples
+ - Ignore section 3.2.3
+ - If you copy/paste the code, make sure you do the exercises, to aid retention.  You are learning a new language, and you need some practice to get accustomed to the flow.
+
+```{r tutorial1_6_mpg, echo=FALSE, fig.cap="Show mpg dataset", out.width='100%', fig.align='left' }
 knitr::include_graphics("screens/tutorial1_6_mpg.jpg")
 ```
 
-```{r tutorial1_7_graph, echo=FALSE, fig.cap="Your first graph", out.width='100%'}
+```{r tutorial1_7_graph, echo=FALSE, fig.cap="Your first graph", out.width='70%', fig.align='left' }
 knitr::include_graphics("screens/tutorial1_7_graph.jpg")
 ```
 
