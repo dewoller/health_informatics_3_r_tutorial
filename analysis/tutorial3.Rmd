@@ -11,7 +11,7 @@ output:
 
 R has many ways to get data.  This tutorial will demonstrate how importing data from Excel, and also, directly from a Postgres database.  Create a new RScript file for this tutorial.
 
-To import data from Excel, first, we need some Excel data. [https://www.myhospitals.gov.au/excel-datasheets/myhospitals-average-length-of-stay-data.xlsx] (Here is an Excel dataset containing hospital length of stay data).  Download it and then upload it to Rstudio server.
+To import data from Excel, first, we need some Excel data. [assets/excel-datasheets/myhospitals-average-length-of-stay-data.xlsx] (Here is an Excel dataset containing hospital length of stay data).  Download it and then upload it to Rstudio server.
 
 
 ```{r tutorial_3_1, echo=FALSE, fig.cap="New File Menu", out.width='50%'}
