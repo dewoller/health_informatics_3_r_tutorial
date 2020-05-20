@@ -100,8 +100,6 @@ avg_los_numeric %>%
 
 1. How would you show the distinct categories?
 
-
-
 ## Exploring the data
 
 The following is a sample graph, showing the average LOS days as a boxplot, for the range of hospitals in each state, for each category of service.
@@ -155,6 +153,6 @@ dbDisconnect( con )
 
 1.  Using R, count how many women there are in the admission table in the vaed_sample database.
 1.  Show all the chronic diseases in the chronic_disease table in the pbs database.  The pbs database is on the same server as the vaed_sample database
-
+1.  Write the SQL query that would get the diagnosis information for your assigned AHD disease.
 
 
