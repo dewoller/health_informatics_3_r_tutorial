@@ -1,14 +1,79 @@
 ---
-title: "Home"
+title: "Introduction to Data Science with R"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
     toc: false
 ---
 
-Welcome to Health Informatics 3 
+Welcome to Health Informatics C - R section
 
-This website contains the R tutorial.  See menu above.
+# What is Data Science
+
+The process of data science involves getting data, making it usable, and exploring it. R is very functional in this regards, especially when using the tidyverse framework.
+
+<img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" />
+
+# What is R?
+
+R is software very useful for data manipulation, graphing, and statistics. Table 1 compares it to other software. Of note, R uses a command language, like SQL, and because of this, it is a much better tool for principled data analysis.
+
+Table 1 - Comparison of R, SQL, Excel and Access for data manipulation
+
+
+| Feature                            | R         | SQL    | Excel | Access |
+| ---                                | ---       | ---    | ---   |---     |
+| Graphing                           | Yes       | No     | Yes   | No     |
+| Data filtering capabilities        | Excellent | Good   | Some  | Some   |
+| Statistics functionality           | Extensive | Little | Some  | No     |
+| Useful for very large datasets     | Yes       | Yes    | No    | Ok     |
+| Uses English language commands     | Yes       | Yes    | No    | No     |
+| Has Graphical User Interface (GUI) | No        | No     | Yes   | Yes    |
+| Can use it via the web             | Yes       | Yes    | Yes   | No     |
+
+# Using R
+
+The easiest way to use R is through Rstudio, an environment that aids access to R’s features. There are 2 ways to get to Rstudio:
+
+ 1) via the web (like SQL), or
+ 1) installed on your own computer. If you want to do this, the instructions for installing it on your own computer are on LMS.
+
+These instructions will assume you are accessing the web Rstudio version.
+
+# Rstudio on the web
+
+Go to: https://him-rstudio.latrobe.edu.au/
+
+Login using the chunk of your email address that is before '@students.latrobe.edu.au' (normally your student number), and your email password. You will end up at the following screen. Like in SQL, this is your own personal workspace, but with more features. For example, you can edit and run R program files, view R help, and connect to databases.
+
+The left side of the screen holds the command window, and also, any files you are currently editing. The top right quadrant mainly lists your data, while the bottom right displays help text, graphics, and files in your directory.
+
+I will assume that you are accessing R through Rstudio.
+
+## Exercises
+1) Where is the command window?
+1) Where is the plot tab?
+
+# Install the Tidyverse (only necessary if using R on home computer)
+
+The functionality of the base R program is augmented through the use of packages. Packages are libraries which add substantial functionality.
+
+When you start R for the first time, it has no packages loaded. To use a package, you use the library command, for example,
+
+    library( tidyverse )
+
+Tidyverse is a collection of 25 packages which make R much easier to use.
+
+If the package you want to use is not installed, the library command will give you an error, for example:
+
+    Error in library(tidyverse) : there is no package called ‘tidyverse’
+
+To get past this, you will need to install the package, using the install.packages command, for example:
+
+    install.packages('tidyverse')
+
+You do not need to do this at https://him-rstudio.latrobe.edu.au/ , it is already done.
+
 
 
 
