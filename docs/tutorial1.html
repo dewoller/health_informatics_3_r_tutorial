@@ -11,7 +11,7 @@
 
 
 
-<title>Introduction to Data Science with R</title>
+<title>tutorial1.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -428,7 +428,6 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Introduction to Data Science with R</h1>
 
 </div>
 
@@ -544,16 +543,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree915f1dc1e791213a0550548248007193ef647c13targetblank915f1dca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/915f1dc1e791213a0550548248007193ef647c13" target="_blank">915f1dc</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree22eaecccfebf42b97f15e511ff2ed182b9fd263etargetblank22eaecca"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/22eaecccfebf42b97f15e511ff2ed182b9fd263e" target="_blank">22eaecc</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree915f1dc1e791213a0550548248007193ef647c13targetblank915f1dca" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree22eaecccfebf42b97f15e511ff2ed182b9fd263etargetblank22eaecca" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/915f1dc1e791213a0550548248007193ef647c13" target="_blank">915f1dc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/22eaecccfebf42b97f15e511ff2ed182b9fd263e" target="_blank">22eaecc</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -602,6 +601,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/22eaecccfebf42b97f15e511ff2ed182b9fd263e/analysis/tutorial1.Rmd" target="_blank">22eaecc</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-20
+</td>
+<td>
+workflowr::wflow_publish(“analysis/tutorial1.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/8aa9e5a73817706a95b39a31e2359d9242892d28/docs/tutorial1.html" target="_blank">8aa9e5a</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-20
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 Rmd
@@ -864,115 +897,9 @@ workflowr::wflow_publish(“analysis/index.Rmd”)
 </div>
 </div>
 </div>
-<div id="what-is-data-science" class="section level1">
-<h1>What is Data Science</h1>
-<p>The process of data science involves getting data, making it usable, and exploring it. R is very functional in this regards, especially when using the tidyverse framework.</p>
-<p><img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" /></p>
-</div>
-<div id="what-is-r" class="section level1">
-<h1>What is R?</h1>
-<p>R is software very useful for data manipulation, graphing, and statistics. Table 1 compares it to other software. Of note, R uses a command language, like SQL, and because of this, it is a much better tool for principled data analysis.</p>
-<p>Table 1 - Comparison of R, SQL, Excel and Access for data manipulation</p>
-<table>
-<thead>
-<tr class="header">
-<th>Feature</th>
-<th>R</th>
-<th>SQL</th>
-<th>Excel</th>
-<th>Access</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Graphing</td>
-<td>Yes</td>
-<td>No</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-<tr class="even">
-<td>Data filtering capabilities</td>
-<td>Excellent</td>
-<td>Good</td>
-<td>Some</td>
-<td>Some</td>
-</tr>
-<tr class="odd">
-<td>Statistics functionality</td>
-<td>Extensive</td>
-<td>Little</td>
-<td>Some</td>
-<td>No</td>
-</tr>
-<tr class="even">
-<td>Useful for very large datasets</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-<td>Ok</td>
-</tr>
-<tr class="odd">
-<td>Uses English language commands</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-<td>No</td>
-</tr>
-<tr class="even">
-<td>Has Graphical User Interface (GUI)</td>
-<td>No</td>
-<td>No</td>
-<td>Yes</td>
-<td>Yes</td>
-</tr>
-<tr class="odd">
-<td>Can use it via the web</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>Yes</td>
-<td>No</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div id="using-r" class="section level1">
-<h1>Using R</h1>
-<p>The easiest way to use R is through Rstudio, an environment that aids access to R’s features. There are 2 ways to get to Rstudio:</p>
-<ol style="list-style-type: decimal">
-<li>via the web (like SQL), or</li>
-<li>installed on your own computer. If you want to do this, the instructions for installing it on your own computer are on LMS.</li>
-</ol>
-<p>These instructions will assume you are accessing the web Rstudio version.</p>
-</div>
-<div id="rstudio-on-the-web" class="section level1">
-<h1>Rstudio on the web</h1>
-<p>Go to: <a href="https://him-rstudio.latrobe.edu.au/" class="uri">https://him-rstudio.latrobe.edu.au/</a></p>
-<p>Login using the chunk of your email address that is before ‘<span class="citation">@students.latrobe.edu.au</span>’ (normally your student number), and your email password. You will end up at the following screen. Like in SQL, this is your own personal workspace, but with more features. For example, you can edit and run R program files, view R help, and connect to databases.</p>
-<p>The left side of the screen holds the command window, and also, any files you are currently editing. The top right quadrant mainly lists your data, while the bottom right displays help text, graphics, and files in your directory.</p>
-<p>Whenever I mention R henceforth, I assume that you are accessing R through Rstudio.</p>
-<div id="exercises" class="section level2">
-<h2>Exercises</h2>
-<ol style="list-style-type: decimal">
-<li>Where is the command window?</li>
-<li>Where is the plot tab?</li>
-</ol>
-</div>
-</div>
-<div id="install-the-tidyverse-if-using-r-on-home-computer" class="section level1">
-<h1>Install the Tidyverse (if using R on home computer)</h1>
-<p>The functionality of the base R program is augmented through the use of packages. Packages are libraries which add substantial functionality.</p>
-<p>When you start R for the first time, it has no packages loaded. To use a package, you use the library command, for example,</p>
-<pre><code>library( tidyverse )</code></pre>
-<p>Tidyverse is a massive collection of 25 packages which make R much easier to use.</p>
-<p>If the package you want to use is not installed, the library command will give you an error, for example:</p>
-<pre><code>Error in library(tidyverse) : there is no package called ‘tidyverse’</code></pre>
-<p>To get past this, you will need to install the package, using the install.packages command, for example:</p>
-<pre><code>install.packages(&#39;tidyverse&#39;)</code></pre>
-<p>You do not need to do this at <a href="https://him-rstudio.latrobe.edu.au/" class="uri">https://him-rstudio.latrobe.edu.au/</a> , it is already done.</p>
-</div>
-<div id="tutorial---exploring-graphics-with-r" class="section level1">
-<h1>Tutorial - Exploring Graphics with R</h1>
+<hr />
+<p>title: “Tutorial 1 - Exploring R Graphics” site: workflowr::wflow_site output: workflowr::wflow_html: toc: true —</p>
+<p>In this tutorial, you will be going using two web browser windows, reading notes and exercise from the R for Data Science book, and doing the exercises in Rstudio</p>
 <div id="open-two-webbrowser-windows" class="section level2">
 <h2>Open two webbrowser windows</h2>
 <ul>
@@ -989,17 +916,15 @@ Create New Rmd File
 </p>
 </div>
 </div>
-<div id="delete-the-text-in-lines-6-18-leave-the-header-intact-and-insert-a-single-r-code-section" class="section level2">
-<h2>Delete the text in lines 6-18 (leave the header intact), and insert a single R code section</h2>
+<div id="delete-boilerplate-text" class="section level2">
+<h2>Delete Boilerplate text</h2>
+<p>Delete the default boilerplate text in lines 6-18 (leave the header intact), and insert a single R code section.</p>
 <div class="figure" style="text-align: center">
 <img src="screens/tutorial1_2_delete_boiler_plate_text.jpg" alt="Delete boiler plate text" width="100%" />
 <p class="caption">
 Delete boiler plate text
 </p>
 </div>
-</div>
-<div id="insert-an-r-code-segment" class="section level2">
-<h2>Insert an R code segment</h2>
 <div class="figure" style="text-align: center">
 <img src="screens/tutorial1_3_insert_r_code.jpg" alt="Insert R code template" width="20%" />
 <p class="caption">
@@ -1023,8 +948,8 @@ Load tidyverse
 </div>
 </div>
 <div id="r-for-data-science-exercises" class="section level2">
-<h2>R for Data Science exercises</h2>
-<p>Do each exercise from <a href="https://r4ds.had.co.nz/data-visualisation.html#first-steps" class="uri">https://r4ds.had.co.nz/data-visualisation.html#first-steps</a> in a new R code section in your notebook. Write notes as necessary.</p>
+<h2><a href="https://r4ds.had.co.nz/data-visualisation.html#first-steps">R for Data Science exercises</a></h2>
+<p>Do each exercise from <a href="https://r4ds.had.co.nz/data-visualisation.html#first-steps" class="uri">https://r4ds.had.co.nz/data-visualisation.html#first-steps</a> in a new R code section in your notebook. Write notes in the white space between code sections. The first 2 code examples follow.</p>
 <div class="figure" style="text-align: center">
 <img src="screens/tutorial1_6_mpg.jpg" alt="Show mpg dataset" width="100%" />
 <p class="caption">
@@ -1036,7 +961,6 @@ Show mpg dataset
 <p class="caption">
 Your first graph
 </p>
-</div>
 </div>
 </div>
 
