@@ -85,8 +85,10 @@ The process of data science involves getting data, making it usable, and explori
  - Do each exercise in a new R code section in your notebook.  Write notes as necessary
 
 # Initial R notebook
+```{r}
 knitr::include_graphics("screens/tutorial1_1_initial_rmd.jpg")
 ```
+
 
 
 
