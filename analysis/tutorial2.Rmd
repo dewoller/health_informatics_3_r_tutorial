@@ -8,15 +8,15 @@ output:
 ---
 
 # Putting your commands in files
-Last week,  we typed all our commands directly into the console window.  THis is useful for testing and small projects, but it is much better to capture our command in a file, so we can control them.  
+In the SQL assignment, we typed our commands into an Rmd file.  In this tutorial, we will type into an R file.  This is a simpler format, where the whole file is filled with R commands alone (no SQL or markdown content).  Don't worry, we will get back to Rmd, for the final assignment.
 
-Rstudio has a file editor built directly into the environment.  Create a new R Script file by going to File -> New File -> R Script (or just type ctrl-shift-N)
+Create a new R Script file by going to File -> New File -> R Script (or just type ctrl-shift-N)
 
 ```{r 0_menu_new_file.jpg, echo=FALSE, fig.cap="New File Menu", out.width='50%'}
 knitr::include_graphics("screens/tutorial2_0_menu_new_file.jpg")
 ```
 ## R script editing window
-A blank R Script editing window pops up in the top left quadrant.  You can type your commands in here, and send them to the console window by pressing ctrl-enter.  As in pgadmin, you can also highlight a section of the line, and run it by pressing ctrl-enter.
+A blank R Script editing window pops up in the top left quadrant.  Commands here are sent to the console window by pressing ctrl-enter.  You can also highlight a section of content and run it by pressing ctrl-enter.
  
 ```{r 1_blank_file_window.jpg, echo=FALSE, fig.cap="Blank R script window", out.width='50%'}
 knitr::include_graphics("screens/tutorial2_1_blank_file_window.jpg")
@@ -25,7 +25,7 @@ knitr::include_graphics("screens/tutorial2_1_blank_file_window.jpg")
 ## Typing commands in Rscript window
 
 
-Now, running commands in RStudio is a two step process.  First type the commands into the upper script window, and press ctrl-enter to run them in the console window, below.  Like last week, type `library(tidyverse)` into the rscript window, and press ctrl-enter.  It is conventional to load all your libraries at the start of the script.
+Running commands in RStudio is a two step process.  First type the commands into the upper script window, and press ctrl-enter to run them in the console window, below.  Like last week, type `library(tidyverse)` into the rscript window, and press ctrl-enter.  It is conventional to load all your libraries at the start of the script.
 
 Notice the informational messages that now show up in the console window, below.
 
@@ -67,46 +67,46 @@ You can see `vaed_explore.R` in the bottom right Files quadrant. If you want to 
 
 # Importing Health Data
 
-We will now work with health data. The following two queries select the same data we used in the second tableau tutorial. 
+We will now work with health data. The following two queries select the same data we used in the second Tableau tutorial.
 
 ## SQL Query for cardiac_diagnosis.csv
 
 ```{sql, eval=F }
 
-select diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
-from admission JOIN sex using (sex_id)
-join admission_diagnosis using (admission_id)
-join diagnosis_desc using (diag_code)
+SELECT diag_code, admission_id, age_years, los, sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc
+FROM admission JOIN sex USING (sex_id)
+JOIN admission_diagnosis USING (admission_id)
+JOIN diagnosis_desc USING (diag_code)
 JOIN separation_mode USING (sep_mode_id)
 JOIN care_type USING (care_type_id)
-WHERE diag_code between 'I21' AND 'I2399';
+WHERE diag_code BETWEEN 'I21' AND 'I2399';
 
 ```
 ## SQL Query for cardiac_procedures.csv
 
 ```{sql, eval=F}
 
-select procedure_code, admission_id, age_years, los, sameday_id, drg, sex_desc, procedure_short_desc, block_desc, sep_mode_desc, care_type_desc
-from admission JOIN sex using (sex_id)
-join admission_procedure using (admission_id)
-join procedure_desc using (procedure_code)
-join block using (block)
+SELECT procedure_code, admission_id, age_years, los, sameday_id, drg, sex_desc, procedure_short_desc, block_desc, sep_mode_desc, care_type_desc
+FROM admission JOIN sex USING (sex_id)
+JOIN admission_procedure USING (admission_id)
+JOIN procedure_desc USING (procedure_code)
+JOIN block USING (block)
 JOIN separation_mode USING (sep_mode_id)
 JOIN care_type USING (care_type_id)
-WHERE block_desc like '%cardiac%'
-AND block_desc not like 'Closure%'
-AND block_desc not like '%catheter%'
-AND block_desc not like 'Gated%'
+WHERE block_desc LIKE '%cardiac%'
+AND block_desc NOT LIKE 'Closure%'
+AND block_desc NOT LIKE '%catheter%'
+AND block_desc NOT LIKE 'Gated%'
 
 ```
-I downloaded the data from the above queries from pgadmin, using F8 to export it as csv, so you do not need to do this.  [Download cardiac.zip](assets/cardiac.zip) to your desktop.  It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv. 
+The data from the above queries are in a zip file. [Download cardiac.zip](assets/cardiac.zip) to your desktop.  It contains these two datasets as csv files, cardiac_diagnosis.csv and cardiac_procedures.csv. 
 
 ### Exercises
 
 1.  Write the SQL query that would get the diagnosis information for your assigned AHD disease. 
 
 ## Uploading data
-We will upload the cardiac datafiles to Rstudio, by using the Files-> Upload, found in Files tab of the bottom right quadrant.  
+We will upload the cardiac zip datafile to Rstudio, by using the Files-> Upload, found in Files tab of the bottom right quadrant.  
 
 ```{r 5_file_upload.jpg, echo=FALSE, fig.cap="Files tab", out.width='100%'}
 knitr::include_graphics("screens/tutorial2_5_file_upload.jpg")
