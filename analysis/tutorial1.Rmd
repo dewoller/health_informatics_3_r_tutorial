@@ -4,7 +4,7 @@ site: workflowr::wflow_site
 output:
     workflowr::wflow_html:
       toc: true
-      ---
+---
 
 
 In this tutorial, you will be going using two web browser windows, reading notes and exercise from the R for Data Science book, and doing the exercises in Rstudio
