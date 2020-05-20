@@ -11,7 +11,7 @@
 
 
 
-<title>Home</title>
+<title>Introduction to Data Science with R</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -352,7 +352,7 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Home</h1>
+<h1 class="title toc-ignore">Introduction to Data Science with R</h1>
 
 </div>
 
@@ -377,7 +377,7 @@ $(document).ready(function () {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-05-19
+<strong>Last updated:</strong> 2020-05-20
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 2 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 0
@@ -408,16 +408,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree65873ad623dea445ce5cbe7917b82483a5741d37targetblank65873ada"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/65873ad623dea445ce5cbe7917b82483a5741d37" target="_blank">65873ad</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree835100bdb8d46fb9ff37358fee8668f0b8cd1b62targetblank835100ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/835100bdb8d46fb9ff37358fee8668f0b8cd1b62" target="_blank">835100b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree65873ad623dea445ce5cbe7917b82483a5741d37targetblank65873ada" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree835100bdb8d46fb9ff37358fee8668f0b8cd1b62targetblank835100ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/65873ad623dea445ce5cbe7917b82483a5741d37" target="_blank">65873ad</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/835100bdb8d46fb9ff37358fee8668f0b8cd1b62" target="_blank">835100b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -426,11 +426,9 @@ Note that you need to be careful to ensure that all relevant files for the analy
 Ignored files:
     Ignored:    code/analysis/
 
-Untracked files:
-    Untracked:  screens
-
 Unstaged changes:
-    Modified:   analysis/tutorial7_forcats.Rmd
+    Modified:   analysis/tutorial1.Rmd
+    Modified:   analysis/tutorial3.Rmd
 
 </code></pre>
 <p>
@@ -469,6 +467,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/835100bdb8d46fb9ff37358fee8668f0b8cd1b62/analysis/index.Rmd" target="_blank">835100b</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-20
+</td>
+<td>
+workflowr::wflow_publish(“analysis/index.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/8bcc43dff1fd4299f5e18a28d3474d3dcc598a43/docs/index.html" target="_blank">8bcc43d</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-19
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -1037,8 +1069,114 @@ Start workflowr project.
 </div>
 </div>
 </div>
-<p>Welcome to Health Informatics 3</p>
-<p>This website contains the R tutorial. See menu above.</p>
+<p>Welcome to Health Informatics C - R section</p>
+<div id="what-is-data-science" class="section level1">
+<h1>What is Data Science</h1>
+<p>The process of data science involves getting data, making it usable, and exploring it. R is very functional in this regards, especially when using the tidyverse framework.</p>
+<p><img src="https://d33wubrfki0l68.cloudfront.net/795c039ba2520455d833b4034befc8cf360a70ba/558a5/diagrams/data-science-explore.png" alt="drawing" /></p>
+</div>
+<div id="what-is-r" class="section level1">
+<h1>What is R?</h1>
+<p>R is software very useful for data manipulation, graphing, and statistics. Table 1 compares it to other software. Of note, R uses a command language, like SQL, and because of this, it is a much better tool for principled data analysis.</p>
+<p>Table 1 - Comparison of R, SQL, Excel and Access for data manipulation</p>
+<table>
+<thead>
+<tr class="header">
+<th>Feature</th>
+<th>R</th>
+<th>SQL</th>
+<th>Excel</th>
+<th>Access</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Graphing</td>
+<td>Yes</td>
+<td>No</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Data filtering capabilities</td>
+<td>Excellent</td>
+<td>Good</td>
+<td>Some</td>
+<td>Some</td>
+</tr>
+<tr class="odd">
+<td>Statistics functionality</td>
+<td>Extensive</td>
+<td>Little</td>
+<td>Some</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Useful for very large datasets</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>Ok</td>
+</tr>
+<tr class="odd">
+<td>Uses English language commands</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr class="even">
+<td>Has Graphical User Interface (GUI)</td>
+<td>No</td>
+<td>No</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+<tr class="odd">
+<td>Can use it via the web</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="using-r" class="section level1">
+<h1>Using R</h1>
+<p>The easiest way to use R is through Rstudio, an environment that aids access to R’s features. There are 2 ways to get to Rstudio:</p>
+<ol style="list-style-type: decimal">
+<li>via the web (like SQL), or</li>
+<li>installed on your own computer. If you want to do this, the instructions for installing it on your own computer are on LMS.</li>
+</ol>
+<p>These instructions will assume you are accessing the web Rstudio version.</p>
+</div>
+<div id="rstudio-on-the-web" class="section level1">
+<h1>Rstudio on the web</h1>
+<p>Go to: <a href="https://him-rstudio.latrobe.edu.au/" class="uri">https://him-rstudio.latrobe.edu.au/</a></p>
+<p>Login using the chunk of your email address that is before ‘<span class="citation">@students.latrobe.edu.au</span>’ (normally your student number), and your email password. You will end up at the following screen. Like in SQL, this is your own personal workspace, but with more features. For example, you can edit and run R program files, view R help, and connect to databases.</p>
+<p>The left side of the screen holds the command window, and also, any files you are currently editing. The top right quadrant mainly lists your data, while the bottom right displays help text, graphics, and files in your directory.</p>
+<p>I will assume that you are accessing R through Rstudio.</p>
+<div id="exercises" class="section level2">
+<h2>Exercises</h2>
+<ol style="list-style-type: decimal">
+<li>Where is the command window?</li>
+<li>Where is the plot tab?</li>
+</ol>
+</div>
+</div>
+<div id="install-the-tidyverse-only-necessary-if-using-r-on-home-computer" class="section level1">
+<h1>Install the Tidyverse (only necessary if using R on home computer)</h1>
+<p>The functionality of the base R program is augmented through the use of packages. Packages are libraries which add substantial functionality.</p>
+<p>When you start R for the first time, it has no packages loaded. To use a package, you use the library command, for example,</p>
+<pre><code>library( tidyverse )</code></pre>
+<p>Tidyverse is a collection of 25 packages which make R much easier to use.</p>
+<p>If the package you want to use is not installed, the library command will give you an error, for example:</p>
+<pre><code>Error in library(tidyverse) : there is no package called ‘tidyverse’</code></pre>
+<p>To get past this, you will need to install the package, using the install.packages command, for example:</p>
+<pre><code>install.packages(&#39;tidyverse&#39;)</code></pre>
+<p>You do not need to do this at <a href="https://him-rstudio.latrobe.edu.au/" class="uri">https://him-rstudio.latrobe.edu.au/</a> , it is already done.</p>
+</div>
 
 
 <!-- Adjust MathJax settings so that all math formulae are shown using
