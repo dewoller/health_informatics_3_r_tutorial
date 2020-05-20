@@ -76,9 +76,10 @@ You do not need to do this at https://him-rstudio.latrobe.edu.au/ , it is alread
 
 # Tutorial - Exploring Graphics with R
 
-## Open two webbrowser windows,
- https://him-rstudio.latrobe.edu.au/
- https://r4ds.had.co.nz/data-visualisation.html#first-steps
+## Open two webbrowser windows
+
+ - https://him-rstudio.latrobe.edu.au/
+ - https://r4ds.had.co.nz/data-visualisation.html#first-steps
 
 ## In Rstudio, create a new .Rmd file (File -> new -> R Notebook)
 
@@ -103,8 +104,8 @@ knitr::include_graphics("screens/tutorial1_4_first_segment.jpg")
 knitr::include_graphics("screens/tutorial1_5_tidyverse.jpg")
 ```
 
-## Do each exercise in a new R code section in your notebook.  Write notes as necessary
-
+## R for Data Science exercises
+Do each exercise from https://r4ds.had.co.nz/data-visualisation.html#first-steps in a new R code section in your notebook.  Write notes as necessary.
 
 ```{r tutorial1_6_mpg, echo=FALSE, fig.cap="Show mpg dataset", out.width='100%'}
 knitr::include_graphics("screens/tutorial1_6_mpg.jpg")
