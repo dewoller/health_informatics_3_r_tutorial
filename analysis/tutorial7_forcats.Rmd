@@ -1,5 +1,5 @@
 ---
-title: "Tutorial 6 - Machine Learning"
+title: "Tutorial 7 - Top N query"
 site: workflowr::wflow_site
 output:
   workflowr::wflow_html:
