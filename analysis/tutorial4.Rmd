@@ -262,7 +262,7 @@ In Merilyn's AHB assignment, you have to :
 
 1. Using the ICD10 code(s) for your disease,  connect to the vaed_full database and retrieve your admissions
 2. Is there a significant diffence in the incidence of your disease between the genders ?
-3. Choose 2 versions of your disease.  Is there a significant difference between the length of stay (LOS) for these 2 versions?
+3. Choose 2 versions of your disease (e.g. gender, age ).  Is there a significant difference between the length of stay (LOS) for these 2 versions?
 
 
 

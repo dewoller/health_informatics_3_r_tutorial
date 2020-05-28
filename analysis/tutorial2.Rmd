@@ -77,7 +77,7 @@ cardiac_procedures %>%
 ```
 ##  `select` and `filter` functions
 
-There are many functions that can be used in a pipe.  Some useful ones that you will recognise are `select` and `filter`. `select` is for selecting columns, whereas `filter` selects out specific rows, just like the `where` clause in SQL.
+There are many functions that can be used in a pipe.  Some useful ones that you will recognise are `select` and `filter`. `select` is for selecting columns, just like `select` in SQL. In R `filter` selects out specific rows,  like the SQL `where` 
 
 ```{r }
 
