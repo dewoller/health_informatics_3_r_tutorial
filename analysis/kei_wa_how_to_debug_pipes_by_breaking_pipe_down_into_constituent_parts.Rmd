@@ -1,0 +1,94 @@
+---
+title: "Question 4 - Costs"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+---
+
+# Initialise
+
+```{r echo=TRUE, eval=T,  warning=F, message=F}
+library(tidyverse)
+library(scales)
+
+cardiac_procedures <- read_csv('cardiac_procedures.csv')
+
+```
+
+#The following query has funny results
+
+```{r }
+
+cardiac_procedures %>%
+  distinct(admission_id, sex_desc, sep_mode_desc) %>%
+  filter(sex_desc=='male')%>%
+  ggplot()+
+  geom_bar(mapping = aes(x=sep_mode_desc, fill=sex_desc))+
+  ggtitle('Number of male in each of the different separation modes')+
+  ylab('Number of Patients') +
+  xlab(' Separation Modes') +
+  scale_fill_discrete(name = 'Sex' )+
+  scale_x_discrete(labels = wrap_format(40)) +
+  coord_flip()
+
+```
+
+The way to solve it is go through the results, step by step.  In Rstudio, you can highlight the chunks you want to run, and press CTRL-Enter
+
+# First line 
+
+
+```{r }
+
+cardiac_procedures 
+
+
+```
+
+
+# First two lines 
+
+
+```{r }
+
+cardiac_procedures %>%
+  distinct(admission_id, sex_desc, sep_mode_desc) 
+
+
+```
+
+# First three lines 
+
+```{r }
+
+cardiac_procedures %>%
+  distinct(admission_id, sex_desc, sep_mode_desc) %>%
+  filter(sex_desc=='male')
+
+```
+At this point, you should see what the problem is
+
+# Solution
+
+```{r }
+
+cardiac_procedures %>%
+  distinct(admission_id, sex_desc, sep_mode_desc) %>%
+  filter(sex_desc=='Male')%>%
+  ggplot()+
+  geom_bar(mapping = aes(x=sep_mode_desc, fill=sex_desc))+
+  ggtitle('Number of male in each of the different separation modes')+
+  ylab('Number of Patients') +
+  xlab(' Separation Modes') +
+  scale_fill_discrete(name = 'Sex' )+
+  scale_x_discrete(labels = wrap_format(40)) +
+  coord_flip()
+
+```
+
+The way to solve it is go through the results, step by step.
+
+# First line 
+
+
