@@ -8,5 +8,6 @@ output:
 
 # Student Questions 2020
 
+- [How to debug pipes by breaking it down into constituent parts](kei_wa_how_to_debug_pipes_by_breaking_pipe_down_into_constituent_parts.html)
 
 
