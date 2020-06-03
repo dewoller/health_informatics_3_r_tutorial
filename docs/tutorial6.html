@@ -453,7 +453,7 @@ div.tocify {
 <div class="tab-content">
 <div id="summary" class="tab-pane fade in active">
 <p>
-<strong>Last updated:</strong> 2020-05-21
+<strong>Last updated:</strong> 2020-06-04
 </p>
 <p>
 <strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
@@ -544,16 +544,16 @@ This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis
 <div class="panel panel-default">
 <div class="panel-heading">
 <p class="panel-title">
-<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree5c9f3d94e521a436eeefd74836c077d942c1020dtargetblank5c9f3d9a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/5c9f3d94e521a436eeefd74836c077d942c1020d" target="_blank">5c9f3d9</a> </a>
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreef245e3bbcfb9a82d978154f0647a0d02252690bctargetblankf245e3ba"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/f245e3bbcfb9a82d978154f0647a0d02252690bc" target="_blank">f245e3b</a> </a>
 </p>
 </div>
-<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtree5c9f3d94e521a436eeefd74836c077d942c1020dtargetblank5c9f3d9a" class="panel-collapse collapse">
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreef245e3bbcfb9a82d978154f0647a0d02252690bctargetblankf245e3ba" class="panel-collapse collapse">
 <div class="panel-body">
 <p>
 Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
 </p>
 <p>
-The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/5c9f3d94e521a436eeefd74836c077d942c1020d" target="_blank">5c9f3d9</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/f245e3bbcfb9a82d978154f0647a0d02252690bc" target="_blank">f245e3b</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
 </p>
 <p>
 Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
@@ -599,6 +599,40 @@ Message
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/f245e3bbcfb9a82d978154f0647a0d02252690bc/analysis/tutorial6.Rmd" target="_blank">f245e3b</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-06-04
+</td>
+<td>
+workflowr::wflow_publish(“analysis/tutorial6.Rmd”)
+</td>
+</tr>
+<tr>
+<td>
+html
+</td>
+<td>
+<a href="https://rawcdn.githack.com/dewoller/health_informatics_3_r_tutorial/968be0a9a7a9b0db4158257b529624bc1e1327bd/docs/tutorial6.html" target="_blank">968be0a</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-05-21
+</td>
+<td>
+Build site.
+</td>
+</tr>
 <tr>
 <td>
 html
@@ -866,7 +900,9 @@ con &lt;- dbConnect(dbDriver(&quot;PostgreSQL&quot;),
                  host = &quot;himsql7.latrobe.edu.au&quot;, port = 5432,
                  user = &quot;dewollershei-test&quot;, password = &quot;healthGuru&quot;)
 #
-# this is the query to get all tne pneumonia diagnois.  the 3 commented lines would also finn the principal procedure
+# this is the query to get all tne pneumonia diagnois.  Finding the 3 commented lines would also find the principal procedure, which might also
+# might be useful in the model
+
 query_diag &lt;- &quot; 
 select ad.position, diag_code, admission_id, age_years, los, 
 sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
@@ -1017,7 +1053,7 @@ Class: Classification
 Performance Metric: AUROC
 Number of Observations: 49653
 Number of Features: 18
-Models Trained: 2020-05-21 10:07:09 
+Models Trained: 2020-06-04 08:11:22 
 
 Models have not been tuned. Performance estimated via 5-fold cross validation at fixed hyperparameter values.
 Best model: eXtreme Gradient Boosting
@@ -1346,7 +1382,7 @@ Performance Metric: Accuracy
 Number of Observations: 42611
 Number of Features: 18
 Number of Outcome Classes: 3
-Models Trained: 2020-05-21 10:09:35 
+Models Trained: 2020-06-04 08:12:51 
 
 Models have not been tuned. Performance estimated via 5-fold cross validation at fixed hyperparameter values.
 Best model: eXtreme Gradient Boosting
