@@ -33,11 +33,13 @@ library(healthcareai)
 
 # create connection to the database
 con <- dbConnect(dbDriver("PostgreSQL"), 
-				 dbname   = 'vaed_full',
-				 host = "himsql7.latrobe.edu.au", port = 5432,
-				 user = "dewollershei-test", password = "healthGuru")
+                 dbname   = 'vaed_full',
+                 host = "himsql7.latrobe.edu.au", port = 5432,
+                 user = "dewollershei-test", password = "healthGuru")
 #
-# this is the query to get all tne pneumonia diagnois.  the 3 commented lines would also finn the principal procedure
+# this is the query to get all tne pneumonia diagnois.  Finding the 3 commented lines would also find the principal procedure, which might also
+# might be useful in the model
+
 query_diag <- " 
 select ad.position, diag_code, admission_id, age_years, los, 
 sameday_id, drg, sex_desc, diag_short_desc, sep_mode_desc, care_type_desc,
