@@ -1,0 +1,116 @@
+
+---
+title: "2020 - Question 1 - Supply Date and Age Grouping"
+site: workflowr::wflow_site
+output:
+  workflowr::wflow_html:
+    toc: true
+---
+
+#  What is the Problem 
+Hi Natalie
+
+What a good question!  I have run into this problem myself, in this same dataset.   There are 2 problems:  definition, and implementation.
+
+## Definition
+The definition problem is that if a person was born in 1950 and they get a drug in 1999, they were 49 years old.  If they also get a drug in 2001, they are then 51 years old. These two prescriptions are the same person, but if we group by age, they will be counted twice.  What should we do?  What age group should they go into?  The 40-50 year olds, the 50-60 year olds, or both?
+
+## Solution
+It seems wrong to count a person twice, despite their various ages.  For lack of anything better, I suggest that we classify a person based on when they *first* got the drug.  In SQL, this query would look like:
+
+Let's say the drug is ATORVASTATIN, pbs_item  08214H.
+
+```{r get_data, echo=TRUE, eval=T,  warning=F, message=F}
+suppressMessages( library(tidyverse))
+
+
+query <- " 
+
+SELECT pin, yob, sex, supply_date
+FROM patient JOIN pbs USING (pin)
+WHERE pbs_item = '08214H'
+
+"
+
+library("RPostgreSQL")
+con <- dbConnect(dbDriver("PostgreSQL"), 
+                 dbname   = 'pbs_sample',
+                  host = "himsql7.latrobe.edu.au", port = 5432,
+                 user = "dewollershei-test", password = "healthGuru")
+
+prescriptions <- dbGetQuery( con, query )   %>% as.tibble() 
+prescriptions
+#
+dbDisconnect( con )
+
+```
+
+## Find age at first prescription, for each person
+Then, in R, with the help of the *lubridate* library to extract the *supply year* from supply_date it would look like:
+
+```{r person_age_at_first_drug}
+
+library( lubridate )
+
+person_age_at_first_drug <- 
+  prescriptions %>%
+    group_by( pin, yob ) %>%
+    summarise( min_year = min( year( supply_date ))) %>%
+    mutate( age_at_first_drug = min_year - yob)  %>%
+    mutate( age_group = cut( age_at_first_drug, breaks=0:11*10 ))
+
+person_age_at_first_drug
+
+```
+
+## Use age at first prescription by through *inner_join*
+Once we have the person's age when they first got the drug, we can join this data in when we need it.  For example, if we want to look at the gender, and total number of prescriptions , we could use the same dataset, but *inner_join* the *person_age_at_first_drug* tibble, to find out the age group.
+
+For example
+
+
+```{r summarise_and_join }
+
+prescriptions %>%
+  inner_join( person_age_at_first_drug, by='pin' ) %>%
+  count( age_group, sex ) %>% 
+  ggplot( mapping = aes( x=age_group, y=n, color=sex, group=sex )) +
+  geom_point() +
+  geom_line()
+
+
+```
+
+## Bonus:  Renaming cut labels
+You also asked how to rename cut labels. 
+
+If you want to relabel the default cuts, you probably need to type them out:
+
+
+```{r labelling_cut_segments}
+
+my_labels = c("0-9", "10-19", "20-29", "30-39", "40-49", "50-59", "60-69", "70-79", "80-89", "90-99", "100-109")
+
+
+
+person_age_at_first_drug %>%
+  mutate( age_group = cut( age_at_first_drug, breaks=0:11*10, labels=my_labels ))
+
+
+
+```
+
+## Bonus Bonus - Not typing them out
+
+If you aspire to be as lazy as me, see if you can figure out what the following two lines of code are doing...
+
+```{r playing_with_vectors }
+
+a=0:10*10
+paste(a,a+9, sep='-') 
+
+```
+
+
+
+
