@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Dennis Wollersheim &amp; Josh Vartuli" />
+
+
+<title>How to make graph percentage scaled?</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+
+<link rel="icon" href="https://github.com/workflowr/workflowr-assets/raw/master/img/reproducible.png">
+<!-- Add a small amount of space between sections. -->
+<style type="text/css">
+div.section {
+  padding-top: 12px;
+}
+</style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Health Informatics R Tutorial</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Tutorials
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="tutorial1.html">1. Introduction</a>
+    </li>
+    <li>
+      <a href="tutorial2.html">2. Basic R </a>
+    </li>
+    <li>
+      <a href="tutorial3.html">3. Loading Data </a>
+    </li>
+    <li>
+      <a href="tutorial4.html">4. Statistics</a>
+    </li>
+    <li>
+      <a href="tutorial5.html">5. Working with VAED </a>
+    </li>
+    <li>
+      <a href="tutorial6.html">6. Machine Learning (AI)</a>
+    </li>
+    <li>
+      <a href="tutorial7_forcats.html">7. Top N Grouping</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Student Questions
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="questions_2019.html">2019 Student Questions</a>
+    </li>
+    <li>
+      <a href="questions_2020.html">2020 Student Questions</a>
+    </li>
+  </ul>
+</li>
+<li>
+  <a href="about.html">About</a>
+</li>
+<li>
+  <a href="license.html">License</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jdblischak/workflowr">
+    <span class="fa fa-github"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">How to make graph percentage scaled?</h1>
+<h4 class="author">Dennis Wollersheim &amp; Josh Vartuli</h4>
+<h4 class="date">11.06.2020</h4>
+
+</div>
+
+
+<p>
+<button type="button" class="btn btn-default btn-workflowr btn-workflowr-report" data-toggle="collapse" data-target="#workflowr-report">
+<span class="glyphicon glyphicon-list" aria-hidden="true"></span> workflowr <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span>
+</button>
+</p>
+<div id="workflowr-report" class="collapse">
+<ul class="nav nav-tabs">
+<li class="active">
+<a data-toggle="tab" href="#summary">Summary</a>
+</li>
+<li>
+<a data-toggle="tab" href="#checks"> Checks <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> </a>
+</li>
+<li>
+<a data-toggle="tab" href="#versions">Past versions</a>
+</li>
+</ul>
+<div class="tab-content">
+<div id="summary" class="tab-pane fade in active">
+<p>
+<strong>Last updated:</strong> 2020-06-11
+</p>
+<p>
+<strong>Checks:</strong> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> 6 <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> 1
+</p>
+<p>
+<strong>Knit directory:</strong> <code>tutorials_workflowr/</code> <span class="glyphicon glyphicon-question-sign" aria-hidden="true" title="This is the local directory in which the code in this file was executed."> </span>
+</p>
+<p>
+This reproducible <a href="http://rmarkdown.rstudio.com">R Markdown</a> analysis was created with <a
+  href="https://github.com/jdblischak/workflowr">workflowr</a> (version 1.6.2). The <em>Checks</em> tab describes the reproducibility checks that were applied when the results were created. The <em>Past versions</em> tab lists the development history.
+</p>
+<hr>
+</div>
+<div id="checks" class="tab-pane fade">
+<div id="workflowr-checks" class="panel-group">
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRMarkdownfilestronguptodate"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>R Markdown file:</strong> up-to-date </a>
+</p>
+</div>
+<div id="strongRMarkdownfilestronguptodate" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great! Since the R Markdown file has been committed to the Git repository, you know the exact version of the code that produced these results.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongEnvironmentstrongempty"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Environment:</strong> empty </a>
+</p>
+</div>
+<div id="strongEnvironmentstrongempty" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! The global environment was empty. Objects defined in the global environment can affect the analysis in your R Markdown file in unknown ways. For reproduciblity it’s best to always run the code in an empty environment.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSeedstrongcodesetseed20190513code"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Seed:</strong> <code>set.seed(20190513)</code> </a>
+</p>
+</div>
+<div id="strongSeedstrongcodesetseed20190513code" class="panel-collapse collapse">
+<div class="panel-body">
+<p>The command <code>set.seed(20190513)</code> was run prior to running the code in the R Markdown file. Setting a seed ensures that any results that rely on randomness, e.g. subsampling or permutations, are reproducible.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongSessioninformationstrongunavailable"> <span class="glyphicon glyphicon-exclamation-sign text-danger" aria-hidden="true"></span> <strong>Session information:</strong> unavailable </a>
+</p>
+</div>
+<div id="strongSessioninformationstrongunavailable" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Recording the operating system, R version, and package versions is critical for reproducibility. To record the session information, add <code>sessioninfo: “sessionInfo()”</code> to _workflowr.yml. Alternatively, you could use <code>devtools::session_info()</code> or <code>sessioninfo::session_info()</code>. Lastly, you can manually add a code chunk to this file to run any one of these commands and then disable to automatic insertion by changing the workflowr setting to <code>sessioninfo: ""</code>.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongCachestrongnone"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Cache:</strong> none </a>
+</p>
+</div>
+<div id="strongCachestrongnone" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Nice! There were no cached chunks for this analysis, so you can be confident that you successfully produced the results during this run.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongFilepathsstrongrelative"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>File paths:</strong> relative </a>
+</p>
+</div>
+<div id="strongFilepathsstrongrelative" class="panel-collapse collapse">
+<div class="panel-body">
+<p>Great job! Using relative paths to the files within your workflowr project makes it easier to run your code on other machines.</p>
+</div>
+</div>
+</div>
+<div class="panel panel-default">
+<div class="panel-heading">
+<p class="panel-title">
+<a data-toggle="collapse" data-parent="#workflowr-checks" href="#strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreece54590c21e9a45e42ef6006ee53cffd361654c5targetblankce54590a"> <span class="glyphicon glyphicon-ok text-success" aria-hidden="true"></span> <strong>Repository version:</strong> <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/ce54590c21e9a45e42ef6006ee53cffd361654c5" target="_blank">ce54590</a> </a>
+</p>
+</div>
+<div id="strongRepositoryversionstrongahrefhttpsgithubcomdewollerhealthinformatics3rtutorialtreece54590c21e9a45e42ef6006ee53cffd361654c5targetblankce54590a" class="panel-collapse collapse">
+<div class="panel-body">
+<p>
+Great! You are using Git for version control. Tracking code development and connecting the code version to the results is critical for reproducibility.
+</p>
+<p>
+The results in this page were generated with repository version <a href="https://github.com/dewoller/health_informatics_3_r_tutorial/tree/ce54590c21e9a45e42ef6006ee53cffd361654c5" target="_blank">ce54590</a>. See the <em>Past versions</em> tab to see a history of the changes made to the R Markdown and HTML files.
+</p>
+<p>
+Note that you need to be careful to ensure that all relevant files for the analysis have been committed to Git prior to generating the results (you can use <code>wflow_publish</code> or <code>wflow_git_commit</code>). workflowr only checks the R Markdown file, but you know if there are other scripts or data files that it depends on. Below is the status of the Git repository when the results were generated:
+</p>
+<pre><code>
+Ignored files:
+    Ignored:    code/analysis/
+
+Unstaged changes:
+    Modified:   analysis/questions_2020.Rmd
+
+</code></pre>
+<p>
+Note that any generated files, e.g. HTML, png, CSS, etc., are not included in this status report because it is ok for generated content to have uncommitted changes.
+</p>
+</div>
+</div>
+</div>
+</div>
+<hr>
+</div>
+<div id="versions" class="tab-pane fade">
+
+<p>
+These are the previous versions of the repository in which changes were made to the R Markdown (<code>analysis/2020_josh_percentage_scales.Rmd</code>) and HTML (<code>docs/2020_josh_percentage_scales.html</code>) files. If you’ve configured a remote Git repository (see <code>?wflow_git_remote</code>), click on the hyperlinks in the table below to view the files as they were in that past version.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed table-hover">
+<thead>
+<tr>
+<th>
+File
+</th>
+<th>
+Version
+</th>
+<th>
+Author
+</th>
+<th>
+Date
+</th>
+<th>
+Message
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+Rmd
+</td>
+<td>
+<a href="https://github.com/dewoller/health_informatics_3_r_tutorial/blob/ce54590c21e9a45e42ef6006ee53cffd361654c5/analysis/2020_josh_percentage_scales.Rmd" target="_blank">ce54590</a>
+</td>
+<td>
+Dennis Wollersheim
+</td>
+<td>
+2020-06-11
+</td>
+<td>
+workflowr::wflow_publish(“analysis/2020_josh_percentage_scales.Rmd”)
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<hr>
+</div>
+</div>
+</div>
+<p>There are many ways to produce scales. Here are a few.</p>
+<div id="load-libraries" class="section level1">
+<h1>load libraries</h1>
+<pre class="r"><code>library(tidyverse)</code></pre>
+<pre><code>── Attaching packages ─────────────────────────────────────── tidyverse 1.3.0 ──</code></pre>
+<pre><code>✔ ggplot2 3.3.0     ✔ purrr   0.3.4
+✔ tibble  3.0.1     ✔ dplyr   0.8.5
+✔ tidyr   1.1.0     ✔ stringr 1.4.0
+✔ readr   1.3.1     ✔ forcats 0.5.0</code></pre>
+<pre><code>── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+<pre class="r"><code>library(RPostgreSQL)</code></pre>
+<pre><code>Loading required package: DBI</code></pre>
+</div>
+<div id="get-data" class="section level1">
+<h1>Get data</h1>
+<pre class="r"><code>con &lt;- dbConnect(dbDriver(&quot;PostgreSQL&quot;),
+                 dbname   = &#39;vaed_full&#39;,
+                 host = &quot;himsql7.latrobe.edu.au&quot;, port = 5432,
+                 user = &quot;dewollershei-test&quot;, password = &quot;healthGuru&quot;)
+
+query_diag &lt;- &quot;
+select admission_id, diag_code, diag_desc, sex_desc
+from admission
+JOIN sex using (sex_id)
+join admission_diagnosis using (admission_id)
+join diagnosis_desc using (diag_code)
+  WHERE diag_desc like &#39;%leukaemia%&#39; ;
+  &quot;
+
+leukaemia_diag &lt;- dbGetQuery( con, query_diag ) %&gt;% as_tibble()
+did_disconnect &lt;- dbDisconnect( con )
+  leukaemia_diag %&gt;%
+distinct(admission_id)</code></pre>
+<pre><code># A tibble: 10,578 x 1
+   admission_id
+          &lt;int&gt;
+ 1     22436498
+ 2     22437315
+ 3     22478217
+ 4     22501964
+ 5     22506805
+ 6     22507346
+ 7     22512582
+ 8     22543309
+ 9     22549430
+10     22558684
+# … with 10,568 more rows</code></pre>
+</div>
+<div id="original-query" class="section level1">
+<h1>Original Query</h1>
+<p>The problem with this query is that it is plotting admission_id as a numeric variable, leading to values of 2 billion!</p>
+<pre class="r"><code>  leukaemia_diag%&gt;%
+  ggplot()+
+  geom_col(mapping=aes(x=diag_desc, y=admission_id, color=sex_desc)) +
+  ggtitle(&#39;leukaemia by gender and type&#39;) +
+  xlab (&#39;Diagnosis&#39;) +
+  ylab (&#39;Admissions&#39;) +
+  scale_fill_discrete (&#39;sex_desc&#39;) +
+  theme(legend.position = &#39;bottom&#39;)</code></pre>
+<p><img src="figure/2020_josh_percentage_scales.Rmd/unnamed-chunk-3-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="original-query---fixed" class="section level1">
+<h1>Original Query - fixed</h1>
+<p>I imagine that you want to count diag_desc (and use fill instead of color). The most simple way to do this is to use geom_bar do to the counting for us</p>
+<pre class="r"><code>leukaemia_diag%&gt;%
+  ggplot()+
+  geom_bar(mapping=aes(x=diag_desc, fill=sex_desc)) +
+  ggtitle(&#39;leukaemia by gender and type&#39;) +
+  xlab (&#39;Diagnosis&#39;) +
+  ylab (&#39;Admissions&#39;) +
+  scale_fill_discrete (&#39;sex_desc&#39;) +
+  theme(legend.position = &#39;bottom&#39;)</code></pre>
+<p><img src="figure/2020_josh_percentage_scales.Rmd/unnamed-chunk-4-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="how-to-produce-percentage-scales" class="section level1">
+<h1>How to produce percentage scales</h1>
+<div id="calculate-the-percentage-yourself" class="section level2">
+<h2>1) Calculate the percentage yourself</h2>
+<p><em>count</em> counts the number of admissions with each <em>diag_desc</em>, and <em>mutate</em> calculates the percentage. We also can use <em>geom_co</em>l because we already know how high the bars should be, we don’t need to have <em>geom_bar</em> do the counting for us.</p>
+<pre class="r"><code>leukaemia_diag %&gt;%
+  count( diag_desc, sex_desc ) %&gt;%
+  mutate( percentage = n / sum(n) ) %&gt;%
+  ggplot()+
+  geom_col(mapping=aes(x=diag_desc, y=percentage, fill=sex_desc)) +
+  ggtitle(&#39;leukaemia by gender and type&#39;) +
+  xlab (&#39;Diagnosis&#39;) +
+  ylab (&#39;Admissions&#39;) +
+  scale_fill_discrete (&#39;sex_desc&#39;) +
+  theme(legend.position = &#39;bottom&#39;)</code></pre>
+<p><img src="figure/2020_josh_percentage_scales.Rmd/unnamed-chunk-5-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="use-magic-word-..count..-in-geom_bar" class="section level2">
+<h2>2) Use magic word <em>..count..</em> in <em>geom_bar</em></h2>
+<p>As you may imagine, because <em>geom_bar</em> can do the counting for us, it actually does know the count! We can see and use the count, because it is stored in the <em>..count..</em> variable.</p>
+<pre class="r"><code>leukaemia_diag %&gt;%
+  ggplot()+
+  geom_bar(mapping=aes(x=diag_desc, y= ..count.. / sum( ..count..), fill=sex_desc)) +
+  ggtitle(&#39;leukaemia by gender and type&#39;) +
+  xlab (&#39;Diagnosis&#39;) +
+  ylab (&#39;Admissions&#39;) +
+  scale_fill_discrete (&#39;sex_desc&#39;) +
+  theme(legend.position = &#39;bottom&#39;)</code></pre>
+<p><img src="figure/2020_josh_percentage_scales.Rmd/unnamed-chunk-6-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+<div id="labelling-scales" class="section level2">
+<h2>3) Labelling scales</h2>
+<p>We probably want to label the scales appropriately. The <em>scales</em> package does this for us.</p>
+<pre class="r"><code>library(scales)</code></pre>
+<pre><code>
+Attaching package: &#39;scales&#39;</code></pre>
+<pre><code>The following object is masked from &#39;package:purrr&#39;:
+
+    discard</code></pre>
+<pre><code>The following object is masked from &#39;package:readr&#39;:
+
+    col_factor</code></pre>
+<pre class="r"><code>leukaemia_diag %&gt;%
+  ggplot()+
+  geom_bar(mapping=aes(x=diag_desc, y= ..count.. / sum( ..count..), fill=sex_desc)) +
+  ggtitle(&#39;leukaemia by gender and type&#39;) +
+  xlab (&#39;Diagnosis&#39;) +
+  ylab (&#39;Admissions&#39;) +
+  scale_fill_discrete (&#39;sex_desc&#39;) +
+  theme(legend.position = &#39;bottom&#39;) +
+  scale_y_continuous(labels=scales::percent)</code></pre>
+<p><img src="figure/2020_josh_percentage_scales.Rmd/unnamed-chunk-7-1.png" width="672" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="further-work" class="section level1">
+<h1>Further work</h1>
+<p>There are some videos, and tutorial 6, on how to reduce the number of categories</p>
+</div>
+
+
+<!-- Adjust MathJax settings so that all math formulae are shown using
+TeX fonts only; see
+http://docs.mathjax.org/en/latest/configuration.html.  This will make
+the presentation more consistent at the cost of the webpage sometimes
+taking slightly longer to load. Note that this only works because the
+footer is added to webpages before the MathJax javascript. -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
