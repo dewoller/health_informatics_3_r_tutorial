@@ -1,0 +1,144 @@
+---
+title:           How to make graph percentage scaled?
+author:          Dennis Wollersheim & Josh Vartuli
+date:            11.06.2020
+linkcolor:       cyan
+citecolor:       grey
+output:
+  pdf_document:
+    highlight:   zenburn
+---
+
+
+There are many ways to produce scales.  Here are a few.
+
+# load libraries
+
+```{r}
+
+library(tidyverse)
+library(RPostgreSQL)
+
+```
+
+# Get data
+
+```{r}
+
+con <- dbConnect(dbDriver("PostgreSQL"),
+                 dbname   = 'vaed_full',
+                 host = "himsql7.latrobe.edu.au", port = 5432,
+                 user = "dewollershei-test", password = "healthGuru")
+
+query_diag <- "
+select admission_id, diag_code, diag_desc, sex_desc
+from admission
+JOIN sex using (sex_id)
+join admission_diagnosis using (admission_id)
+join diagnosis_desc using (diag_code)
+  WHERE diag_desc like '%leukaemia%' ;
+  "
+
+leukaemia_diag <- dbGetQuery( con, query_diag ) %>% as_tibble()
+did_disconnect <- dbDisconnect( con )
+  leukaemia_diag %>%
+distinct(admission_id)
+
+```
+# Original Query
+The problem with this query is that it is plotting admission_id as a numeric variable, leading to values of 2 billion!
+
+```{r}
+
+  leukaemia_diag%>%
+  ggplot()+
+  geom_col(mapping=aes(x=diag_desc, y=admission_id, color=sex_desc)) +
+  ggtitle('leukaemia by gender and type') +
+  xlab ('Diagnosis') +
+  ylab ('Admissions') +
+  scale_fill_discrete ('sex_desc') +
+  theme(legend.position = 'bottom')
+
+
+```
+
+# Original Query - fixed
+
+I imagine that you want to count diag_desc (and use fill instead of color).  The most simple way to do this is to use geom_bar do to the counting for us
+
+```{r}
+
+leukaemia_diag%>%
+  ggplot()+
+  geom_bar(mapping=aes(x=diag_desc, fill=sex_desc)) +
+  ggtitle('leukaemia by gender and type') +
+  xlab ('Diagnosis') +
+  ylab ('Admissions') +
+  scale_fill_discrete ('sex_desc') +
+  theme(legend.position = 'bottom')
+
+```
+
+# How to produce percentage scales
+
+## 1) Calculate the percentage yourself
+
+*count* counts the number of admissions with each *diag_desc*, and *mutate* calculates the percentage.  We also can use *geom_co*l because we already know how high the bars should be, we don't need to have *geom_bar* do the counting for us.
+
+```{r}
+
+leukaemia_diag %>%
+  count( diag_desc, sex_desc ) %>%
+  mutate( percentage = n / sum(n) ) %>%
+  ggplot()+
+  geom_col(mapping=aes(x=diag_desc, y=percentage, fill=sex_desc)) +
+  ggtitle('leukaemia by gender and type') +
+  xlab ('Diagnosis') +
+  ylab ('Admissions') +
+  scale_fill_discrete ('sex_desc') +
+  theme(legend.position = 'bottom')
+
+```
+
+
+## 2) Use magic word *..count..* in *geom_bar*
+
+As you may imagine, because *geom_bar* can do the counting for us, it actually does know the count!  We can see and use the count, because it is stored in the *..count..* variable.
+
+
+```{r}
+
+leukaemia_diag %>%
+  ggplot()+
+  geom_bar(mapping=aes(x=diag_desc, y= ..count.. / sum( ..count..), fill=sex_desc)) +
+  ggtitle('leukaemia by gender and type') +
+  xlab ('Diagnosis') +
+  ylab ('Admissions') +
+  scale_fill_discrete ('sex_desc') +
+  theme(legend.position = 'bottom')
+
+```
+
+## 3) Labelling scales
+
+We probably want to label the scales appropriately.  The *scales* package does this for us.
+
+```{r}
+
+library(scales)
+
+leukaemia_diag %>%
+  ggplot()+
+  geom_bar(mapping=aes(x=diag_desc, y= ..count.. / sum( ..count..), fill=sex_desc)) +
+  ggtitle('leukaemia by gender and type') +
+  xlab ('Diagnosis') +
+  ylab ('Admissions') +
+  scale_fill_discrete ('sex_desc') +
+  theme(legend.position = 'bottom') +
+  scale_y_continuous(labels=scales::percent)
+
+```
+
+# Further work
+
+There are some videos, and tutorial 6, on how to reduce the number of categories
